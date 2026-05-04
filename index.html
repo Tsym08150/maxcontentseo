@@ -524,6 +524,82 @@ section { padding: var(--section-pad); }
   line-height: 1.55;
 }
 
+/* ═══ PRICING ═══ */
+.pricing-section {
+  background: var(--white);
+}
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+.pricing-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.pricing-card-featured {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.pricing-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+.pricing-price {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  line-height: 1.1;
+  color: var(--text);
+  letter-spacing: -0.015em;
+}
+.pricing-period {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+.pricing-list {
+  list-style: disc;
+  padding-left: 1.1rem;
+  margin: 1.5rem 0;
+  display: grid;
+  gap: 0.7rem;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+.pricing-cta {
+  display: inline-block;
+  margin-top: auto;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  color: var(--accent);
+  text-align: center;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.2s, color 0.2s;
+}
+.pricing-cta:hover {
+  background: var(--accent);
+  color: var(--white);
+}
+.pricing-note {
+  margin-top: 1.25rem;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  text-align: center;
+}
+
 /* ═══ FAQ ═══ */
 .faq-list { max-width: 750px; }
 .faq-item {
@@ -688,6 +764,7 @@ footer .footer-links a { margin: 0 1rem; }
 @media (max-width: 600px) {
   .hero h1 { font-size: 2rem; }
   .trust-signals { flex-direction: column; gap: 0.75rem; }
+  .pricing-grid { grid-template-columns: 1fr; }
   .hero-ctas { flex-direction: column; }
   .btn-primary, .btn-secondary { text-align: center; }
 }
@@ -977,6 +1054,55 @@ footer .footer-links a { margin: 0 1rem; }
   </div>
 </section>
 
+<!-- PRICING -->
+<section class="pricing-section">
+  <div class="container">
+    <div class="section-label">Preise</div>
+    <h2 class="section-title">Transparente Preise</h2>
+    <p class="section-subtitle">Keine versteckten Kosten. Keine Knebelverträge.</p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-label">SEO-Audit</div>
+        <div class="pricing-price">ab 299 €</div>
+        <div class="pricing-period">einmalig</div>
+        <ul class="pricing-list">
+          <li>Vollständige Website-Analyse</li>
+          <li>Keyword- &amp; Wettbewerbsrecherche</li>
+          <li>Konkreter Maßnahmenplan</li>
+        </ul>
+        <a class="pricing-cta" href="#kontakt">Audit anfragen</a>
+      </div>
+
+      <div class="pricing-card pricing-card-featured">
+        <div class="pricing-label">SEO-Betreuung</div>
+        <div class="pricing-price">ab 499 €</div>
+        <div class="pricing-period">pro Monat</div>
+        <ul class="pricing-list">
+          <li>Monatliche Content-Erstellung</li>
+          <li>Laufende technische Optimierung</li>
+          <li>Reporting &amp; Priorisierung</li>
+        </ul>
+        <a class="pricing-cta" href="#kontakt">Betreuung anfragen</a>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-label">Premium-Betreuung</div>
+        <div class="pricing-price">ab 899 €</div>
+        <div class="pricing-period">pro Monat</div>
+        <ul class="pricing-list">
+          <li>Erweiterter Content-Output</li>
+          <li>Local SEO + Google Business Profile aktiv gepflegt</li>
+          <li>Direkter Ansprechpartner mit Priorität</li>
+        </ul>
+        <a class="pricing-cta" href="#kontakt">Anfrage stellen</a>
+      </div>
+    </div>
+
+    <p class="pricing-note">Alle Preise zzgl. USt. nach individueller Abstimmung. Keine Mindestlaufzeit.</p>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section class="faq">
   <div class="container">
@@ -992,8 +1118,8 @@ footer .footer-links a { margin: 0 1rem; }
         <div class="faq-a">Erste Verbesserungen bei technischen Fixes oft innerhalb von Wochen. Für nachhaltige Ranking-Verbesserungen durch Content sollten Sie mit 3–6 Monaten rechnen. SEO ist kein Sprint, aber die Ergebnisse sind dauerhaft.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q">Was kostet SEO?</div>
-        <div class="faq-a">Ein einmaliger SEO-Audit startet ab 299 €. Laufende Betreuung mit Content und Optimierung beginnt ab 499 €/Monat. Jedes Projekt wird individuell auf Ihre Situation zugeschnitten — in der kostenlosen Erstanalyse besprechen wir, was für Sie sinnvoll ist.</div>
+        <div class="faq-q">Kann ich auch nur ein Audit ohne laufende Betreuung buchen?</div>
+        <div class="faq-a">Ja. Viele Kunden starten mit einem einmaligen Audit und entscheiden danach, ob laufende Betreuung Sinn ergibt. Es gibt keinen Druck zur Verlängerung.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q">Gibt es Mindestlaufzeiten?</div>
