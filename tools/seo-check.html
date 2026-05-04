@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO-Chancen-Check | MaxContentSEO</title>
+  <meta name="description" content="Nicht bindender SEO-Chancen-Check fuer lokale Dienstleister.">
+  <link rel="stylesheet" href="/tools/seo-check.css">
+</head>
+<body>
+  <header class="tool-header">
+    <a class="tool-logo" href="/">Max<span>Content</span> SEO</a>
+    <a class="tool-back" href="/">Zur Startseite</a>
+  </header>
+
+  <main>
+    <section class="tool-hero">
+      <div class="tool-container">
+        <p class="tool-label">SEO-Chancen-Check</p>
+        <h1>Erste Einschätzung Ihrer lokalen Sichtbarkeit</h1>
+        <p class="tool-intro">Dieser Check basiert auf Ihren Angaben — er ersetzt keine echte SEO-Analyse, gibt aber eine erste Einschätzung.</p>
+      </div>
+    </section>
+
+    <section class="tool-section">
+      <div class="tool-container tool-panel">
+        <form id="seo-check-form" class="check-form">
+          <div class="field-group">
+            <label for="branche">Branche</label>
+            <select id="branche" name="branche" required>
+              <option value="">Bitte auswählen</option>
+              <option value="Kosmetikstudio">Kosmetikstudio</option>
+              <option value="Massage/Wellness">Massage/Wellness</option>
+              <option value="TCM-Praxis">TCM-Praxis</option>
+              <option value="Heilpraktiker">Heilpraktiker</option>
+              <option value="Andere">Andere</option>
+            </select>
+          </div>
+
+          <fieldset class="field-group">
+            <legend>Stadt-Größe</legend>
+            <label class="option-row"><input type="radio" name="citySize" value="large" required> Großstadt (&gt;500k)</label>
+            <label class="option-row"><input type="radio" name="citySize" value="medium"> Mittelstadt (50–500k)</label>
+            <label class="option-row"><input type="radio" name="citySize" value="small"> Kleinstadt (&lt;50k)</label>
+          </fieldset>
+
+          <fieldset class="field-group">
+            <legend>Aktuelle Google-Sichtbarkeit</legend>
+            <label class="option-row"><input type="radio" name="visibility" value="page1" required> Bei Suche nach meiner Hauptleistung + Stadt erscheine ich auf Seite 1</label>
+            <label class="option-row"><input type="radio" name="visibility" value="sometimes"> Manchmal auf Seite 1, oft Seite 2+</label>
+            <label class="option-row"><input type="radio" name="visibility" value="nameOnly"> Nur wenn man meinen Studionamen sucht</label>
+            <label class="option-row"><input type="radio" name="visibility" value="unknown"> Ich weiß es nicht</label>
+          </fieldset>
+
+          <fieldset class="field-group">
+            <legend>Google Business Profile</legend>
+            <label class="option-row"><input type="radio" name="gbp" value="complete" required> Vollständig ausgefüllt mit regelmäßigen Beiträgen</label>
+            <label class="option-row"><input type="radio" name="gbp" value="rare"> Ausgefüllt, aber selten aktualisiert</label>
+            <label class="option-row"><input type="radio" name="gbp" value="incomplete"> Existiert, ist aber unvollständig</label>
+            <label class="option-row"><input type="radio" name="gbp" value="none"> Habe ich nicht oder weiß nicht</label>
+          </fieldset>
+
+          <div class="field-group">
+            <label for="reviews">Wie viele Google-Bewertungen haben Sie aktuell?</label>
+            <input id="reviews" name="reviews" type="number" min="0" placeholder="z.B. 24" required>
+          </div>
+
+          <button class="button-primary" type="submit">Einschätzung berechnen</button>
+        </form>
+
+        <section id="result" class="result-panel" hidden aria-live="polite">
+          <p class="result-label">Ihre Einschätzung</p>
+          <div class="score-row">
+            <div class="score-number"><span id="score-value">0</span><small>/12</small></div>
+            <div class="progress-track" aria-hidden="true"><div id="score-bar" class="progress-bar"></div></div>
+          </div>
+          <h2 id="bucket-title"></h2>
+          <p id="bucket-copy"></p>
+          <h3>Priorisierte Empfehlungen</h3>
+          <ol id="recommendations"></ol>
+          <p class="result-disclaimer">Dieser Check basiert auf Ihren Angaben — er ersetzt keine echte SEO-Analyse.</p>
+
+          <form id="lead-form" class="lead-form" action="https://formspree.io/f/mqenpryl" method="POST">
+            <h3>Detaillierte Erstanalyse anfordern</h3>
+            <div class="field-group">
+              <label for="lead-name">Name</label>
+              <input id="lead-name" name="name" type="text" autocomplete="name">
+            </div>
+            <div class="field-group">
+              <label for="lead-email">E-Mail</label>
+              <input id="lead-email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field-group">
+              <label for="lead-website">Website <span>optional</span></label>
+              <input id="lead-website" name="website" type="url" autocomplete="url" placeholder="https://">
+            </div>
+            <input type="hidden" name="score" id="lead-score">
+            <input type="hidden" name="bucket" id="lead-bucket">
+            <input type="hidden" name="recommendations" id="lead-recommendations">
+            <input type="hidden" name="branche" id="lead-branche">
+            <label class="consent-row">
+              <input id="consent" name="consent" type="checkbox" required>
+              <span>Ich stimme zu, dass meine Angaben zur Bearbeitung meiner Anfrage verarbeitet werden. Weitere Informationen finde ich in der <a href="/#datenschutz">Datenschutzerklärung</a>.</span>
+            </label>
+            <button id="lead-submit" class="button-primary" type="submit" disabled>Detaillierte Erstanalyse anfordern</button>
+            <p id="form-message" class="form-message" role="status"></p>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="/tools/seo-check.js" defer></script>
+</body>
+</html>
