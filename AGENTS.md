@@ -195,3 +195,19 @@ Nach jedem Codex-Run, **bevor du committest**:
 Diese Site verkauft Vertrauen. Jede falsche Zahl, jede leere Floskel,
 jeder kopierte Stockfoto-Look schwächt das Geschäft. Im Zweifel:
 weniger ist mehr.
+## PowerShell Outreach Scripts — Pflicht-Checks vor Live-Versand
+
+### Encoding-Checks (vor jedem Batch)
+- `-Encoding UTF8` im Send-MailMessage-Aufruf gesetzt?
+- SMTP-Body-String explizit als UTF-8 kodiert?
+- Umlaute/Sonderzeichen im Vorschau-Output korrekt sichtbar (ä, ö, ü — keine Hieroglyphen)?
+- Encoding-Test: einen Testlauf mit georg@maxcontentseo.de vor Live-Batch durchführen?
+
+### Pflicht-Vorschau vor Freigabe
+Vor jedem Live-Versand jede einzelne E-Mail vollständig ausgeben:
+- Empfänger-Adresse
+- Betreffzeile
+- Vollständiger E-Mail-Body (kein Kürzen, kein "...")
+
+Erst wenn Georg explizit "Freigabe" oder "go" schreibt → Versand starten.
+Kein automatischer Start nach dem Preview.
