@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "outreach-cli"
+version = "0.1.0"
+description = "Kompakte CLI zwischen Claude Code und Lead-Tracker-Sheet."
+requires-python = ">=3.10"
+dependencies = [
+    "typer>=0.12",
+    "rich>=13.7",
+    "gspread>=6.1",
+    "google-auth>=2.30",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+outreach = "outreach_cli.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["outreach_cli*"]
