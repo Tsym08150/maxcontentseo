@@ -217,3 +217,53 @@ Kein automatischer Start nach dem Preview.
 ## Lead-Tracker — Datenkorruption-Notiz
 
 Datenkorruption pre-existing aus `muenchen_email_update.ps1`-Era (vor sent_log.csv) — restauriert 2026-05-11 via `outreach-cli/v3_restore_dirty_kont.py`. Datenquellen-Chain dokumentiert in `outreach-cli/README.md`.
+
+---
+
+## Sheet-Migration 11.05.2026 — Stand nach Cleanup
+
+Das Google-Sheet `Lead_Tracker_Gesamt` ist seit dem 11.05.2026 schema-normalisiert.
+Alle 6 Tabs haben einheitliche Pflicht-Header. Versand-Scripts (`send_outreach.ps1`,
+`send_followup_*.ps1` in `D:\000 SEO Business\Tools\`) sind nach der Migration mit
+den neuen Header-Namen kompatibel — Status-Updates kommen seither sauber im Sheet
+an, kein Webhook-Bypass mehr nötig.
+
+### Einheitliches Schema (alle 6 Tabs)
+
+```
+FIRMA | STADT | EMAIL | SCORE
+Recherche_Status   ← Outreach-Lifecycle (Angeschrieben, Follow-up gesendet, ...)
+KONTAKTIERT_AM     ← Erstkontakt-Datum (älteres wins bei Daten-Migrationen)
+FOLLOWUP_AM        ← Letztes Follow-up-Datum (neueres wins bei Daten-Migrationen)
+LETZTE_ANTWORT_AM  ← Datum der Antwort (Geantwortet*/Bounce)
+Verkaufsstatus     ← Sales-Outcome (Geantwortet - kein Interesse, Bounce, ...)
+```
+
+### Tab-spezifische Anpassungen 11.05.2026
+
+- **Frankfurt** repariert: Spalte 1 hieß `.` → `FIRMA`. `STADT`-Spalte neu eingefügt.
+  `FOLLOWUP_AM` neu eingefügt. 4 leere Spalten (M-P) gelöscht. Doppelter
+  `VERKAUFSWINKEL`-Header zu `Verkaufswinkel` normalisiert.
+- **Muenchen** normalisiert: `KONTAKTIERT` → `KONTAKTIERT_AM`,
+  `FOLLOW-UP` → `FOLLOWUP_AM`. (Die alten Header haben monatelang
+  stille Webhook-Failures verursacht.)
+- **Frankfurt_Umland**: `Verkaufsstatus`-Spalte ergänzt.
+- **Bad Homburg**: neuer Tab mit Hamburg-Schema + zusätzlicher
+  `Pilot_Reihenfolge`-Spalte. 9 Pilot-Leads importiert.
+- **Alle_Leads**: `Stadt` → `STADT` (uppercase). Aggregat-Tab, wird automatisch
+  vom CLI synchron mit Stadt-Tabs gepflegt.
+- **`LETZTE_ANTWORT_AM`** in allen Stadt-Tabs neu eingefügt.
+
+### Pflicht-Regel für Sheet-Operationen ab jetzt
+
+**Sheet-Updates ab jetzt ausschließlich via `outreach-cli`, nicht mehr direkt API
+oder Webhook.** Begründung:
+
+- `outreach set-status` macht Aggregat-Sync (Stadt-Tab + Alle_Leads) automatisch.
+- Header-Synonym-Map fängt evtl. zurückbleibende Alt-Schreibweisen ab.
+- Idempotency-Check schützt vor doppelten Writes.
+- Partial-Failure-Reporting (Exit-Code 3) statt silent Inkonsistenzen.
+
+Direkter `gspread`/Apps-Script-Zugriff aus anderen Scripts ist erlaubt, solange
+sie die Pflicht-Header schreiben (`KONTAKTIERT_AM`, nicht `KONTAKTIERT`) und
+Aggregat-Sync selber sicherstellen. Im Zweifel: outreach-cli verwenden.

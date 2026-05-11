@@ -7,11 +7,54 @@ Bad Homburg** sowie Aggregat **Alle_Leads**).
 Statt das ganze Sheet in den Kontext zu laden, ruft Claude Code kurze CLI-Befehle
 auf und bekommt kompakte tabellarische oder JSON-Ausgabe zurück.
 
-Ersetzt für Status-Updates den **unzuverlässigen** Apps-Script-Webhook
-(`/macros/.../exec`) durch direkten Service-Account-Zugriff via `gspread`.
-Bestätigter Webhook-Bug: Updates für Muenchen-Leads liefen seit Monaten ins
-Leere (Header-Diskrepanz `KONTAKTIERT` vs `KONTAKTIERT_AM`). My Tiny Spa
-(Frankfurt, 2026-05-11) ebenfalls ein Opfer.
+---
+
+## Why this exists
+
+Über Monate hat das Apps-Script-Webhook unter
+`https://script.google.com/macros/s/.../exec` (Modi `updateCell`,
+`updateByEmail`) `200 OK`-Responses mit Body `"Das Script wurde abgeschlossen,
+jedoch kein Wert zurückgegeben."` geliefert, **ohne tatsächlich ins Sheet zu
+schreiben**. Konkrete Ausfälle (verifiziert via Backup-Snapshots + sent_log):
+
+- **Muenchen**: Header-Diskrepanz `KONTAKTIERT` (im Sheet) vs `KONTAKTIERT_AM`
+  (im Webhook-Payload) → 4 Leads bekamen H4_FU_Beauty Follow-ups versendet,
+  Sheet blieb auf `Angeschrieben`.
+- **Frankfurt**: My Tiny Spa, 2026-05-11 — Webhook gab "no value" zurück,
+  `Verkaufsstatus="Geantwortet - kein Interesse"` wurde nie geschrieben.
+- **Gesamt**: 101 historische Stati aus `sent_log.csv` waren im Sheet veraltet
+  (siehe `v2_nachzieh.py`).
+
+outreach-cli ersetzt den Webhook durch **direkten Google-Sheets-API-Zugriff mit
+Service-Account-Auth via `gspread`**. Jeder `set-status`-Call hat
+verifizierbares Outcome (success/fail/partial per Tab), kein silent no-op mehr.
+
+---
+
+## Architektur-Highlights
+
+- **Asymmetrische Datums-Logik** für Bestandsdaten-Migration (`v2_nachzieh.py`):
+  - `KONTAKTIERT_AM` = **älteres** wins (Erstkontakt-Schutz — Sheet-Datum darf
+    nicht durch späteres sent_log-Datum überschrieben werden).
+  - `FOLLOWUP_AM` = **neueres** wins (Letzter-Touchpoint — sent_log-Datum
+    soll Sheet-Datum bei späteren FU-Wellen ersetzen).
+- **Aggregat-Sync**: `set_status` schreibt synchron in Primary-Stadt-Tab **und**
+  `Alle_Leads`-Aggregat. Partial-Failure wird per `SetStatusResult.partial_failure`
+  reportet (Exit-Code 3), nicht silently inkonsistent.
+- **Synonym-Map** für Header-Drift: Alt-Frankfurt `.` → `FIRMA`,
+  Alt-Muenchen `KONTAKTIERT` → `KONTAKTIERT_AM`, `FOLLOW-UP` → `FOLLOWUP_AM`,
+  Alle_Leads `Stadt` → `STADT`. Damit funktioniert die CLI während laufender
+  Header-Migrationen ohne Downtime.
+- **Lifecycle-Schutz vor Downgrades**: Leads im Endzustand
+  (`Geantwortet - kein Interesse`, `Geantwortet - Interesse`, `Bounce`) werden
+  von Bulk-Importern (`v2_nachzieh`) nie wieder auf frühere Lifecycle-Stufen
+  (`Angeschrieben`, `Follow-up gesendet`) zurückgesetzt.
+- **Idempotency** mit `--force` Override: re-runs schreiben nur wenn sich Werte
+  tatsächlich ändern. Schützt vor Quota-Verschwendung und Audit-Trail-Drift.
+- **Two-Spalten-Status-Modell**: `Recherche_Status` (Outreach-Lifecycle:
+  Nicht kontaktiert → Angeschrieben → Follow-up gesendet) **getrennt von**
+  `Verkaufsstatus` (Sales-Outcome: Geantwortet*/Bounce). `set-status --column`
+  wählt, welche Spalte geschrieben wird (Default: `Verkaufsstatus`).
 
 ---
 
