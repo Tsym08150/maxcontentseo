@@ -211,3 +211,9 @@ Vor jedem Live-Versand jede einzelne E-Mail vollständig ausgeben:
 
 Erst wenn Georg explizit "Freigabe" oder "go" schreibt → Versand starten.
 Kein automatischer Start nach dem Preview.
+
+---
+
+## Lead-Tracker — Datenkorruption-Notiz
+
+Datenkorruption pre-existing aus `muenchen_email_update.ps1`-Era (vor sent_log.csv) — restauriert 2026-05-11 via `outreach-cli/v3_restore_dirty_kont.py`. Datenquellen-Chain dokumentiert in `outreach-cli/README.md`.
