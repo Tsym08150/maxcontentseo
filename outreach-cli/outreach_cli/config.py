@@ -110,3 +110,51 @@ class Config:
             primary_tabs=primary,
             aggregate_tabs=aggregate,
         )
+
+
+@dataclass(frozen=True)
+class SmtpConfig:
+    """SMTP-Config für outreach send Phase 2. Aus .env."""
+    host: str
+    port: int
+    user: str
+    token: str  # App-Password — NIE loggen
+    owner_email: str  # Default-From, Test-Self-Empfänger
+
+    @classmethod
+    def from_env(cls) -> "SmtpConfig":
+        host = (os.getenv("SMTP_HOST") or "").strip()
+        port_raw = (os.getenv("SMTP_PORT") or "").strip()
+        user = (os.getenv("SMTP_USER") or "").strip()
+        token = (os.getenv("SMTP_TOKEN") or "").strip()
+        owner = (os.getenv("OWNER_EMAIL") or user).strip()
+
+        missing = []
+        if not host:
+            missing.append("SMTP_HOST")
+        if not port_raw:
+            missing.append("SMTP_PORT")
+        if not user:
+            missing.append("SMTP_USER")
+        if not token:
+            missing.append("SMTP_TOKEN")
+        if missing:
+            raise SystemExit(
+                f"FEHLER: SMTP-Config unvollständig — fehlend in .env: "
+                f"{', '.join(missing)}"
+            )
+        # Placeholder-Check: User hat .env.example kopiert ohne zu editieren?
+        # Match alle gängigen Placeholder-Patterns (case-insensitive).
+        upper = token.upper()
+        if upper.startswith("REPLACE_") or upper.startswith("YOUR_") or upper == "CHANGE_ME":
+            raise SystemExit(
+                f"FEHLER: SMTP_TOKEN ist noch ein Placeholder ({token!r}). "
+                f"Echtes App-Password aus ProtonMail eintragen."
+            )
+        try:
+            port = int(port_raw)
+        except ValueError:
+            raise SystemExit(f"FEHLER: SMTP_PORT muss Zahl sein, ist {port_raw!r}")
+        return cls(
+            host=host, port=port, user=user, token=token, owner_email=owner,
+        )

@@ -344,6 +344,293 @@ def hot(
     console.print(table)
 
 
+@app.command()
+def send(
+    tab: Optional[str] = typer.Option(None, "--tab", help="Sheet-Tab, z.B. Frankfurt_Umland (bei --test-self nicht nötig)"),
+    template: str = typer.Option(..., "--template", help="Template-Name ohne .txt"),
+    score_min: int = typer.Option(0, "--score-min", help="SCORE >= N"),
+    status_filter: Optional[str] = typer.Option(
+        None, "--status", help="Recherche_Status-Filter (z.B. 'Neu')"
+    ),
+    limit: int = typer.Option(0, "--limit", help="Max N Leads (0 = unbegrenzt)"),
+    hwg_filter: bool = typer.Option(
+        True, "--hwg-filter/--no-hwg-filter",
+        help="Heilpraktiker/Arzt-Filter (HWG). Default: AKTIV. Nur deaktivieren mit echtem Grund.",
+    ),
+    dry_run: bool = typer.Option(
+        True, "--dry-run/--no-dry-run",
+        help="Dry-Run = nur .eml in preview/ schreiben. --no-dry-run = SMTP (benötigt --test-self ODER --confirm-live).",
+    ),
+    test_self: bool = typer.Option(
+        False, "--test-self",
+        help="Sendet GENAU 1 Mail an OWNER_EMAIL (aus .env). Implies --no-dry-run.",
+    ),
+    confirm_live: bool = typer.Option(
+        False, "--confirm-live",
+        help="Echter Batch-Versand. Implies --no-dry-run. ACHTUNG: schreibt an echte Leads.",
+    ),
+    rate_limit: float = typer.Option(
+        2.0, "--rate-limit",
+        help="Pause in Sekunden zwischen Versanden (Domain-Reputation-Schutz). Default: 2s.",
+    ),
+    from_email: Optional[str] = typer.Option(
+        None, "--from", help="From-Header (default: OWNER_EMAIL aus .env)"
+    ),
+    json_out: bool = typer.Option(False, "--json"),
+) -> None:
+    """Outreach-Mails generieren oder versenden.
+
+    Drei Modi (mutex):
+      --dry-run        (default): Generiert .eml in preview/. Kein Netzwerk.
+      --test-self      : 1 Mail an OWNER_EMAIL. Verifiziert SMTP-Setup.
+      --confirm-live   : Echter Batch-Versand (alle gefilterten Leads).
+
+    Beispiele:
+      py -m outreach_cli send --tab Frankfurt_Umland --template variante_c --limit 3
+      py -m outreach_cli send --template variante_c --test-self
+      py -m outreach_cli send --tab Frankfurt_Umland --template variante_c --score-min 5 --status Neu --limit 20 --confirm-live
+    """
+    if test_self and confirm_live:
+        typer.secho("FEHLER: --test-self und --confirm-live mutex.", fg="red", err=True)
+        raise typer.Exit(2)
+    if test_self or confirm_live:
+        dry_run = False
+    if not dry_run and not (test_self or confirm_live):
+        typer.secho(
+            "FEHLER: --no-dry-run benötigt --test-self ODER --confirm-live "
+            "(Schutz gegen versehentlichen Live-Versand).",
+            fg="red", err=True,
+        )
+        raise typer.Exit(2)
+    if confirm_live and not tab:
+        typer.secho("FEHLER: --confirm-live benötigt --tab.", fg="red", err=True)
+        raise typer.Exit(2)
+    if dry_run and not tab:
+        typer.secho("FEHLER: --dry-run benötigt --tab.", fg="red", err=True)
+        raise typer.Exit(2)
+
+    # Lazy imports
+    from .commands.send import run_send, SendRunResult
+    from .config import SmtpConfig
+    from .email.transport import DryRunTransport, MailTransport
+    from .email.sender import SmtpTransport
+    from .templates.engine import (
+        MissingTemplateVariableError,
+        TemplateNotFoundError,
+        TemplateParseError,
+        load_template,
+        render,
+    )
+
+    # Transport + From wählen
+    transport: MailTransport
+    actual_from = from_email
+    if dry_run:
+        from pathlib import Path
+        preview = Path(__file__).resolve().parent.parent / "preview"
+        transport = DryRunTransport(preview_dir=preview)
+        if not actual_from:
+            actual_from = "georg@maxcontentseo.de"
+        rate_for_run = 0.0  # dry-run braucht kein Rate-Limit
+    else:
+        try:
+            smtp_cfg = SmtpConfig.from_env()
+        except SystemExit as e:
+            typer.secho(str(e), fg="red", err=True)
+            raise typer.Exit(2) from e
+        transport = SmtpTransport(smtp_cfg)
+        if not actual_from:
+            actual_from = smtp_cfg.owner_email
+        rate_for_run = rate_limit
+
+    # ----- Test-Self-Sonderpfad -----
+    if test_self:
+        _run_test_self(
+            transport=transport,
+            template_name=template,
+            from_email=actual_from,
+            owner_email=actual_from,
+        )
+        return
+
+    # ----- Normal-Pfad (Dry-Run oder Confirm-Live) -----
+    try:
+        result = run_send(
+            tab=tab,
+            template_name=template,
+            transport=transport,
+            score_min=score_min,
+            status=status_filter,
+            limit=limit,
+            exclude_hwg=hwg_filter,
+            from_email=actual_from,
+            rate_limit_seconds=rate_for_run,
+        )
+    except TemplateNotFoundError as e:
+        typer.secho(f"FEHLER: {e}", fg="red", err=True)
+        raise typer.Exit(2) from e
+    except TemplateParseError as e:
+        typer.secho(f"FEHLER (Template-Parse): {e}", fg="red", err=True)
+        raise typer.Exit(2) from e
+    except (SheetsAPIError, gspread_exceptions_APIError) as e:
+        typer.secho(f"API-FEHLER: {e}", fg="red", err=True)
+        raise typer.Exit(2) from e
+
+    _render_send_result(
+        result, json_out=json_out, hwg_filter=hwg_filter,
+        score_min=score_min, status_filter=status_filter, limit=limit,
+    )
+
+
+def _run_test_self(
+    *, transport, template_name: str, from_email: str, owner_email: str
+) -> None:
+    """Sendet GENAU 1 Mail an owner_email mit Test-Lead-Daten."""
+    from datetime import datetime as _dt
+    import time as _time
+    from .templates.engine import load_template, render, MissingTemplateVariableError
+
+    # Hardcoded Test-Lead — User-Spec
+    test_vars = {
+        "stadt": "Frankfurt",
+        "name": "Sehr geehrte/r Test-Empfänger",
+        "beispiel_keyword": "Hydrafacial Frankfurt",
+        "firma": "Test Studio",
+    }
+
+    try:
+        tpl = load_template(template_name)
+        subject, body = render(tpl, test_vars)
+    except MissingTemplateVariableError as e:
+        typer.secho(f"FEHLER: Template-Render fehlgeschlagen: {e}", fg="red", err=True)
+        raise typer.Exit(2) from e
+
+    # Subject mit [TEST-SELF] Präfix damit man die Mail im Posteingang erkennt
+    subject = f"[TEST-SELF] {subject}"
+
+    typer.secho(
+        f"TEST-SELF: 1 Mail an {owner_email} via {transport.name()}",
+        fg="cyan",
+    )
+    typer.echo(f"  Subject:  {subject}")
+    typer.echo(f"  Template: {template_name}")
+    typer.echo(f"  Body-Vars: {test_vars}")
+    typer.echo("  Sende...")
+
+    result = transport.deliver(
+        index=0,
+        to_email=owner_email,
+        from_email=from_email,
+        subject=subject,
+        body=body,
+    )
+
+    if not result.delivered:
+        typer.secho(f"FAIL: {result.error}", fg="red", err=True)
+        raise typer.Exit(2)
+
+    # 10s warten (User-Spec) — Mail Server-Side delivery-window
+    typer.echo(f"  [OK] gesendet um {result.delivered_at.strftime('%H:%M:%S')}")
+    typer.echo(f"  SMTP-Response: {result.smtp_response}")
+    typer.echo(f"  Retries:       {result.retry_count}")
+    typer.echo("  Warte 10s auf Server-Side-Delivery...")
+    _time.sleep(10)
+    typer.secho(
+        f"  ✓ Test-Self abgeschlossen. Bitte ProtonMail-Postfach prüfen "
+        f"({_dt.now().strftime('%H:%M:%S')}).",
+        fg="green",
+    )
+
+
+def _render_send_result(
+    result, *, json_out: bool, hwg_filter: bool,
+    score_min: int, status_filter: Optional[str], limit: int,
+) -> None:
+    s = result.stats
+    if json_out:
+        _emit_json({
+            "tab": result.tab,
+            "template": result.template_name,
+            "transport": result.transport_name,
+            "preview_dir": str(result.preview_dir) if result.preview_dir else None,
+            "stats": {
+                "total_in_tab": s.total_in_tab,
+                "after_score": s.after_score,
+                "after_status": s.after_status,
+                "after_hwg": s.after_hwg,
+                "after_limit": s.after_limit,
+                "hwg_excluded": s.hwg_excluded,
+                "skipped_no_render_vars": s.skipped_no_render_vars,
+            },
+            "delivered": [
+                {
+                    "to": d.to_email, "subject": d.subject,
+                    "path": str(d.path) if d.path else None,
+                    "smtp_response": d.smtp_response,
+                    "retry_count": d.retry_count,
+                } for d in result.delivered
+            ],
+            "failed": [
+                {"to": d.to_email, "error": d.error, "retries": d.retry_count}
+                for d in result.failed
+            ],
+            "render_errors": [
+                {"email": e, "error": msg}
+                for e, msg in result.skipped_render_errors
+            ],
+        })
+        if result.failed:
+            raise typer.Exit(2)
+        raise typer.Exit(0)
+
+    label = result.transport_name.upper()
+    typer.secho(f"{label}: {result.tab} → {result.template_name}", fg="cyan")
+    typer.echo(f"  Total im Tab:       {s.total_in_tab}")
+    if score_min > 0:
+        typer.echo(f"  Nach Score >= {score_min}:    {s.after_score}")
+    if status_filter:
+        typer.echo(f"  Nach Status='{status_filter}':  {s.after_status}")
+    if hwg_filter:
+        typer.echo(f"  Nach HWG-Filter:    {s.after_hwg}")
+        if s.hwg_excluded:
+            typer.secho(f"  HWG-ausgeschlossen ({len(s.hwg_excluded)}):", fg="yellow")
+            for x in s.hwg_excluded:
+                typer.echo(f"    - {x}")
+    if limit > 0:
+        typer.echo(f"  Nach Limit={limit}:       {s.after_limit}")
+    if s.skipped_no_render_vars:
+        typer.secho(
+            f"  Skip (keine Render-Vars, {len(s.skipped_no_render_vars)}):", fg="yellow",
+        )
+        for x in s.skipped_no_render_vars:
+            typer.echo(f"    - {x}")
+
+    if result.preview_dir:
+        typer.echo(f"\n  Preview-Dir:  {result.preview_dir}")
+    typer.secho(f"  Delivered: {len(result.delivered)}", fg="green")
+    for d in result.delivered:
+        path_or_smtp = (
+            d.path.name if d.path else f"smtp:{(d.smtp_response or '')[:40]}"
+        )
+        typer.echo(f"    • {path_or_smtp}  ←  {d.to_email}  ({d.subject!r})")
+
+    if result.failed:
+        typer.secho(f"\n  Failed ({len(result.failed)}):", fg="red")
+        for d in result.failed:
+            typer.echo(f"    ❌ {d.to_email}: {d.error} (nach {d.retry_count} retries)")
+
+    if result.skipped_render_errors:
+        typer.secho(
+            f"\n  Render-Fehler ({len(result.skipped_render_errors)}):",
+            fg="red",
+        )
+        for em, msg in result.skipped_render_errors:
+            typer.echo(f"    ❌ {em}: {msg}")
+
+    if result.failed:
+        raise typer.Exit(2)
+
+
 def main() -> None:
     app()
 

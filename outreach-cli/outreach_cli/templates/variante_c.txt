@@ -1,0 +1,41 @@
+---
+subject: "Kurze Frage zu Ihrem Kosmetikstudio in {stadt}"
+version: "C"
+ported_from: "send_outreach.ps1 H3_Beauty_C"
+ported_at: "2026-05-11"
+hardcoded_frankfurt_fixed: "yes — body uses {stadt} instead of literal 'Frankfurt'"
+---
+{name},
+
+kurze Frage zu Ihrem Studio in {stadt}: Wissen Sie, wie viele Menschen in {stadt} gerade jeden Monat nach „{beispiel_keyword}" suchen?
+
+Die meisten Studioinhaber sind überrascht, wie hoch die lokale Suchnachfrage ist – und gleichzeitig, warum ihre Website dabei nicht auftaucht. Der Grund ist fast nie das Angebot, sondern ein paar strukturelle Punkte, die für die lokale Google-Sichtbarkeit entscheidend sind.
+
+Mein Schwerpunkt: lokale Sichtbarkeit für Studios im Beauty- und Wellness-Bereich.
+
+Ich schaue mir Ihre Seite gerne kurz an und fasse Ihnen schriftlich zusammen, wo die größten Hebel liegen – konkret, ohne Werbeaussagen.
+
+Ein kurzes Ja genügt.
+
+Mit freundlichen Grüßen
+Georg Stopfer
+
+---
+
+MaxContentSEO – Inhaber Georg Stopfer
+An den Höfen 1a, 04626 Schmölln
+E-Mail: georg@maxcontentseo.de
+Web: maxcontentseo.de
+
+Hinweis nach UWG/DSGVO:
+Sie erhalten diese Mail als gewerblicher Ansprechpartner
+Ihres Studios. Rechtsgrundlage: berechtigtes Interesse
+(Art. 6 Abs. 1 lit. f DSGVO) zur Anbahnung einer
+B2B-Geschäftsbeziehung im Bereich SEO-Dienstleistungen
+für Ihre Branche. Sollte ich keine Rückmeldung erhalten,
+sende ich einmalig eine kurze Erinnerung – danach nicht
+weiter.
+
+Kein Interesse? Eine kurze Antwort mit "Bitte streichen"
+genügt – ich entferne Ihre Adresse umgehend und dauerhaft.
+Widerspruch nach Art. 21 DSGVO ist jederzeit möglich.
