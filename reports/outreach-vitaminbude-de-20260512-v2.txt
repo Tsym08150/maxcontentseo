@@ -1,0 +1,12 @@
+Betreff: Kurze Frage zu Ihrem Studio in München
+
+Sehr geehrter Herr Villinger,
+
+beim Aufruf der Kategorien /buecher, /vitale-produkte, /news und einiger weiterer leitet Ihre Domain www.vitaminbude-shop.de direkt auf eine 404-Fehlerseite weiter — Nutzer und Suchmaschinen landen nicht auf den vorgesehenen Inhalten.
+
+Zusätzlich erscheint im Google-Suchergebnis bei Ihrer Startseite der Platzhalter-Text #IndexMetaDescriptionStandard# statt einer Beschreibung. Beides ist direkt im Browser nachvollziehbar.
+
+Wenn Sie möchten, schicke ich Ihnen einen kurzen Befund-Report (1 PDF, 2 Seiten) mit den genauen URLs und einer 3-Punkte-Empfehlung. Ein kurzes "Ja" per Antwort genügt.
+
+Mit freundlichen Grüßen
+[ABSENDER]
