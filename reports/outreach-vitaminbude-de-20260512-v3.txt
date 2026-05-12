@@ -1,0 +1,12 @@
+Betreff: Kurze Frage zu Ihrem Shop in München
+
+Sehr geehrter Herr Villinger,
+
+beim Aufruf einzelner URL-Varianten Ihres Shops www.vitaminbude-shop.de — zum Beispiel www.vitaminbude-shop.de/buecher oder /vitale-produkte — erscheint eine 404-Fehlerseite, während die gleiche URL mit angehängtem Schrägstrich (/buecher/) korrekt lädt. Das ist ein typisches Trailing-Slash-Problem bei Shopware: Google indexiert beide Varianten, Nutzer landen aber teilweise auf 404.
+
+Zusätzlich erscheint im Google-Suchergebnis bei Ihrer Startseite der unausgefüllte Platzhalter #IndexMetaDescriptionStandard# statt einer Beschreibung. Beides ist in unter einer Minute im Browser nachvollziehbar.
+
+Wenn Sie möchten, schicke ich Ihnen einen kurzen Befund-Report (1 PDF, 2 Seiten) mit den genauen URLs und einer 3-Punkte-Empfehlung. Ein kurzes "Ja" per Antwort genügt.
+
+Mit freundlichen Grüßen
+[ABSENDER]
