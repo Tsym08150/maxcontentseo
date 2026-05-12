@@ -21,6 +21,7 @@ Verifikations-Matrix:
 | Meta-Description ist Platzhalter | Firecrawl `meta_description`-Feld | WebFetch HTML `<meta name="description">` | beide enthalten Platzhalter-Pattern |
 | Domain deindexiert | Ubersuggest Traffic = 0 für ≥ 3 Monate | Google `site:domain` Index-Count = 0 | beide melden 0 |
 | Domain ranking-tot, aber indexiert | Ubersuggest Traffic = 0 | Google `site:` ≥ 1 Treffer | beide bestätigen Diskrepanz |
+| Sichtbarkeit-Verlust (Triple-Source) | Ubersuggest Traffic = 0 | Sistrix-Sichtbarkeitsindex = 0,0000 (Tageswert) | beide melden 0 → höchstes Vertrauen |
 | Domain redirected | Curl HEAD Location-Header | WebFetch Final-URL | beide zeigen gleiches Target |
 
 PageSpeed-Score bekommt **keine Cross-Verification** (single source, neutrale Diagnostik) — wird mit Hinweis `(single source: Google PageSpeed API)` ausgewiesen.
@@ -70,6 +71,18 @@ In **einem** Assistant-Turn alle Calls parallel feuern:
    curl -s "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://<target>&strategy=mobile&category=performance&category=seo" --max-time 60
    ```
    Falls Antwort > 50KB: pipe durch `jq '{score: .lighthouseResult.categories.performance.score, seo: .lighthouseResult.categories.seo.score, lcp: .lighthouseResult.audits["largest-contentful-paint"].displayValue, cls: .lighthouseResult.audits["cumulative-layout-shift"].displayValue}'`
+
+8. `Bash` — Sistrix Sichtbarkeitsindex (Free-Tool, ohne Account, max. 25/IP/Tag):
+   ```bash
+   cd "D:/000 SEO Business/maxcontentseo" && \
+   FIRECRAWL_API_KEY=$(grep FIRECRAWL_API_KEY "D:/000 SEO Business/Tools/config.ps1" | awk -F'"' '{print $2}') \
+   ./bin/firecrawl-pp-cli.exe scrape \
+     --url "https://app.sistrix.com/de/visibility-index?domain=<input-domain>" \
+     --wait-for 4000 --formats '["markdown"]' --only-main-content=false 2>&1
+   ```
+   Aus dem Markdown den Wert hinter "Sichtbarkeitsindex Mobil" extrahieren (Format `X,YYYY`, deutsche Dezimal-Komma-Notation). Auch `Aktualisiert: DD.MM.YYYY HH:MM` für Frische-Check.
+   - **Hinweis:** 25 Abfragen/IP/Tag ohne Login. Bei `0,0000` → Domain rankt nicht (oder ist unbekannt). Bei `1,2345` → relevante Sichtbarkeit.
+   - **Rate-Limit-Verhalten:** Bei Überschreitung gibt die Seite eine Registrierungs-Aufforderung statt Daten. Falls erkannt → markiere `⚠️ Sistrix-Quota überschritten`, kein Score-Impact.
 
 **Wenn Ubersuggest-Tools nicht geladen sind**, vorher mit `ToolSearch` `select:mcp__ubersuggest__domain_overview,mcp__ubersuggest__domain_keywords,mcp__ubersuggest__domain_top_pages,mcp__ubersuggest__backlinks_overview` laden.
 
@@ -296,6 +309,7 @@ NICHT zulässig (Befund-Out):
 | Trailing-Slash 404: `/buecher` öffnen → 404 | ✅ ja | ✅ ja |
 | Meta-Description-Platzhalter `#IndexMeta...#` in SERP | ✅ ja (google domain.de + SERP anschauen) | ✅ ja |
 | Ubersuggest meldet Traffic 0 für 6 Monate | ❌ nein (braucht Ubersuggest) | ❌ nein (höchstens als "laut Tool-Analyse" framing) |
+| **Sistrix Sichtbarkeitsindex = 0** (via Free-Tool) | ✅ ja — Empfänger öffnet `https://app.sistrix.com/de/visibility-index?domain=<X>` und sieht 0,0000 | ✅ ja — sehr starker, public-verifizierbarer Hook |
 | PageSpeed LCP > 5s | ❌ nein (braucht PageSpeed API/Tool) | ❌ nein |
 | DA 17 + nur 77 Ref-Domains | ❌ nein (braucht SEO-Tool) | ❌ nein |
 | Footer "© 2002-2015" auf der Seite | ✅ ja (root öffnen, footer anschauen) | ✅ ja |
@@ -342,6 +356,7 @@ Jeder Befund wird konkret und prüfbar formuliert:
 | Deindexed | "Ihre Domain rankt aktuell für 0 Keywords bei Google — vor [N] Monaten waren es noch [M]." |
 | PageSpeed kritisch | "Die mobile Ladezeit Ihrer Startseite liegt bei [LCP] (Empfehlung: < 2,5 s)." |
 | Redirect-Inkonsistenz | "Die Domain <code>[input]</code> leitet weiter zu <code>[target]</code> — Nutzer und Backlinks landen auf einer anderen URL als erwartet." |
+| Sistrix Sichtbarkeitsindex = 0 | "Wenn Sie Ihre Domain bei `app.sistrix.com/de/visibility-index?domain=[input]` prüfen, zeigt SISTRIX einen Sichtbarkeitsindex von 0,0000 an — Google rankt Ihre Seite aktuell für keine messbaren Suchbegriffe." |
 
 **Trailing-Slash-Detection (vor Befund-Formulierung):**
 
@@ -406,6 +421,16 @@ Wenn Match: ersetze Platzhalter im Mail-Text. Wenn kein Match: Platzhalter bleib
 
 ### Top Keywords / Top Pages
 (wie zuvor — noData wenn leer)
+
+## Sichtbarkeit (Sistrix, 3rd-Party Cross-Source)
+
+| Metrik | Wert |
+|---|---|
+| Sichtbarkeitsindex Mobil (DE) | X,YYYY |
+| Aktualisiert | DD.MM.YYYY HH:MM |
+| Cross-Check mit Ubersuggest | ✅ konsistent / ⚠️ Diskrepanz: Ubersuggest = X, Sistrix = Y |
+
+Browser-Link für Empfänger-Verifikation: `https://app.sistrix.com/de/visibility-index?domain=<domain>`
 
 ## Backlink Profile (Ubersuggest)
 - Total, Ref-Domains, Gov/Edu, Follow-Ratio, Auffälligkeiten
