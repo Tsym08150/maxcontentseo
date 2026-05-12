@@ -222,11 +222,15 @@ def test_smtp_rate_limit_pauses_between_sends(monkeypatch, tmp_path):
         sheet_client=client, rate_limit_seconds=2.0,
     )
 
-    # 3 Leads → 2 Pausen (zwischen 1-2 und 2-3, nicht nach letztem)
-    pause_calls = [s for s in sleep_calls if s == 2.0]
-    assert len(pause_calls) == 2, (
-        f"Erwarte 2 Pausen für 3 Leads, fand {pause_calls}"
+    # 3 Leads → 2 Pausen (zwischen 1-2 und 2-3, nicht nach letztem).
+    # Seit Random-Delay-Patch: jede Pause ist random.randint(8, 25), nicht
+    # mehr der rate_limit_seconds-Wert direkt. Assertion: 2 sleeps, jeder
+    # im Range [8, 25] (Inclusive).
+    assert len(sleep_calls) == 2, (
+        f"Erwarte 2 Pausen für 3 Leads, fand {sleep_calls}"
     )
+    for s in sleep_calls:
+        assert 8 <= s <= 25, f"Delay {s}s ausserhalb [8, 25] Range"
 
 
 # ---------------------------------------------------------------------------

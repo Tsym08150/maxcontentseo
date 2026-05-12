@@ -83,8 +83,13 @@ def run_send(
             werden versendet. Anderen werden silently dropped (CLI hat sie
             schon via verifier filtern lassen). Lowercase-Matching.
         sheet_client: Optionaler vor-konfigurierter Client (für Tests)
-        rate_limit_seconds: Pause zwischen Versanden (für SMTP, nicht für dry-run)
+        rate_limit_seconds: 0 = keine Pause (Tests / Dry-Run).
+            > 0 = randomisierte Pause zwischen Sends (8-25 s). Der konkrete
+            Wert wird als On/Off-Schalter behandelt — die Range ist hardcoded
+            (random.randint(8, 25)) zum Schutz vor SMTP-Pattern-Detection
+            (gleichmäßige 2s-Takte sind ein Bot-Signal für Spamfilter).
     """
+    import random as _random
     import time as _time
 
     if sheet_client is None:
@@ -151,7 +156,10 @@ def run_send(
             failed.append(result)
 
         if rate_limit_seconds > 0 and idx < len(filtered):
-            _time.sleep(rate_limit_seconds)
+            # Randomisierter Delay 8-25s — verschleiert Bot-Pattern.
+            # rate_limit_seconds-Wert selbst ignoriert (nur On/Off-Sentinel).
+            delay = _random.randint(8, 25)
+            _time.sleep(delay)
 
     # preview_dir nur befüllen wenn DryRunTransport
     preview_dir = getattr(transport, "preview_dir", None)
