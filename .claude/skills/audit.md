@@ -86,11 +86,30 @@ Werte Phase-1-Output aus und identifiziere zu verifizierende Behauptungen. Feuer
 
 | Trigger aus Phase 1 | Verifikations-Call |
 |---|---|
-| Firecrawl Meta-Description enthält `#`, `{{`, `%`, `[`, oder `<` als Auftakt (Template-Platzhalter-Pattern) | `WebFetch` auf URL, prüfe ob `<meta name="description"` content das exakt gleiche Pattern hat |
-| Firecrawl URL `ok: false` (Error/Timeout) | `WebFetch` auf URL, prüfe HTTP-Status + Body |
-| Firecrawl Title enthält "Fehler", "Error", "404", "Not Found", "503" | `WebFetch` auf URL, prüfe HTML-Status + visible Text |
+| Firecrawl Meta-Description enthält `#`, `{{`, `%`, `[`, oder `<` als Auftakt (Template-Platzhalter-Pattern) | `ctx_execute` direkter HTTP-GET, prüfe ob `<meta name="description"` content das exakt gleiche Pattern hat |
+| Firecrawl URL `ok: false` ODER Title enthält Error-Pattern ("Fehler", "Error", "404", "503") | **Doppel-Check mit beiden URL-Varianten:** `curl -sI <url>` UND `curl -sI <url>/` — vergleiche Status der Slash- und Non-Slash-Variante getrennt |
 | Ubersuggest Traffic = 0 für 3+ Monate | Schon in Phase 1 via Firecrawl-Search abgedeckt — auswerten ob count > 0 oder = 0 |
-| Phase-1-Firecrawl-Sitemap nur 1 URL | `WebFetch` auf Root, extrahiere alle internen Links manuell aus HTML |
+| Phase-1-Firecrawl-Sitemap nur 1 URL | `ctx_fetch_and_index` auf Root, extrahiere alle internen Links aus HTML |
+
+**Trailing-Slash-Diagnose (Pflicht bei Error-Befund):**
+
+Für JEDE URL die in Phase 1 als kaputt/error verifiziert wird, immer beide Varianten testen:
+
+```bash
+curl -sI --max-time 10 "https://<target>/<pfad>"   # ohne Slash
+curl -sI --max-time 10 "https://<target>/<pfad>/"  # mit Slash
+```
+
+Vier mögliche Outcomes — pro Outcome anderer Befund-Typ:
+
+| no-slash | with-slash | Befund-Typ | Severity-Mapping |
+|---|---|---|---|
+| 404 | 200 | **URL-Normalisierungsproblem** | Mittel — Inhalte existieren, nur Routing kaputt |
+| 200 | 200 | URL funktioniert | Kein Befund |
+| 404 | 404 | **Echte 404 / Inhalt entfernt** | Hoch — Inhalte fehlen |
+| 200 | 404 | Inverses Slash-Problem (selten) | Mittel — Routing-Bug |
+
+Verwende `URL-Normalisierungsproblem`-Wording NIEMALS synonym mit "broken pages" oder "ausgefallen" — das wäre faktisch falsch und im Browser nachprüfbar.
 
 **Anti-Pattern:** Nicht jede URL pauschal verifizieren — nur die mit Befund. Sonst Token-Explosion.
 
@@ -179,14 +198,52 @@ Falls Edge nicht verfügbar oder fehlschlägt: Fallback auf `npx markdown-pdf re
 
 ### Outreach-Mail-Generierung
 
-**Format (Variante C):**
+**Schritt 1: Business-Type-Detection (Pflicht vor Subject-Wahl)**
+
+Bestimme den Business-Typ aus drei Signalquellen (Reihenfolge = Priorität):
+
+| Priorität | Quelle | Match | Typ |
+|---|---|---|---|
+| 1 | Input- oder Target-Domain enthält Substring | `studio` | **Studio** |
+| 1 | " | `shop`, `kaufen`, `store`, `versand` | **Shop** |
+| 1 | " | `praxis` | **Praxis** |
+| 1 | " | `salon` | **Salon** |
+| 1 | " | `spa` | **Spa** |
+| 1 | " | `center`, `zentrum` | **Center** |
+| 2 | Impressum Rechtsform | `e.K.`, `GmbH & Co. KG` mit Shop-Kontext | **Shop** |
+| 2 | Impressum Berufsbezeichnung | "Heilpraktiker", "Physiotherapeut", "Arzt", "Zahnarzt", "TCM" | **Praxis** |
+| 2 | Impressum Berufsbezeichnung | "Friseurmeister", "Friseur", "Nagelstylist" | **Salon** |
+| 3 | Firecrawl Root-Page Body | "Onlineshop", "Warenkorb", "Versandkosten", "in den Warenkorb" | **Shop** |
+| 3 | Firecrawl Root-Page Body | "Termin buchen", "Sprechzeiten" | **Praxis** |
+| 3 | Firecrawl Root-Page Body | "Kosmetikbehandlung", "Fitnesskurse", "Fotoshooting" | **Studio** |
+| 3 | Firecrawl Root-Page Body | "Wellness", "Massage", "Sauna" | **Spa** |
+| 3 | Firecrawl detected CMS | `Shopware`, `WooCommerce`, `Shopify`, `Magento` | **Shop** |
+| Default | (kein Match) | — | **Unternehmen** |
+
+Bei mehreren Treffern: höhere Priorität gewinnt. Bei Gleichstand auf Priorität 1: das spezifischere Token (`praxis` > `shop`, weil enger umrissen).
+
+**Schritt 2: Subject + Anrede-Wording pro Typ**
+
+| Typ | Subject | Body-Wording für "Ihr X" |
+|---|---|---|
+| Studio | `Kurze Frage zu Ihrem Studio in [ORT]` | "Ihr Studio" / "Ihres Studios" |
+| Shop | `Kurze Frage zu Ihrem Shop in [ORT]` | "Ihr Shop" / "Ihres Shops" |
+| Praxis | `Kurze Frage zu Ihrer Praxis in [ORT]` | "Ihre Praxis" / "Ihrer Praxis" |
+| Salon | `Kurze Frage zu Ihrem Salon in [ORT]` | "Ihr Salon" / "Ihres Salons" |
+| Spa | `Kurze Frage zu Ihrem Spa in [ORT]` | "Ihr Spa" / "Ihres Spas" |
+| Center | `Kurze Frage zu Ihrem Center in [ORT]` | "Ihr Center" / "Ihres Centers" |
+| Unternehmen | `Kurze Frage zu Ihrer Website` *(kein [ORT])* | "Ihre Website" / "Ihrer Website" |
+
+**Strikte Regel:** NIEMALS "Studio" für einen Shop / "Shop" für eine Praxis verwenden — der Empfänger merkt sofort, dass die Mail nicht personalisiert ist. Im Zweifel "Unternehmen" + "Ihre Website" verwenden.
+
+**Schritt 3: Format (Variante C)**
 
 ```
-Betreff: Kurze Frage zu Ihrem Studio in [ORT]
+Betreff: <Subject aus Tabelle, mit [ORT] eingesetzt>
 
 Sehr geehrte/r [NAME],
 
-<2-3 stärkste verifizierte Befunde, formuliert als Beobachtungen — keine Wertung, keine Heilversprechen, keine Produkt-Aussagen. Jeder Befund 25-35 Wörter.>
+<2-3 stärkste verifizierte Befunde, formuliert als Beobachtungen — keine Wertung, keine Heilversprechen, keine Produkt-Aussagen. Jeder Befund 25-35 Wörter. Verwende Body-Wording aus der Typ-Tabelle wo es natürlich passt.>
 
 <Verbindender Übergangs-Satz, max. 15 Wörter.>
 
@@ -211,25 +268,66 @@ Mit freundlichen Grüßen
 | **Befunde im Mail-Text, nicht im Anhang** | Anhang wird oft nicht geöffnet; Nutzwert muss im Text sein |
 | **CTA: "Ein kurzes 'Ja' genügt"** | Niedrigstmögliche Reply-Schwelle |
 
-**Befund-Selektion (Top 2-3):**
+**Befund-Selektion für Outreach-Hook (3 Filter, in dieser Reihenfolge):**
 
-Sortiere alle Befunde aus dem Audit nach `severity_score`:
+**Filter 1 — Verification:** Nur 2-Quellen-bestätigte Befunde qualifizieren. Unverifizierte raus.
+
+**Filter 2 — Browser-Verifiability-Test (NEU, Pflicht):**
+
+Für JEDEN Befund-Kandidaten beantworte: *"Kann der Empfänger das in unter 30 Sekunden im Browser selbst nachprüfen, ohne ein Tool oder eine API zu nutzen?"*
+
+Zulässige Verifikations-Wege für den Empfänger:
+- ✅ URL im Browser öffnen und HTTP-Antwort/Inhalt sehen
+- ✅ Google-Suche `site:domain.de` oder den Domain-Namen suchen, SERP-Snippet anschauen
+- ✅ Rechtsklick → "Seitenquelltext anzeigen" + Strg+F nach Pattern suchen
+- ✅ DevTools öffnen und Network-Tab anschauen
+
+NICHT zulässig (Befund-Out):
+- ❌ Ubersuggest/Ahrefs/Semrush öffnen müssen
+- ❌ PageSpeed-Insights laufen lassen müssen
+- ❌ Crawl-Tool/Sitemap-Parser benutzen müssen
+- ❌ API-Daten interpretieren müssen
+- ❌ Daten über mehrere Monate vergleichen müssen ("vor 6 Monaten war es noch X")
+
+**Beispiele:**
+
+| Befund | Browser-verifizierbar in 30s? | Hook-tauglich? |
+|---|---|---|
+| Trailing-Slash 404: `/buecher` öffnen → 404 | ✅ ja | ✅ ja |
+| Meta-Description-Platzhalter `#IndexMeta...#` in SERP | ✅ ja (google domain.de + SERP anschauen) | ✅ ja |
+| Ubersuggest meldet Traffic 0 für 6 Monate | ❌ nein (braucht Ubersuggest) | ❌ nein (höchstens als "laut Tool-Analyse" framing) |
+| PageSpeed LCP > 5s | ❌ nein (braucht PageSpeed API/Tool) | ❌ nein |
+| DA 17 + nur 77 Ref-Domains | ❌ nein (braucht SEO-Tool) | ❌ nein |
+| Footer "© 2002-2015" auf der Seite | ✅ ja (root öffnen, footer anschauen) | ✅ ja |
+| Title-Tag generisch ("Startseite") | ✅ ja (Tab-Titel im Browser) | ✅ ja |
+
+**Filter 3 — Severity-Sortierung** (für die verbleibenden Kandidaten):
 
 ```
-severity_score = verification_count * 2 + impact_weight + visibility_weight
+severity_score = impact_weight + visibility_weight
 
-verification_count: 2 wenn 2-Quellen-bestätigt, sonst 0 (nicht-bestätigte werden nicht selektiert)
 impact_weight:
-  + 3 wenn betrifft kritische Funktionalität (Shop tot, Auth tot, Kontaktform tot)
-  + 2 wenn betrifft Suchsichtbarkeit (Meta-Tags, Index-Status, 404s)
-  + 1 wenn betrifft Performance (PageSpeed, LCP)
+  + 3 wenn betrifft kritische Funktionalität (Routing/Auth/Kontakt kaputt)
+  + 2 wenn betrifft Suchsichtbarkeit (Meta, Index, falsche URL-Varianten)
+  + 1 wenn betrifft Wartung/Aktualität (alter Footer, alte Snippets)
 visibility_weight:
-  + 2 wenn von außen direkt sichtbar (in Google SERP, in URL-Bar)
-  + 1 wenn intern aber leicht prüfbar
-  + 0 wenn nur in Devtools sichtbar
+  + 2 wenn in Google-SERP direkt sichtbar
+  + 1 wenn beim direkten Domain-Besuch sichtbar
+  + 0 wenn nur bei spezifischen URL-Tests sichtbar
 ```
 
-Wähle die Top 2-3 mit den höchsten Scores. Bei Gleichstand bevorzuge unterschiedliche Befund-Kategorien (z.B. nicht 2× "kaputte Kategorien-URLs").
+Wähle die Top 2-3 nach `severity_score`. Bei Gleichstand bevorzuge unterschiedliche Befund-Kategorien.
+
+**Self-Plausibility-Check (Pflicht vor Schreiben des Hook-Texts):**
+
+Nachdem 2-3 Befunde selektiert sind, für JEDEN Befund einen letzten Check durchführen:
+
+1. **"Kann der Empfänger das sofort selbst prüfen und bestätigen?"** → wenn NEIN: Befund aus Hook entfernen, oder mit "laut SEO-Analyse" / "laut Crawl-Daten" kennzeichnen (dann ist es transparenter, aber schwächer)
+2. **"Würde der Empfänger nach der eigenen Prüfung sagen 'stimmt'?"** → wenn NEIN: Befund-Formulierung präzisieren. Beispiel: "Alle Kategorien kaputt" ist widerlegbar (Slash-Variante geht), `"Einige URL-Varianten laufen ins Leere"` ist nicht widerlegbar.
+3. **"Ist die Formulierung HWG-konform?"** → wenn NEIN: umformulieren oder Befund streichen.
+4. **"Klingt das nach Beobachtung oder nach Wertung?"** → Beobachtungen werden eher akzeptiert ("Die Domain leitet auf X weiter") als Wertungen ("Ihre SEO ist kaputt").
+
+Falls nach allen Filtern nur 1 Befund übrigbleibt: Outreach-Mail trotzdem schreiben, mit nur 1 Befund + stärkerer Ausarbeitung. Falls 0 Befunde: Outreach-Mail nicht generieren (siehe Edge-Case).
 
 **Befund-Formulierungs-Templates:**
 
@@ -237,11 +335,29 @@ Jeder Befund wird konkret und prüfbar formuliert:
 
 | Befund-Typ | Template |
 |---|---|
-| Kaputte URLs (verifiziert) | "Beim Aufruf von <code>www.[domain]/[pfad]</code> erscheint statt der Inhalts-Seite eine 404-Fehlerseite — das betrifft auch <code>/[pfad2]</code> und [n] weitere Kategorien." |
+| Trailing-Slash-Problem (Shopware) | "Einige URL-Varianten Ihres Shops laufen ins Leere — Google kann diese Kategorien nicht direkt crawlen, obwohl die Navigation über die Startseite funktioniert. Das ist ein typisches Trailing-Slash-Problem bei Shopware." |
+| Trailing-Slash-Problem (generisch) | "Einige URL-Varianten Ihrer Website laufen ins Leere — wenn Nutzer oder Google die Kategorien direkt aufrufen, erscheint eine Fehlerseite, obwohl die Navigation über die Startseite funktioniert." |
+| Kaputte URLs (kein Slash-Workaround, beide Varianten 404) | "Beim Aufruf von <code>www.[domain]/[pfad]</code> erscheint statt der Inhalts-Seite eine 404-Fehlerseite — das betrifft auch <code>/[pfad2]</code> und [n] weitere Bereiche." |
 | Meta-Description Platzhalter | "In der Google-Suche zeigt sich bei Ihrer Startseite der unausgefüllte Platzhalter-Text <code>#IndexMetaDescriptionStandard#</code> statt einer Beschreibung." |
 | Deindexed | "Ihre Domain rankt aktuell für 0 Keywords bei Google — vor [N] Monaten waren es noch [M]." |
 | PageSpeed kritisch | "Die mobile Ladezeit Ihrer Startseite liegt bei [LCP] (Empfehlung: < 2,5 s)." |
 | Redirect-Inkonsistenz | "Die Domain <code>[input]</code> leitet weiter zu <code>[target]</code> — Nutzer und Backlinks landen auf einer anderen URL als erwartet." |
+
+**Trailing-Slash-Detection (vor Befund-Formulierung):**
+
+Wenn eine URL ohne trailing Slash als kaputt verifiziert wurde, prüfe IMMER ob die Variante mit Slash funktioniert:
+
+```bash
+curl -sI --max-time 10 "https://<target>/<pfad>"  # ohne Slash
+curl -sI --max-time 10 "https://<target>/<pfad>/" # mit Slash
+```
+
+Wenn no-slash 404 **und** with-slash 200 → **Trailing-Slash-Problem-Template** verwenden, NICHT "URL kaputt"-Template. Das ist faktisch korrekter und nicht widerlegbar — der Empfänger kann mit Slash öffnen und sieht, dass es geht, aber das ändert nichts daran, dass die no-slash-Variante in Google-SERPs/Backlinks/direkten Aufrufen 404 wirft.
+
+CMS-Detection für Template-Wahl:
+- Shopware: `x-content-digest`-Header oder `/shopware`-Pfade oder Footer "Powered by Shopware"
+- WooCommerce: `?wc-ajax=` URLs oder `/wp-content/plugins/woocommerce`
+- Falls keins erkannt → generische Template-Variante verwenden
 
 **HWG-Sperrwörter (NIEMALS verwenden):**
 - "heilen", "Heilung", "heilend"
@@ -347,41 +463,63 @@ Wenn Match: ersetze Platzhalter im Mail-Text. Wenn kein Match: Platzhalter bleib
 2. ...
 ````
 
-## Health-Score Heuristik (0-10)
+## Health-Score Heuristik (0-10) — Recalibrated
 
-**Wichtige Regel:** Nur **verifizierte** Befunde gehen in den Score. Unverifizierte Befunde werden im Report transparent gemacht, beeinflussen den Score aber nicht.
+**Kern-Regel:** Nur **verifizierte** Befunde gehen in den Score. Unverifizierte Befunde werden im Report transparent gemacht, beeinflussen den Score aber nicht.
+
+**Score-Skala (Trennschärfe wichtig):**
+
+| Score | Bedeutung |
+|---|---|
+| **1-2/10** | **Domain technisch tot** — Root antwortet nicht, kein Index, keine erreichbare Hauptseite |
+| **3-4/10** | **Schwere technische Probleme**, aber Shop/Website läuft grundsätzlich (Hauptseite erreichbar, Kontakt möglich) |
+| **5-6/10** | **Ungepflegt**, mehrere SEO-Fehler, technische Schwächen — aber funktionsfähig und nutzbar |
+| **7-8/10** | **Kleinere Probleme**, grundsätzlich solide aufgestellt |
+| **9-10/10** | **Gut aufgestellt**, kaum Verbesserungspotential |
+
+**Wichtig:** "ungepflegt ≠ ausgefallen". Eine Domain mit kaputtem Meta-Tag, Trailing-Slash-Problem, aber funktionierendem Shop ist 4-5/10, nicht 1-2/10.
 
 Start bei 5, addiere/subtrahiere:
 
 | Signal | Δ |
 |---|---|
+| **Verfügbarkeit** | |
+| Root-Page antwortet HTTP 200 mit echtem Inhalt | +0 (Baseline-Voraussetzung) |
+| Root-Page antwortet nicht oder 5xx | −5 (= technisch tot) |
+| Kontakt-Seite / Impressum erreichbar | +0 (Baseline) |
+| Kontakt nicht erreichbar | −2 |
+| **Authority** | |
 | DA ≥ 30 | +2 |
-| DA ≥ 15 (aber < 30) | +1 |
+| DA ≥ 15 | +1 |
 | DA < 10 | −1 |
-| Traffic-Trend wachsend (+15% MoM) | +2 |
-| Traffic-Trend stabil | 0 |
-| Traffic-Trend fallend | −1 |
-| Traffic komplett verloren (≥ 3 Monate 0) **UND** Google site: = 0 (verifiziert deindexiert) | −3 |
-| Traffic-Verlust **ohne** Index-Verlust (Ranking-tot, aber indexiert) | −2 |
+| **Ranking** | |
 | Ranking-KWs ≥ 50 | +2 |
-| Ranking-KWs zwischen 5-49 | +1 |
-| Ranking-KWs = 0 | −1 (Ergänzung zum Traffic-Penalty, kein Doppel-Punkt) |
-| Firecrawl + WebFetch: > 80% Hauptseiten verifiziert OK | +2 |
-| Firecrawl + WebFetch: 30-80% verifiziert OK | 0 |
-| Firecrawl + WebFetch: < 30% verifiziert OK (broken) | −3 |
-| Meta-Description-Platzhalter verifiziert (beide Quellen) | −1 |
-| Gov/Edu Backlinks > 0 | +1 |
-| Follow-Ratio > 60% | +1 |
-| PageSpeed Performance < 30 | −1 (nicht-verifiziert, aber Signal) |
+| Ranking-KWs 5-49 | +1 |
+| Ranking-KWs = 0 **UND** Google `site:` = 0 (verifiziert deindexiert) | −3 |
+| Ranking-KWs = 0 **aber** Google `site:` ≥ 1 (ranking-tot, indexiert) | −2 |
+| Traffic-Trend wachsend (+15% MoM) | +1 |
+| Traffic-Trend fallend (−15% MoM) | −1 |
+| **On-Page** | |
+| URL-Normalisierungsproblem (Trailing-Slash, no-slash 404, with-slash 200) | −1 (mittel, Inhalte da) |
+| Echte 404 auf Haupt-Bereichen (beide URL-Varianten 404) | −3 (hoch, Inhalte fehlen) |
+| Meta-Description-Platzhalter verifiziert | −1 |
+| Title-Tag generisch oder leer auf Haupt-Pages | −1 |
+| **Performance** | |
+| PageSpeed Performance < 30 | −1 |
 | PageSpeed Performance > 80 | +1 |
+| **Link-Profil** | |
+| Gov/Edu Backlinks > 0 | +1 |
+| Follow-Ratio > 60% (bei ≥ 30 Ref-Domains) | +1 |
 
 Cap bei 0 und 10.
 
-**Score-Interpretation:**
-- 8-10: Etablierter, gesunder Lead
-- 5-7: Solide Basis, klare Optimierungs-Potentiale → guter Outreach-Kandidat
-- 2-4: Domain hat Probleme → Outreach mit Lösungsangebot
-- 0-1: Domain technisch/strategisch ausgefallen → Wake-Up-Hook
+**Plausibilitäts-Gate nach Berechnung:**
+
+Nach Score-Berechnung prüfe:
+- Wenn Root-Page funktioniert UND mindestens eine Sub-Page (Impressum/Kontakt) erreichbar → Score MUSS ≥ 3 sein (egal wie viele SEO-Probleme). Domain ist nicht "tot".
+- Wenn Score < 3 und Root antwortet 200 → Score auf 3 anheben + im Verdict notieren "Score-Lift: Hauptseite funktioniert, daher kein 1-2-Score".
+
+Diese Korrektur verhindert dass ungepflegte aber lauffähige Shops als "tot" eingestuft werden.
 
 ## Platzhalter-Pattern (für Meta-Description-Detection)
 
