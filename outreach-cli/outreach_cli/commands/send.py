@@ -65,6 +65,7 @@ def run_send(
     from_email: str = "georg@maxcontentseo.de",
     sheet_client: Optional[SheetClient] = None,
     rate_limit_seconds: float = 0.0,
+    restrict_to_emails: Optional[set[str]] = None,
 ) -> SendRunResult:
     """Führt den Send-Workflow aus mit gegebenem Transport.
 
@@ -77,6 +78,9 @@ def run_send(
         limit: Max N Leads (0 = unbegrenzt)
         exclude_hwg: HWG-Heilpraktiker/Arzt-Ausschluss (default True)
         from_email: From-Header
+        restrict_to_emails: Optional Whitelist — nur Leads mit Email in diesem Set
+            werden versendet. Anderen werden silently dropped (CLI hat sie
+            schon via verifier filtern lassen). Lowercase-Matching.
         sheet_client: Optionaler vor-konfigurierter Client (für Tests)
         rate_limit_seconds: Pause zwischen Versanden (für SMTP, nicht für dry-run)
     """
@@ -94,6 +98,11 @@ def run_send(
         limit=limit,
         exclude_hwg=exclude_hwg,
     )
+
+    # Whitelist-Filter (z.B. nach Email-Verifikation in CLI). Silently drop.
+    if restrict_to_emails is not None:
+        allow = {e.strip().lower() for e in restrict_to_emails}
+        filtered = [fl for fl in filtered if fl.email.strip().lower() in allow]
 
     # Template
     template: Template = load_template(template_name)

@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import sys
 from datetime import date, datetime
+from pathlib import Path
 from typing import Optional
 
 import gspread.exceptions as gspread_exceptions
@@ -453,7 +454,49 @@ def send(
         )
         return
 
-    # ----- Normal-Pfad (Dry-Run oder Confirm-Live) -----
+    # ----- Pre-Send Email-Verifikation (NUR --confirm-live, NICHT dry-run/test-self) -----
+    restrict_emails: Optional[set[str]] = None
+    if confirm_live:
+        from .commands.verify import run_verify_for_tab
+        try:
+            verify_report, _leads = run_verify_for_tab(
+                tab=tab, score_min=score_min, status_filter=status_filter,
+                limit=limit, exclude_hwg=hwg_filter,
+                apply_sheet_updates=True,
+            )
+        except SystemExit as e:
+            # ZeroBounce API-Key fehlt oder ungültig
+            typer.secho(str(e), fg="red", err=True)
+            raise typer.Exit(2) from e
+        _render_verify_report(verify_report, scope=tab)
+
+        if verify_report.total == 0:
+            typer.secho("  Keine Leads zum Verifizieren — Abbruch.", fg="yellow")
+            raise typer.Exit(0)
+
+        if verify_report.n_send + verify_report.n_warn == 0:
+            typer.secho(
+                "  KEINE sendbaren Adressen nach Verifikation. Send abgebrochen.",
+                fg="red", err=True,
+            )
+            raise typer.Exit(2)
+
+        # Explizite Freigabe — verhindert versehentlichen Live-Send.
+        warn_note = (
+            f" (inkl. {verify_report.n_warn} catch-all mit Warnung)"
+            if verify_report.n_warn else ""
+        )
+        prompt_msg = (
+            f"Sende JETZT {verify_report.n_send + verify_report.n_warn} "
+            f"verifizierte Mails{warn_note}?"
+        )
+        if not typer.confirm(prompt_msg, default=False):
+            typer.secho("  Abgebrochen — kein SMTP-Versand.", fg="yellow")
+            raise typer.Exit(0)
+
+        restrict_emails = verify_report.sendable_emails
+
+    # ----- Normal-Pfad (Dry-Run oder Confirm-Live nach Verify) -----
     try:
         result = run_send(
             tab=tab,
@@ -465,6 +508,7 @@ def send(
             exclude_hwg=hwg_filter,
             from_email=actual_from,
             rate_limit_seconds=rate_for_run,
+            restrict_to_emails=restrict_emails,
         )
     except TemplateNotFoundError as e:
         typer.secho(f"FEHLER: {e}", fg="red", err=True)
@@ -655,6 +699,146 @@ def _render_send_result(
 
     if result.failed:
         raise typer.Exit(2)
+
+
+def _render_verify_report(report, *, scope: str) -> None:
+    """Tabular-Anzeige + Counts. report: VerifyReport"""
+    from .verifier import VerificationBucket
+    typer.secho(f"\nEMAIL-VERIFIKATION (ZeroBounce): {scope}", fg="cyan")
+    typer.echo(f"  Total geprüft: {report.total}  "
+               f"(API: {report.batch.api_calls_made}, Cache: {report.batch.cache_hits})")
+    typer.secho(f"  ✓ Send (valid):       {report.n_send}", fg="green")
+    typer.secho(f"  ⚠ Send + Warnung (catch-all): {report.n_warn}", fg="yellow")
+    typer.secho(f"  ✗ Skip (invalid/sus): {report.n_skip}", fg="red")
+    if report.n_quota:
+        typer.secho(f"  ⛔ Quota-Abbruch:    {report.n_quota}", fg="red")
+    if report.n_error:
+        typer.secho(f"  ❌ API-Fehler:        {report.n_error}", fg="red")
+
+    skip_list = [d for d in report.batch.decisions if d.bucket == VerificationBucket.SKIP]
+    if skip_list:
+        typer.echo("")
+        typer.secho("  Übersprungen (Sheet auf Email-Ungültig gesetzt):", fg="red")
+        for d in skip_list[:25]:
+            badge = "[cache]" if d.source == "cache" else "[api]"
+            tip = f"  → typo? {d.did_you_mean!r}" if d.did_you_mean else ""
+            typer.echo(f"    ✗ {d.email}  [{d.status}/{d.sub_status or '-'}] {badge}{tip}")
+        if len(skip_list) > 25:
+            typer.echo(f"    ... und {len(skip_list) - 25} weitere")
+
+    warn_list = [d for d in report.batch.decisions if d.bucket == VerificationBucket.SEND_WITH_WARN]
+    if warn_list:
+        typer.echo("")
+        typer.secho("  catch-all (versendet, aber Bounce möglich):", fg="yellow")
+        for d in warn_list[:10]:
+            badge = "[cache]" if d.source == "cache" else "[api]"
+            typer.echo(f"    ⚠ {d.email}  {badge}")
+        if len(warn_list) > 10:
+            typer.echo(f"    ... und {len(warn_list) - 10} weitere")
+
+    if report.sheet_updates_ok or report.sheet_updates_failed:
+        typer.echo("")
+        typer.secho(
+            f"  Sheet-Updates: {report.sheet_updates_ok} OK, "
+            f"{report.sheet_updates_failed} failed",
+            fg="green" if not report.sheet_updates_failed else "yellow",
+        )
+        for e in report.sheet_update_errors[:5]:
+            typer.echo(f"    ⚠️  {e}")
+
+
+@app.command("verify-emails")
+def verify_emails_cmd(
+    tab: Optional[str] = typer.Option(None, "--tab", help="Sheet-Tab. Mutex mit --email/--emails-from."),
+    email: Optional[str] = typer.Option(None, "--email", help="Eine Email direkt."),
+    emails_from: Optional[Path] = typer.Option(None, "--emails-from", help="Datei mit Emails (eine pro Zeile)."),
+    score_min: int = typer.Option(0, "--score-min"),
+    status_filter: Optional[str] = typer.Option(None, "--status", help="Recherche_Status-Filter (z.B. 'Neu')"),
+    limit: int = typer.Option(0, "--limit"),
+    hwg_filter: bool = typer.Option(True, "--hwg-filter/--no-hwg-filter"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Nur prüfen, kein Sheet-Update."),
+    json_out: bool = typer.Option(False, "--json"),
+) -> None:
+    """E-Mail-Adressen via ZeroBounce verifizieren — vor --confirm-live wird das automatisch ausgeführt.
+
+    Drei Input-Modi (mutex):
+      --tab X         : Lädt mit den gleichen Filtern wie send (--score-min/--status/--limit/--hwg-filter)
+      --email X       : Genau eine Adresse
+      --emails-from F : Datei mit Emails (eine pro Zeile)
+
+    Status-Routing:
+      valid                                              → SEND
+      catch-all                                          → SEND mit Warnung
+      invalid / unknown / spamtrap / abuse / do_not_mail → SKIP + Sheet 'Email-Ungültig'
+
+    Caching: outreach-cli/cache/verified-emails.json (TTL 30 Tage).
+    Free-Quota: 100 Verifikationen/Monat — Cache spart Anrufe.
+
+    Beispiele:
+      py -m outreach_cli verify-emails --tab Frankfurt_Umland --status Neu --limit 20
+      py -m outreach_cli verify-emails --email info@example.de --dry-run
+      py -m outreach_cli verify-emails --emails-from leads.txt
+    """
+    inputs_set = sum(1 for x in (tab, email, emails_from) if x)
+    if inputs_set != 1:
+        typer.secho(
+            "FEHLER: Genau EIN Input nötig: --tab ODER --email ODER --emails-from.",
+            fg="red", err=True,
+        )
+        raise typer.Exit(2)
+
+    from .commands.verify import run_verify_for_tab, run_verify_for_emails
+
+    try:
+        if tab:
+            report, _leads = run_verify_for_tab(
+                tab=tab, score_min=score_min, status_filter=status_filter,
+                limit=limit, exclude_hwg=hwg_filter,
+                apply_sheet_updates=not dry_run,
+            )
+            scope_label = tab
+        elif email:
+            report = run_verify_for_emails(
+                [email], apply_sheet_updates=not dry_run,
+            )
+            scope_label = email
+        else:
+            assert emails_from is not None
+            try:
+                emails = [line.strip() for line in emails_from.read_text(encoding="utf-8").splitlines() if line.strip()]
+            except OSError as e:
+                typer.secho(f"FEHLER: emails-from nicht lesbar: {e}", fg="red", err=True)
+                raise typer.Exit(2) from e
+            report = run_verify_for_emails(emails, apply_sheet_updates=not dry_run)
+            scope_label = str(emails_from)
+    except SystemExit as e:
+        typer.secho(str(e), fg="red", err=True)
+        raise typer.Exit(2) from e
+
+    if json_out:
+        _emit_json({
+            "scope": scope_label,
+            "total": report.total,
+            "send": report.n_send,
+            "send_with_warn": report.n_warn,
+            "skip": report.n_skip,
+            "quota_abort": report.n_quota,
+            "error": report.n_error,
+            "api_calls": report.batch.api_calls_made,
+            "cache_hits": report.batch.cache_hits,
+            "sheet_updates_ok": report.sheet_updates_ok,
+            "sheet_updates_failed": report.sheet_updates_failed,
+            "decisions": [
+                {"email": d.email, "bucket": d.bucket.value, "status": d.status,
+                 "sub_status": d.sub_status, "source": d.source, "error": d.error_msg or None,
+                 "did_you_mean": d.did_you_mean or None}
+                for d in report.batch.decisions
+            ],
+            "dry_run": dry_run,
+        })
+        raise typer.Exit(0)
+
+    _render_verify_report(report, scope=scope_label)
 
 
 @app.command("bounce-check")
