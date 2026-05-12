@@ -42,6 +42,7 @@ class SendRunResult:
     delivered: list[DeliveryResult] = field(default_factory=list)
     failed: list[DeliveryResult] = field(default_factory=list)
     skipped_render_errors: list[tuple[str, str]] = field(default_factory=list)
+    sheet_sync_failures: list[tuple[str, str]] = field(default_factory=list)
     preview_dir: Optional[Path] = None
 
     @property
@@ -108,9 +109,15 @@ def run_send(
     template: Template = load_template(template_name)
 
     # Render + Deliver via Transport
+    from datetime import date as _date
+    from ..config import H_RECHERCHE_STATUS
+
     delivered: list[DeliveryResult] = []
     failed: list[DeliveryResult] = []
     render_errors: list[tuple[str, str]] = []
+    sync_failures: list[tuple[str, str]] = []  # (email, reason) — non-fatal
+    is_live_send = transport.name() != "dry-run"
+
     for idx, fl in enumerate(filtered, start=1):
         try:
             subject, body = render(template, fl.render_vars)
@@ -126,6 +133,20 @@ def run_send(
         )
         if result.delivered:
             delivered.append(result)
+            # Sheet-Sync: Recherche_Status = "Angeschrieben" für erfolgreich gesendete
+            # Mails. Verhindert Doppel-Versand beim nächsten Run (Filter --status Neu).
+            # Nicht für Dry-Run — kein echter Versand passiert.
+            # Non-fatal: wenn Sync fehlschlägt, ist die Mail trotzdem raus.
+            if is_live_send:
+                try:
+                    sheet_client.set_status(
+                        email=fl.email,
+                        status="Angeschrieben",
+                        when=_date.today(),
+                        column=H_RECHERCHE_STATUS,
+                    )
+                except Exception as e:
+                    sync_failures.append((fl.email, f"{type(e).__name__}: {e}"))
         else:
             failed.append(result)
 
@@ -143,5 +164,6 @@ def run_send(
         delivered=delivered,
         failed=failed,
         skipped_render_errors=render_errors,
+        sheet_sync_failures=sync_failures,
         preview_dir=preview_dir,
     )
