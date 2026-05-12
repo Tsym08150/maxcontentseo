@@ -105,10 +105,163 @@ Erstelle Markdown-Report nach dem Template. Health-Score berechnet sich **nur au
 
 Identifiziere den **stärksten Outreach-Hook** (das auffälligste, verifizierte Signal in 1 Satz).
 
-### Phase 3 — Dual Output
+### Phase 3 — Triple Output
 
-1. Schreibe Report nach `reports/audit-<sanitized-domain>-<YYYYMMDD>.md`.
-2. Gib im Chat kompakten Summary zurück (Top-Level-Tabelle + Verdict + Datei-Pfad).
+Generiere drei Dateien parallel:
+
+1. **Markdown-Report:** `reports/audit-<sanitized-domain>-<YYYYMMDD>.md` — vollständig (alle Phasen, alle Befunde, alle Status).
+2. **PDF-Report:** `reports/audit-<sanitized-domain>-<YYYYMMDD>.pdf` — vom MD generiert via Edge Headless (siehe PDF-Generation-Block).
+3. **Outreach-Mail:** `reports/outreach-<sanitized-domain>-<YYYYMMDD>.txt` — fertige Cold-Mail nach Variante-C-Format (siehe Outreach-Mail-Block).
+
+Dann Chat-Summary mit den drei Datei-Pfaden + Top-Level-Metriken + Verdict + Vorschau der Outreach-Mail.
+
+### PDF-Generation
+
+Edge Headless rendert HTML → PDF. Pipeline:
+
+```javascript
+// In ctx_execute (javascript):
+const fs = require('fs');
+const { execFileSync } = require('child_process');
+const path = require('path');
+
+const md = fs.readFileSync('reports/audit-<domain>-<date>.md', 'utf-8');
+
+// Minimaler MD→HTML-Konverter (keine npm deps, kein Markdown-Spec-Voll-Support, aber für unsere Reports reicht es)
+function mdToHtml(md) {
+  let h = md
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/^\> (.*$)/gm, '<blockquote>$1</blockquote>')
+    .replace(/^\| (.+) \|$/gm, (line) => {
+      const cells = line.split('|').slice(1, -1).map(c => c.trim());
+      const isSep = cells.every(c => /^[-:\s]+$/.test(c));
+      if (isSep) return '<!--sep-->';
+      return '<tr>' + cells.map(c => `<td>${c}</td>`).join('') + '</tr>';
+    })
+    .replace(/(<tr>[\s\S]+?<\/tr>(\s*<!--sep-->\s*<tr>[\s\S]+?<\/tr>)*)/g, '<table>$1</table>')
+    .replace(/<!--sep-->/g, '')
+    .replace(/\n\n/g, '</p><p>');
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+    body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:780px;margin:40px auto;padding:0 20px;color:#222;line-height:1.55}
+    h1{border-bottom:2px solid #333;padding-bottom:8px}
+    h2{border-bottom:1px solid #ccc;padding-bottom:4px;margin-top:32px}
+    h3{margin-top:24px}
+    table{border-collapse:collapse;margin:12px 0;width:100%;font-size:0.95em}
+    td,th{border:1px solid #ccc;padding:6px 10px;text-align:left;vertical-align:top}
+    code{background:#f4f4f4;padding:1px 5px;border-radius:3px;font-size:0.9em}
+    blockquote{border-left:4px solid #888;padding-left:14px;color:#555;margin-left:0;font-style:italic}
+    strong{color:#000}
+  </style></head><body><p>${h}</p></body></html>`;
+}
+
+const html = mdToHtml(md);
+const tmpHtml = path.resolve('reports/_tmp-audit.html');
+fs.writeFileSync(tmpHtml, html, 'utf-8');
+
+const edge = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
+const outPdf = path.resolve('reports/audit-<domain>-<date>.pdf');
+execFileSync(edge, [
+  '--headless', '--disable-gpu', '--no-sandbox',
+  `--print-to-pdf=${outPdf}`,
+  `file:///${tmpHtml.replace(/\\/g,'/')}`
+], { stdio: 'pipe', timeout: 30000 });
+
+fs.unlinkSync(tmpHtml);
+console.log('PDF written:', outPdf);
+```
+
+Falls Edge nicht verfügbar oder fehlschlägt: Fallback auf `npx markdown-pdf reports/audit-<domain>-<date>.md -o reports/audit-<domain>-<date>.pdf`. Falls auch das fehlschlägt: PDF überspringen, nur MD + TXT ausliefern, Hinweis im Chat-Output.
+
+### Outreach-Mail-Generierung
+
+**Format (Variante C):**
+
+```
+Betreff: Kurze Frage zu Ihrem Studio in [ORT]
+
+Sehr geehrte/r [NAME],
+
+<2-3 stärkste verifizierte Befunde, formuliert als Beobachtungen — keine Wertung, keine Heilversprechen, keine Produkt-Aussagen. Jeder Befund 25-35 Wörter.>
+
+<Verbindender Übergangs-Satz, max. 15 Wörter.>
+
+<CTA-Block:>
+Wenn Sie möchten, schicke ich Ihnen einen kurzen Befund-Report (1 PDF, 2 Seiten) mit den genauen Stellen und einer 3-Punkte-Empfehlung. Ein kurzes "Ja" per Antwort genügt.
+
+Mit freundlichen Grüßen
+[ABSENDER]
+```
+
+**Strenge Regeln:**
+
+| Regel | Begründung |
+|---|---|
+| **Max. 120 Wörter** im Mail-Body (ohne Betreff, Anrede, Gruß) | Cold-Mail-Best-Practice + B2B-Aufmerksamkeitsspanne |
+| **Nur 2-3 stärkste verifizierte Befunde** (✅ 2-Quellen-bestätigt) | Mehr → Mail wirkt überfordernd; weniger als 2 → zu dünn |
+| **Sie-Form durchgehend** | B2B-Convention DE |
+| **HWG-konform** | Keine Aussagen über Heilung, Behandlung, Wirkung, Gesundheit; nur Website-/SEO-Befunde |
+| **Keine Produktangebote in der Mail** | CTA ist erst der PDF-Download, nicht die Leistung |
+| **Platzhalter `[NAME]`, `[ORT]`, `[ABSENDER]` bleiben** sofern Daten nicht verfügbar | Nutzer füllt manuell auf |
+| **Encoding: UTF-8 ohne BOM** | PowerShell-Kompatibilität (siehe `feedback_encoding_hieroglyphen.md`) |
+| **Befunde im Mail-Text, nicht im Anhang** | Anhang wird oft nicht geöffnet; Nutzwert muss im Text sein |
+| **CTA: "Ein kurzes 'Ja' genügt"** | Niedrigstmögliche Reply-Schwelle |
+
+**Befund-Selektion (Top 2-3):**
+
+Sortiere alle Befunde aus dem Audit nach `severity_score`:
+
+```
+severity_score = verification_count * 2 + impact_weight + visibility_weight
+
+verification_count: 2 wenn 2-Quellen-bestätigt, sonst 0 (nicht-bestätigte werden nicht selektiert)
+impact_weight:
+  + 3 wenn betrifft kritische Funktionalität (Shop tot, Auth tot, Kontaktform tot)
+  + 2 wenn betrifft Suchsichtbarkeit (Meta-Tags, Index-Status, 404s)
+  + 1 wenn betrifft Performance (PageSpeed, LCP)
+visibility_weight:
+  + 2 wenn von außen direkt sichtbar (in Google SERP, in URL-Bar)
+  + 1 wenn intern aber leicht prüfbar
+  + 0 wenn nur in Devtools sichtbar
+```
+
+Wähle die Top 2-3 mit den höchsten Scores. Bei Gleichstand bevorzuge unterschiedliche Befund-Kategorien (z.B. nicht 2× "kaputte Kategorien-URLs").
+
+**Befund-Formulierungs-Templates:**
+
+Jeder Befund wird konkret und prüfbar formuliert:
+
+| Befund-Typ | Template |
+|---|---|
+| Kaputte URLs (verifiziert) | "Beim Aufruf von <code>www.[domain]/[pfad]</code> erscheint statt der Inhalts-Seite eine 404-Fehlerseite — das betrifft auch <code>/[pfad2]</code> und [n] weitere Kategorien." |
+| Meta-Description Platzhalter | "In der Google-Suche zeigt sich bei Ihrer Startseite der unausgefüllte Platzhalter-Text <code>#IndexMetaDescriptionStandard#</code> statt einer Beschreibung." |
+| Deindexed | "Ihre Domain rankt aktuell für 0 Keywords bei Google — vor [N] Monaten waren es noch [M]." |
+| PageSpeed kritisch | "Die mobile Ladezeit Ihrer Startseite liegt bei [LCP] (Empfehlung: < 2,5 s)." |
+| Redirect-Inkonsistenz | "Die Domain <code>[input]</code> leitet weiter zu <code>[target]</code> — Nutzer und Backlinks landen auf einer anderen URL als erwartet." |
+
+**HWG-Sperrwörter (NIEMALS verwenden):**
+- "heilen", "Heilung", "heilend"
+- "Behandlung", "Therapie" (außer im Kontext "SEO-Audit")
+- "Gesundheit", "gesund" (außer in der Domain selbst)
+- "Wirkung", "wirksam"
+- "Patient", "Patientin" (statt: "Besucher", "Interessenten")
+- "Erfolg" mit Heilbezug
+- Konkrete Symptome / Krankheiten / Diagnosen
+
+**Wenn die Domain weniger als 2 verifizierte Befunde hat:**
+Outreach-Mail nicht generieren. Statt-dessen `reports/outreach-<domain>-<date>.txt` mit Inhalt `# Outreach nicht generiert\n\nZu wenig verifizierte Befunde (<2). Manuell prüfen.` schreiben.
+
+**[ORT]- und [NAME]-Extraktion (opportunistisch):**
+
+Wenn Phase 1 die Impressum-Seite erfolgreich gescraped hat, extrahiere via Regex aus dem Markdown:
+- `[ORT]`: deutsche PLZ + Ort (`\d{5}\s+[A-ZÄÖÜ][a-zäöüß-]+`)
+- `[NAME]`: "Geschäftsführer:?", "Inhaber:?", "vertreten durch:?" gefolgt von Name
+
+Wenn Match: ersetze Platzhalter im Mail-Text. Wenn kein Match: Platzhalter bleibt für manuelle Ergänzung durch Nutzer.
 
 ## Report Template
 
@@ -255,12 +408,17 @@ Bei Match: Phase-1.5 Verifikation triggern.
 
 ## File-Naming
 
-`reports/audit-<sanitized-input-domain>-<YYYYMMDD>.md`
+Pro Audit-Lauf entstehen drei Dateien (gleicher Stamm):
+
+- `reports/audit-<sanitized-input-domain>-<YYYYMMDD>.md` — Markdown-Report
+- `reports/audit-<sanitized-input-domain>-<YYYYMMDD>.pdf` — PDF-Version (für Versand)
+- `reports/outreach-<sanitized-input-domain>-<YYYYMMDD>.txt` — fertige Outreach-Mail
+
+Regeln:
 - `<sanitized-input-domain>`: Input-Domain (nicht Target!) mit `.` → `-` ersetzt, lowercase.
 - `<YYYYMMDD>`: Heutiges Datum.
-- Beispiel: `reports/audit-vitaminbude-de-20260512.md`
-
-Wenn Re-Audit am gleichen Tag: Hänge `-v2`, `-v3` etc. an.
+- Beispiel: `reports/audit-vitaminbude-de-20260512.md` / `.pdf` / `reports/outreach-vitaminbude-de-20260512.txt`
+- Wenn Re-Audit am gleichen Tag: Hänge `-v2`, `-v3` etc. an. Alle drei Dateien kriegen das gleiche Suffix.
 
 ## Anti-Patterns
 
@@ -271,3 +429,8 @@ Wenn Re-Audit am gleichen Tag: Hänge `-v2`, `-v3` etc. an.
 - ❌ Phase 1.5 für jede einzelne URL pauschal triggern — nur für URLs mit auffälligem Befund aus Phase 1
 - ❌ Den Report-Text ins Memory schreiben — nur den Datei-Pfad und Top-Level-Metriken merken
 - ❌ Unverifizierte Befunde im Health-Score zählen — Score bleibt sauber auf bestätigten Daten
+- ❌ Outreach-Mail mit unverifizierten Befunden schreiben — nur ✅-Befunde landen im Mail-Text
+- ❌ Heilversprechen, Produkt-Aussagen, Patient/Krankheit-Begriffe in der Outreach-Mail — HWG-Sperre
+- ❌ Outreach-Mail mit >120 Wörtern im Body — strikter Cut, lieber Befund kürzen
+- ❌ PDF mit BOM-Encoding oder relativem Pfad an Edge übergeben — Edge braucht `file:///` mit absolutem Pfad und Forward-Slashes
+- ❌ `.txt` Mail mit UTF-8-BOM schreiben — PowerShell/Outlook zeigen Hieroglyphen (siehe `feedback_encoding_hieroglyphen.md`)
