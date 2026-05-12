@@ -476,6 +476,32 @@ def send(
         typer.secho(f"API-FEHLER: {e}", fg="red", err=True)
         raise typer.Exit(2) from e
 
+    # Auto-Schedule Bounce-Check 24h später (nur bei Live-Versand mit ≥1 erfolgreichem Send)
+    # Render-Failures werden NICHT als "Versand fehlgeschlagen" gewertet — solange irgendeine
+    # Mail rausging, ist Bounce-Check sinnvoll. Render-Result.delivered=[] → kein Task.
+    if confirm_live and result.delivered:
+        try:
+            from .commands.scheduler import schedule_one_shot_bounce_check
+            sched = schedule_one_shot_bounce_check(tab=tab)
+            if sched.ok:
+                typer.secho(
+                    f"  ⏰ Bounce-Check geplant: '{sched.task_name}' "
+                    f"@ {sched.trigger_at.strftime('%Y-%m-%d %H:%M')} "
+                    f"(in 24h, schtasks)",
+                    fg="cyan",
+                )
+            else:
+                typer.secho(
+                    f"  ⚠️  Bounce-Check-Task konnte nicht erstellt werden: "
+                    f"{sched.schtasks_output}",
+                    fg="yellow",
+                )
+        except Exception as e:
+            typer.secho(
+                f"  ⚠️  Auto-Schedule fehlgeschlagen: {type(e).__name__}: {e}",
+                fg="yellow",
+            )
+
     _render_send_result(
         result, json_out=json_out, hwg_filter=hwg_filter,
         score_min=score_min, status_filter=status_filter, limit=limit,
@@ -628,6 +654,133 @@ def _render_send_result(
             typer.echo(f"    ❌ {em}: {msg}")
 
     if result.failed:
+        raise typer.Exit(2)
+
+
+@app.command("bounce-check")
+def bounce_check_cmd(
+    tab: Optional[str] = typer.Option(None, "--tab", help="Sheet-Tab. Mutex mit --all-tabs."),
+    all_tabs: bool = typer.Option(False, "--all-tabs", help="Alle Tabs aus PRIMARY_TABS+AGGREGATE_TABS."),
+    since_days: int = typer.Option(2, "--since-days", help="IMAP-Suchfenster in Tagen (default: 2)."),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Nur scannen, kein set_status."),
+    json_out: bool = typer.Option(False, "--json"),
+) -> None:
+    """Bounce-Check: IMAP via ProtonMail-Bridge → MAILER-DAEMON-Mails → Sheet-Status 'Bounce'.
+
+    Pipeline:
+      1. Zählt 'Angeschrieben'-Leads im Scope (für Bounce-Rate-Denominator).
+      2. Verbindet IMAP 127.0.0.1:1143 (Bridge), STARTTLS, Login per .env.
+      3. SEARCH FROM mailer-daemon/postmaster, SUBJECT Undelivered/Delayed.
+      4. Parsed jede Bounce-Mail → failed_recipients (Final-Recipient-Header).
+      5. Cross-Ref gegen Sheet → set_status(email, 'Bounce', Recherche_Status).
+      6. Bounce-Rate = matched / Angeschrieben-im-Scope.
+
+    Beispiele:
+      py -m outreach_cli bounce-check --tab Frankfurt_Umland
+      py -m outreach_cli bounce-check --all-tabs --since-days 7
+      py -m outreach_cli bounce-check --tab X --dry-run
+    """
+    from .commands.bounce_check import run_bounce_check
+
+    result = run_bounce_check(
+        tab=tab, all_tabs=all_tabs, since_days=since_days, dry_run=dry_run,
+    )
+
+    if json_out:
+        _emit_json({
+            "bounces_total": result.bounces_total,
+            "matched_in_sheet": [
+                {
+                    "email": m.email,
+                    "bounce_type": m.bounce_type,
+                    "subject": m.bounce_subject,
+                    "lead_tab": m.matched_lead.tab,
+                    "lead_firma": m.matched_lead.firma,
+                } for m in result.matched_in_sheet
+            ],
+            "unmatched_recipients": result.unmatched_recipients,
+            "sheet_writes_ok": result.sheet_writes_ok,
+            "sheet_writes_failed": result.sheet_writes_failed,
+            "angeschrieben_in_scope": result.angeschrieben_in_scope,
+            "bounce_rate_pct": result.bounce_rate_pct,
+            "errors": result.errors,
+            "dry_run": dry_run,
+        })
+        raise typer.Exit(2 if result.errors else 0)
+
+    # Plain output
+    scope_label = "ALLE TABS" if all_tabs else (tab or "?")
+    typer.secho(f"BOUNCE-CHECK: {scope_label} (seit {since_days}d)", fg="cyan")
+    typer.echo(f"  Angeschrieben im Scope:  {result.angeschrieben_in_scope}")
+    typer.echo(f"  Bounce-Mails gefunden:   {result.bounces_total}")
+    typer.echo(f"  Failed-Recipients:       {len(result.failed_recipients)}")
+    typer.echo(f"  In Sheet gematched:      {len(result.matched_in_sheet)}")
+    typer.echo(f"  Nicht im Sheet:          {len(result.unmatched_recipients)}")
+    if not dry_run:
+        typer.echo(f"  Sheet-Writes OK:         {result.sheet_writes_ok}")
+        if result.sheet_writes_failed:
+            typer.secho(f"  Sheet-Writes FAILED:     {result.sheet_writes_failed}", fg="red")
+
+    rate = result.bounce_rate_pct
+    if rate is not None:
+        color = "red" if rate >= 5.0 else ("yellow" if rate >= 2.0 else "green")
+        typer.secho(f"  Bounce-Rate: {rate:.2f}%", fg=color)
+    else:
+        typer.echo("  Bounce-Rate: n/a (keine Angeschrieben-Leads im Scope)")
+
+    if result.matched_in_sheet:
+        typer.echo("")
+        typer.secho("  Gebouncte Adressen (im Sheet aktualisiert):", fg="yellow" if not dry_run else "cyan")
+        for m in result.matched_in_sheet:
+            badge = "[DRY]" if dry_run else "✓"
+            typer.echo(
+                f"    {badge} {m.email} [{m.bounce_type}] · "
+                f"{m.matched_lead.tab}/{m.matched_lead.firma}"
+            )
+
+    if result.unmatched_recipients:
+        typer.echo("")
+        typer.secho(
+            f"  Bounces ohne Sheet-Match ({len(result.unmatched_recipients)}):",
+            fg="yellow",
+        )
+        for r in result.unmatched_recipients[:20]:
+            typer.echo(f"    · {r}")
+        if len(result.unmatched_recipients) > 20:
+            typer.echo(f"    ... und {len(result.unmatched_recipients) - 20} weitere")
+
+    if result.errors:
+        typer.echo("")
+        typer.secho(f"  Fehler ({len(result.errors)}):", fg="red")
+        for e in result.errors:
+            typer.echo(f"    ⚠️  {e}")
+        raise typer.Exit(2)
+
+
+@app.command("install-weekly-bounce")
+def install_weekly_bounce_cmd(
+    weekday: str = typer.Option("Monday", "--weekday", help="Wochentag (Monday..Sunday)."),
+    hour: int = typer.Option(9, "--hour", help="Stunde 0-23."),
+    minute: int = typer.Option(0, "--minute", help="Minute 0-59."),
+) -> None:
+    """Installiert wöchentlichen Bounce-Check-Task (Default: Mo 09:00, alle Tabs).
+
+    Task-Name: MaxContentSEO_WeeklyBounceCheck (overwrite-safe).
+    Aktion:    py -m outreach_cli bounce-check --all-tabs
+
+    Deinstallieren mit: schtasks /Delete /TN MaxContentSEO_WeeklyBounceCheck /F
+    """
+    from .commands.scheduler import schedule_weekly_bounce_check
+    res = schedule_weekly_bounce_check(weekday=weekday, hour=hour, minute=minute)
+    if res.ok:
+        typer.secho(
+            f"OK: '{res.task_name}' eingerichtet — {weekday} {hour:02d}:{minute:02d}",
+            fg="green",
+        )
+        typer.echo(f"  Action: {res.action_cmd}")
+    else:
+        typer.secho(f"FEHLER: Task konnte nicht erstellt werden", fg="red", err=True)
+        typer.echo(f"  schtasks Output: {res.schtasks_output}")
         raise typer.Exit(2)
 
 
