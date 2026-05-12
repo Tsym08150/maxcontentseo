@@ -22,8 +22,14 @@ from outreach_cli.verifier.zerobounce import (
 
 
 class MockClient:
-    """Mock-ZeroBounceClient — gibt vorgefertigte Status-Werte zurück."""
-    def __init__(self, responses: dict[str, str | Exception]):
+    """Mock-ZeroBounceClient — gibt vorgefertigte Status-Werte zurück.
+
+    responses-Werte können sein:
+      - str (status) → sub_status=""
+      - tuple[str, str] (status, sub_status)
+      - Exception → wird beim Aufruf geworfen
+    """
+    def __init__(self, responses):
         self.responses = responses
         self.calls: list[str] = []
 
@@ -32,10 +38,14 @@ class MockClient:
         v = self.responses[email]
         if isinstance(v, Exception):
             raise v
+        if isinstance(v, tuple):
+            status, sub_status = v
+        else:
+            status, sub_status = v, ""
         return VerifyResponse(
-            address=email, status=v, sub_status="",
+            address=email, status=status, sub_status=sub_status,
             free_email=False, mx_found=True, did_you_mean="",
-            raw={"status": v},
+            raw={"status": status, "sub_status": sub_status},
         )
 
     def get_credits(self) -> int:
@@ -152,6 +162,58 @@ def test_whitespace_email_ignored(tmp_path: Path):
     r = verify_batch(["", "  ", "real@x.de"], client=client, cache=cache)
     assert len(r.decisions) == 1
     assert r.decisions[0].email == "real@x.de"
+
+
+def test_do_not_mail_with_role_based_is_relaxed_to_send_with_warn(tmp_path: Path):
+    """B2B-Outreach-Relaxation: do_not_mail+role_based → SEND_WITH_WARN.
+
+    Echte Suppressions (do_not_mail+disposable/toxic/global_suppression) bleiben SKIP.
+    """
+    client = MockClient({
+        "info@studio-a.de": ("do_not_mail", "role_based"),
+        "kontakt@studio-b.de": ("do_not_mail", "role_based_catch_all"),
+        "user@studio-c.de": ("do_not_mail", "disposable"),         # echte Suppression
+        "blocked@studio-d.de": ("do_not_mail", "global_suppression"),
+        "test@studio-e.de": ("do_not_mail", "toxic"),
+        "naked@studio-f.de": ("do_not_mail", ""),                  # ohne sub → bleibt SKIP
+    })
+    cache = EmailVerifyCache(tmp_path / "v.json")
+    r = verify_batch(client.responses.keys(), client=client, cache=cache)
+
+    by = {d.email: d.bucket for d in r.decisions}
+    assert by["info@studio-a.de"] == VerificationBucket.SEND_WITH_WARN
+    assert by["kontakt@studio-b.de"] == VerificationBucket.SEND_WITH_WARN
+    assert by["user@studio-c.de"] == VerificationBucket.SKIP        # disposable
+    assert by["blocked@studio-d.de"] == VerificationBucket.SKIP     # global_suppression
+    assert by["test@studio-e.de"] == VerificationBucket.SKIP        # toxic
+    assert by["naked@studio-f.de"] == VerificationBucket.SKIP       # kein sub → konservativ
+
+
+def test_role_based_with_valid_status_stays_send(tmp_path: Path):
+    """`role_based` darf bei status=valid den SEND-Bucket nicht runterstufen."""
+    client = MockClient({
+        "info@x.de": ("valid", "role_based"),
+        "kontakt@y.de": ("valid", "alias_address"),
+    })
+    cache = EmailVerifyCache(tmp_path / "v.json")
+    r = verify_batch(client.responses.keys(), client=client, cache=cache)
+    by = {d.email: d.bucket for d in r.decisions}
+    assert by["info@x.de"] == VerificationBucket.SEND
+    assert by["kontakt@y.de"] == VerificationBucket.SEND
+
+
+def test_cache_hit_respects_relaxation_too(tmp_path: Path):
+    """Wenn ein gecachter Eintrag do_not_mail+role_based ist, kommt SEND_WITH_WARN raus."""
+    cache = EmailVerifyCache(tmp_path / "v.json")
+    cache.put(
+        "info@cached.de",
+        status="do_not_mail",
+        sub_status="role_based",
+    )
+    r = verify_batch(["info@cached.de"], client=None, cache=cache)
+    assert len(r.decisions) == 1
+    assert r.decisions[0].bucket == VerificationBucket.SEND_WITH_WARN
+    assert r.decisions[0].source == "cache"
 
 
 def test_cache_persists_only_when_api_called(tmp_path: Path):

@@ -48,9 +48,26 @@ _BUCKET_MAP: dict[str, VerificationBucket] = {
     "do_not_mail": VerificationBucket.SKIP,
 }
 
+# Sub-Status-Werte die "do_not_mail" auf SEND_WITH_WARN herabstufen.
+# Hintergrund: B2B-Cold-Outreach an Studios/Praxen/Salons geht zu 80%+ an
+# `info@`, `kontakt@`, `mail@`, `admin@` (= role_based). ZeroBounce klassifiziert
+# diese als `do_not_mail` mit sub_status `role_based` — für unseren Use-Case
+# zu aggressiv. Echte Suppressions (sub: disposable/toxic/global_suppression)
+# bleiben strikt SKIP.
+_DO_NOT_MAIL_RELAXED_SUBS = frozenset({
+    "role_based",
+    "role_based_catch_all",
+})
 
-def _bucket_for_status(status: str) -> VerificationBucket:
-    return _BUCKET_MAP.get(status.lower(), VerificationBucket.SKIP)
+
+def _bucket_for_status(status: str, sub_status: str = "") -> VerificationBucket:
+    s = status.lower()
+    sub = sub_status.lower()
+    # Relaxation: do_not_mail + role_based-Subgrund → SEND_WITH_WARN.
+    # Send-Risiko ähnlich catch-all; Bounce-Check (24h später) fängt nach.
+    if s == "do_not_mail" and sub in _DO_NOT_MAIL_RELAXED_SUBS:
+        return VerificationBucket.SEND_WITH_WARN
+    return _BUCKET_MAP.get(s, VerificationBucket.SKIP)
 
 
 @dataclass(frozen=True)
@@ -137,7 +154,7 @@ def verify_batch(
         if cached is not None:
             decision = VerificationDecision(
                 email=email,
-                bucket=_bucket_for_status(cached.status),
+                bucket=_bucket_for_status(cached.status, cached.sub_status),
                 status=cached.status,
                 sub_status=cached.sub_status,
                 did_you_mean=cached.did_you_mean,
@@ -212,7 +229,7 @@ def verify_batch(
 
         result.decisions.append(VerificationDecision(
             email=email,
-            bucket=_bucket_for_status(resp.status),
+            bucket=_bucket_for_status(resp.status, resp.sub_status),
             status=resp.status,
             sub_status=resp.sub_status,
             did_you_mean=resp.did_you_mean,
