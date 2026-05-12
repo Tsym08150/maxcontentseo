@@ -370,6 +370,11 @@ def send(
         False, "--confirm-live",
         help="Echter Batch-Versand. Implies --no-dry-run. ACHTUNG: schreibt an echte Leads.",
     ),
+    skip_verification: bool = typer.Option(
+        False, "--skip-verification",
+        help="ZeroBounce-Check überspringen (nur mit --confirm-live). Bounce-Risiko erhöht; "
+             "24h-Auto-Bounce-Check ist Safety-Net.",
+    ),
     rate_limit: float = typer.Option(
         2.0, "--rate-limit",
         help="Pause in Sekunden zwischen Versanden (Domain-Reputation-Schutz). Default: 2s.",
@@ -456,7 +461,38 @@ def send(
 
     # ----- Pre-Send Email-Verifikation (NUR --confirm-live, NICHT dry-run/test-self) -----
     restrict_emails: Optional[set[str]] = None
-    if confirm_live:
+    if confirm_live and skip_verification:
+        # Skip-Path: Verifikation umgehen, aber Lead-Count für Prompt inline ermitteln
+        from .sheets import SheetClient as _SheetClient
+        from .config import Config as _Config
+        from .leads.loader import load_filtered_leads as _load_leads
+        _sc = _SheetClient(_Config.from_env())
+        _filtered, _stats = _load_leads(
+            _sc, tab=tab, score_min=score_min, status=status_filter,
+            limit=limit, exclude_hwg=hwg_filter,
+        )
+        n_leads = len(_filtered)
+        if n_leads == 0:
+            typer.secho("  Keine Leads im Scope — Abbruch.", fg="yellow")
+            raise typer.Exit(0)
+
+        typer.secho(
+            f"\n⚠️  --skip-verification: ZeroBounce-Check ÜBERSPRUNGEN.",
+            fg="yellow",
+        )
+        typer.secho(
+            f"    Bounce-Risiko erhöht (letzter Batch ohne Verify: 12.5%). "
+            f"24h-Auto-Bounce-Check fängt nach.",
+            fg="yellow",
+        )
+        if not typer.confirm(
+            f"Sende JETZT {n_leads} Mails OHNE Verifikation?",
+            default=False,
+        ):
+            typer.secho("  Abgebrochen — kein SMTP-Versand.", fg="yellow")
+            raise typer.Exit(0)
+        # Kein restrict_emails — alle gefilterten gehen raus
+    elif confirm_live:
         from .commands.verify import run_verify_for_tab
         try:
             verify_report, _leads = run_verify_for_tab(
