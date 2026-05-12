@@ -1,4 +1,10 @@
-"""Email-Verifier — ZeroBounce-API + JSON-Cache vor --confirm-live."""
+"""Email-Verifier — NeverBounce (primary) + ZeroBounce (fallback) + JSON-Cache."""
+from .neverbounce import (
+    NeverBounceConfig,
+    NeverBounceClient,
+    NeverBounceError,
+    NeverBounceQuotaError,
+)
 from .zerobounce import (
     ZeroBounceConfig,
     ZeroBounceClient,
@@ -15,6 +21,10 @@ from .pipeline import (
 )
 
 __all__ = [
+    "NeverBounceConfig",
+    "NeverBounceClient",
+    "NeverBounceError",
+    "NeverBounceQuotaError",
     "ZeroBounceConfig",
     "ZeroBounceClient",
     "ZeroBounceError",

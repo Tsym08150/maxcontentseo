@@ -21,12 +21,45 @@ from pathlib import Path
 from typing import Iterable, Optional
 
 from .cache import EmailVerifyCache, CachedVerification, DEFAULT_TTL_DAYS
+from .neverbounce import (
+    NeverBounceClient,
+    NeverBounceConfig,
+    NeverBounceError,
+    NeverBounceQuotaError,
+)
 from .zerobounce import (
     ZeroBounceClient,
     ZeroBounceConfig,
     ZeroBounceError,
     ZeroBounceQuotaError,
 )
+
+
+def _select_provider_client():
+    """Provider-Selection: NeverBounce-Primary, ZeroBounce-Fallback.
+
+    Returns ein Client-Objekt mit `.validate(email)` Methode, oder raised
+    SystemExit wenn KEIN Provider konfiguriert ist.
+
+    Logik:
+      1. NEVERBOUNCE_API_KEY gesetzt und kein Placeholder → NeverBounceClient
+      2. Sonst: ZEROBOUNCE_API_KEY gesetzt → ZeroBounceClient
+      3. Sonst: SystemExit mit klarer Anleitung
+    """
+    import os
+    nb_key = (os.getenv("NEVERBOUNCE_API_KEY") or "").strip()
+    nb_valid = nb_key and not nb_key.upper().startswith(("REPLACE_", "YOUR_", "CHANGE_ME"))
+    if nb_valid:
+        return NeverBounceClient(NeverBounceConfig.from_env())
+    zb_key = (os.getenv("ZEROBOUNCE_API_KEY") or "").strip()
+    zb_valid = zb_key and not zb_key.upper().startswith(("REPLACE_", "YOUR_", "CHANGE_ME"))
+    if zb_valid:
+        return ZeroBounceClient(ZeroBounceConfig.from_env())
+    raise SystemExit(
+        "FEHLER: Kein Email-Verifier-Provider konfiguriert.\n"
+        "Setze NEVERBOUNCE_API_KEY (primary, 1000/Monat free) ODER "
+        "ZEROBOUNCE_API_KEY (fallback) in .env."
+    )
 
 
 class VerificationBucket(str, Enum):
@@ -37,15 +70,19 @@ class VerificationBucket(str, Enum):
     ERROR = "error"               # API-Fehler / Netzwerk
 
 
-# Status → Bucket Mapping
+# Status → Bucket Mapping — provider-agnostisch.
+# ZB nutzt "catch-all" (mit Hyphen), NB nutzt "catchall" (ohne) — wir akzeptieren beide.
+# NB hat zusätzlich "disposable" als Top-Level-Status (ZB nur als sub_status).
 _BUCKET_MAP: dict[str, VerificationBucket] = {
     "valid": VerificationBucket.SEND,
     "catch-all": VerificationBucket.SEND_WITH_WARN,
+    "catchall": VerificationBucket.SEND_WITH_WARN,  # NeverBounce-Variante
     "invalid": VerificationBucket.SKIP,
     "unknown": VerificationBucket.SKIP,
-    "spamtrap": VerificationBucket.SKIP,
-    "abuse": VerificationBucket.SKIP,
-    "do_not_mail": VerificationBucket.SKIP,
+    "disposable": VerificationBucket.SKIP,           # NB Top-Level
+    "spamtrap": VerificationBucket.SKIP,             # ZB-spezifisch
+    "abuse": VerificationBucket.SKIP,                # ZB-spezifisch
+    "do_not_mail": VerificationBucket.SKIP,          # ZB-spezifisch
 }
 
 # Sub-Status-Werte die "do_not_mail" auf SEND_WITH_WARN herabstufen.
@@ -177,12 +214,12 @@ def verify_batch(
             continue
 
         if client is None:
-            # Lazy: erst hier ZeroBounceClient.from_env() — vermeidet API-Key-Pflicht
+            # Lazy provider-selection — vermeidet API-Key-Pflicht
             # für reine Cache-Hits (z.B. wenn alle Emails schon im Cache sind).
             try:
-                client = ZeroBounceClient(ZeroBounceConfig.from_env())
+                client = _select_provider_client()
             except SystemExit as e:
-                # API-Key fehlt → kompletter Batch wird unverifiziert.
+                # KEIN Provider konfiguriert → kompletter Batch wird unverifiziert.
                 api_unavailable = True
                 result.decisions.append(VerificationDecision(
                     email=email,
@@ -195,7 +232,7 @@ def verify_batch(
 
         try:
             resp = client.validate(email)
-        except ZeroBounceQuotaError as e:
+        except (ZeroBounceQuotaError, NeverBounceQuotaError) as e:
             api_unavailable = True
             result.quota_aborted_at = email
             result.decisions.append(VerificationDecision(
@@ -206,7 +243,7 @@ def verify_batch(
                 error_msg=str(e),
             ))
             continue
-        except ZeroBounceError as e:
+        except (ZeroBounceError, NeverBounceError) as e:
             result.decisions.append(VerificationDecision(
                 email=email,
                 bucket=VerificationBucket.ERROR,
