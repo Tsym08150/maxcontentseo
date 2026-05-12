@@ -1,47 +1,63 @@
-# outreach-cli: Email-Verifikation (ZeroBounce)
+# outreach-cli: Email-Verifikation (NeverBounce / ZeroBounce)
 
 ## Use Case
 
-Vor jedem `--confirm-live` Versand wird die Bounce-Quote senkende Vor-Validierung erzwungen. Im letzten Live-Batch hatten wir **12.5% Bounces** (siehe [bounce-check.md](bounce-check.md)) — das schadet Sender-Reputation. ZeroBounce-Verifikation senkt diese Quote, indem ungültige Adressen vor dem Versand aussortiert werden.
+Vor jedem `--confirm-live` Versand wird die Bounce-Quote senkende Vor-Validierung erzwungen. Im ersten unverifizierten Live-Batch hatten wir **12.5% Bounces** (siehe [bounce-check.md](bounce-check.md)) — das schadet Sender-Reputation. Verifier senkt diese Quote, indem ungültige Adressen vor dem Versand aussortiert werden.
+
+## Provider-Selection
+
+Zwei Provider unterstützt, in dieser Priorität:
+
+1. **NeverBounce (Primary)** — https://app.neverbounce.com/, 1000 Verifikationen/Monat free
+2. **ZeroBounce (Fallback)** — https://www.zerobounce.net/, Trial-Tier nur ~5 Credits einmalig
+
+Wenn `NEVERBOUNCE_API_KEY` gesetzt UND kein Placeholder → NeverBounce. Sonst → ZeroBounce. Wenn beide leer/Placeholder → SystemExit mit Anleitung.
+
+Wechsel zwischen Providers ohne Code-Change: einfach den `NEVERBOUNCE_API_KEY` aus `.env` löschen → nächster Run nutzt ZB.
 
 ## Pipeline
 
 ```
 outreach send --confirm-live --tab X ...
   ├── Phase A: Leads laden (gleiche Filter wie Send)
-  ├── Phase B: Email-Verifikation (NEU)
+  ├── Phase B: Email-Verifikation
   │   ├── 1. Cache-Lookup (cache/verified-emails.json, TTL 30 Tage)
-  │   ├── 2. Für uncached: ZeroBounce API /v2/validate
-  │   ├── 3. Bucketing: valid → SEND, catch-all → SEND+WARN, rest → SKIP
+  │   ├── 2. Für uncached: Provider-API-Call (NB /v4/single/check ODER ZB /v2/validate)
+  │   ├── 3. Bucketing: valid → SEND, catch-all/catchall → SEND+WARN, rest → SKIP
   │   ├── 4. SKIP → Sheet Recherche_Status = "Email-Ungültig"
-  │   └── 5. Cache speichern
+  │   └── 5. Cache speichern (provider-agnostisch)
   ├── Phase C: Ergebnis-Anzeige + EXPLIZITE FREIGABE (typer.confirm)
-  └── Phase D: SMTP-Versand nur an SEND + SEND+WARN
+  └── Phase D: SMTP-Versand nur an SEND + SEND+WARN (mit Random-Delay 8-25s)
 ```
 
 ## Status-Routing
 
-ZeroBounce returnt einen von 7 Status-Werten. Wir mappen sie in 3 Buckets:
+Beide Provider liefern unterschiedliche Status-Namen — wir akzeptieren beide Formen:
 
-| ZeroBounce-Status | Bucket | Aktion |
-|---|---|---|
-| `valid` | **SEND** | Mail rausgeschickt |
-| `catch-all` | **SEND_WITH_WARN** | Mail trotzdem rausgeschickt (catch-all-Domains akzeptieren technisch alles, aber landen oft) — gelbe Warnung im Output |
-| `invalid` | **SKIP** | Nicht senden + Sheet auf "Email-Ungültig" |
-| `unknown` | **SKIP** | dito |
-| `spamtrap` | **SKIP** | dito (gefährlich: kann Sender-Reputation killen) |
-| `abuse` | **SKIP** | dito |
-| `do_not_mail` | **SKIP** | dito |
+| Status | Provider | Bucket | Aktion |
+|---|---|---|---|
+| `valid` | NB + ZB | **SEND** | Mail rausgeschickt |
+| `catchall` | NB | **SEND_WITH_WARN** | Mail trotzdem raus (catch-all-Domains akzeptieren alles, bouncen oft) |
+| `catch-all` | ZB | **SEND_WITH_WARN** | (gleicher Bucket, andere Schreibweise) |
+| `invalid` | NB + ZB | **SKIP** | Sheet auf "Email-Ungültig" |
+| `unknown` | NB + ZB | **SKIP** | dito |
+| `disposable` | NB (top-level) | **SKIP** | Mailinator-style temp-Adresse |
+| `spamtrap` | ZB | **SKIP** | Reputation-killer |
+| `abuse` | ZB | **SKIP** | Spam-Complainer |
+| `do_not_mail` | ZB | **SKIP** | Suppression-Liste |
+
+**Relaxation für B2B**: `do_not_mail` + sub `role_based`/`role_based_catch_all` → SEND_WITH_WARN. Bei NB wird die `role_account`-Flag automatisch auf `sub_status='role_based'` gemappt (siehe `neverbounce.py:80`).
 
 ## Konfiguration
 
 In `outreach-cli/.env`:
 
 ```ini
-ZEROBOUNCE_API_KEY=<dein-key>
+NEVERBOUNCE_API_KEY=<dein-nb-key>      # Primary, 1000/Monat free
+ZEROBOUNCE_API_KEY=<dein-zb-key>       # Fallback, optional
 ```
 
-Free-Tier: **100 Verifikationen/Monat** auf https://www.zerobounce.net/. Account erstellen → Dashboard → API → API Key kopieren.
+Original-Quelle: `D:\000 SEO Business\Tools\config.ps1` (`$NEVERBOUNCE_API_KEY`). `.env` wird daraus synchronisiert.
 
 ## Cache
 
