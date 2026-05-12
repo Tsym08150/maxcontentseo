@@ -376,8 +376,10 @@ def send(
              "24h-Auto-Bounce-Check ist Safety-Net.",
     ),
     rate_limit: float = typer.Option(
-        2.0, "--rate-limit",
-        help="Pause in Sekunden zwischen Versanden (Domain-Reputation-Schutz). Default: 2s.",
+        1.0, "--rate-limit",
+        help="On/Off-Schalter für Inter-Mail-Delay. 0 = kein Delay (Tests). "
+             "Jeder Wert >0 aktiviert randomisierten Delay 8-25s zwischen Sends "
+             "(Schutz vor SMTP-Bot-Detection durch Spamfilter). Default: 1.",
     ),
     from_email: Optional[str] = typer.Option(
         None, "--from", help="From-Header (default: OWNER_EMAIL aus .env)"
