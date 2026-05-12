@@ -22,6 +22,7 @@ ALLOWED_STATUSES: tuple[str, ...] = (
     "Geantwortet - kein Interesse",
     "Geantwortet - Interesse",
     "Bounce",
+    "Email-Ungültig",
     "Nicht kontaktiert",
 )
 

@@ -13,3 +13,6 @@ venv/
 .coverage
 .mypy_cache/
 .ruff_cache/
+
+# Email-Verify-Cache (lokal, enthält Status-Daten pro Adresse)
+cache/
