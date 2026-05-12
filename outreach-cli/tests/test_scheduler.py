@@ -23,6 +23,8 @@ def test_one_shot_xml_contains_correct_trigger_and_action():
     )
     # Trigger-Format YYYY-MM-DDTHH:MM:SS
     assert "<StartBoundary>2026-05-13T14:30:00</StartBoundary>" in xml
+    # EndBoundary erforderlich für DeleteExpiredTaskAfter (sonst schtasks-Error)
+    assert "<EndBoundary>2026-05-14T02:30:00</EndBoundary>" in xml  # +12h default
     # ONCE-Trigger
     assert "<TimeTrigger>" in xml
     # Action argstring
@@ -31,6 +33,15 @@ def test_one_shot_xml_contains_correct_trigger_and_action():
     assert "<Command>py</Command>" in xml
     # XML well-formed (no unescaped ampersands)
     assert "&amp;" not in xml or xml.count("&") == xml.count("&amp;") + xml.count("&lt;") + xml.count("&gt;") + xml.count("&quot;")
+
+
+def test_one_shot_xml_end_window_configurable():
+    trigger = datetime(2026, 5, 13, 14, 0, 0)
+    xml = _build_one_shot_xml(
+        task_name="x", trigger_at=trigger, cmd_args="-m x",
+        end_window_hours=24,
+    )
+    assert "<EndBoundary>2026-05-14T14:00:00</EndBoundary>" in xml  # +24h
 
 
 def test_weekly_xml_uses_monday_default():

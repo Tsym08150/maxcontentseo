@@ -63,10 +63,19 @@ def _build_one_shot_xml(
     trigger_at: datetime,
     cmd_args: str,
     description: str = "Bounce-Check 24h nach Outreach-Versand",
+    end_window_hours: int = 12,
 ) -> str:
-    """ONCE-Trigger XML für schtasks /XML."""
+    """ONCE-Trigger XML für schtasks /XML.
+
+    Windows Task Scheduler verlangt EndBoundary wenn DeleteExpiredTaskAfter gesetzt
+    ist (sonst: "(48,4):EndBoundary: Element fehlt"). Window-Default: 12h nach
+    Trigger — bedeutet "Task darf in diesem 12h-Fenster anlaufen", danach läuft
+    er nicht mehr UND wird nach DeleteExpiredTaskAfter (P1D) entfernt.
+    StartWhenAvailable=true holt verpasste Trigger nach (z.B. PC war aus).
+    """
     # XML-Datetime-Format: YYYY-MM-DDTHH:MM:SS
     start = trigger_at.strftime("%Y-%m-%dT%H:%M:%S")
+    end = (trigger_at + timedelta(hours=end_window_hours)).strftime("%Y-%m-%dT%H:%M:%S")
     cwd = _outreach_cwd()
     # XML-escape die paar Sonderzeichen die in cmd_args + cwd vorkommen könnten
     def esc(s: str) -> str:
@@ -80,6 +89,7 @@ def _build_one_shot_xml(
   <Triggers>
     <TimeTrigger>
       <StartBoundary>{start}</StartBoundary>
+      <EndBoundary>{end}</EndBoundary>
       <Enabled>true</Enabled>
     </TimeTrigger>
   </Triggers>
