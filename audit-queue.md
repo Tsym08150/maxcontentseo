@@ -32,11 +32,12 @@ Spec: [docs/pipeline-v2.md](docs/pipeline-v2.md).
 | 18 | kosmetik-van-wyngaarden.de | PENDING | — | — | — | Wiesbaden |
 | 19 | fine-line-wiesbaden.de | PENDING | — | — | — | Wiesbaden, Permanent Make-up |
 | 20 | yourskinaesthetic.de | PENDING | — | — | — | Wiesbaden, HydraFacial |
+| 21 | soulistas.de | DONE | PENDING | PENDING | — | Wiesbaden, Pipeline v2 Stufe 1 durch Codex |
 
 ## Status-Snapshot
 
-- **Total:** 20 Domains
-- **Codex DONE:** 1
+- **Total:** 21 Domains
+- **Codex DONE:** 2
 - **Claude Code DONE:** 1
 - **Claude.ai DONE:** 1
 - **Send DONE:** 0
