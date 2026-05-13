@@ -32,16 +32,36 @@ Spec: [docs/pipeline-v2.md](docs/pipeline-v2.md).
 | 18 | kosmetik-van-wyngaarden.de | PENDING | — | — | — | Wiesbaden |
 | 19 | fine-line-wiesbaden.de | PENDING | — | — | — | Wiesbaden, Permanent Make-up |
 | 20 | yourskinaesthetic.de | PENDING | — | — | — | Wiesbaden, HydraFacial |
+| 21 | soulistas.de | **BLOCKED** | — | — | — | **Codex Re-Run Pflicht** — Service-Halluzinationen (siehe Blocker-Sektion) |
 
 ## Status-Snapshot
 
-- **Total:** 20 Domains
+- **Total:** 21 Domains
 - **Codex DONE:** 1
 - **Claude Code DONE:** 1
 - **Claude.ai DONE:** 1
 - **Send DONE:** 0
 - **Send PENDING:** 1
+- **BLOCKED:** 1 (Soulistas — Codex Re-Run Pflicht)
 - **Pipeline noch nicht gestartet:** 19
+
+## 🚨 Aktive Blocker
+
+### soulistas.de — Stufe 3 fand 3 Service-Halluzinationen im Codex-Audit
+
+Branch `audit/soulistas-de-20260513` (Commits `54dc6b3` + `48bf8c4`) **wird nicht gemerged**. Codex hat 3 Services im Hook genannt, die nicht der Realität entsprechen:
+
+| Halluziniert (Codex) | Wahrheit (live geprüft auf soulistas.de) | Konsequenz |
+|---|---|---|
+| "Soul-Time-Massage hat keine eigene URL" | `soulistas.de/massagen/soul-time-de-luxe.html` existiert | Service entfernen oder Behauptung umformulieren |
+| "Entspannung de Luxe" | Tatsächlicher Name: **"Soul-Time de Luxe"** | Korrekten Namen einsetzen |
+| "Full-Body-Peeling" | Tatsächlicher Name: **"Softpeeling"** / "Softpeeling-Massage" | Korrekten Namen einsetzen |
+
+**Codex muss neu laufen mit Pflicht:**
+- Service-Namen DIREKT aus `soulistas.de/angebot.html` ziehen (live-Scrape)
+- Jeden Service-Namen einzeln via `site:soulistas.de "<Service-Name>"` verifizieren
+- 3 Services nennen die WIRKLICH keine eigene URL haben
+- Wenn alle Services eigene URLs haben → Hook-Logik komplett ändern (z.B. Duplicate-Title-Problem → Profil C statt Profil B)
 
 ## Quarantäne / Sonderfälle
 
