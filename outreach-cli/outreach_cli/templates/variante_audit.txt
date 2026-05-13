@@ -1,14 +1,18 @@
 ---
 subject: "Kurze Frage zu Ihrer Website in {stadt}"
-version: "audit"
+version: "audit-v2"
 created_at: "2026-05-13"
-description: "Domain-agnostisch. Hook kommt aus /audit-Skill (reports/outreach-<domain>-*.txt). Keine Branche-Keywords nötig, weil der personalisierte Befund den Hook trägt."
+description: "5-Absatz-Sales-Struktur: Problem (Hook P1) → Konsequenz (Hook P2) → Hoffnung → Audit-Wertigkeit → CTA. Hook (P1+P2) kommt aus /audit Skill — reports/outreach-<domain>-*.txt. Keine Tool-Sprache, Konsequenz-Satz Pflicht (Anfragen → Mitbewerber)."
 ---
 {name},
 
 {audit_hook}
 
-Wenn Sie möchten, schicke ich Ihnen einen kurzen Befund-Report (1 PDF, 2 Seiten) mit den genauen URLs und einer 3-Punkte-Empfehlung. Ein kurzes "Ja" per Antwort genügt.
+Die gute Nachricht: oft reichen wenige gezielte Anpassungen, um wieder lokal sichtbar zu werden — das Angebot stimmt ja.
+
+Wenn Sie möchten, schicke ich Ihnen einen kurzen Sichtbarkeitscheck mit den 3 wichtigsten Stellschrauben in priorisierter Reihenfolge — konkret auf Ihre Seite bezogen, ohne Werbeaussagen.
+
+Ein kurzes „Ja" per Antwort genügt.
 
 Mit freundlichen Grüßen
 Georg Stopfer
