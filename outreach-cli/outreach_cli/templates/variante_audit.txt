@@ -1,0 +1,33 @@
+---
+subject: "Kurze Frage zu Ihrer Website in {stadt}"
+version: "audit"
+created_at: "2026-05-13"
+description: "Domain-agnostisch. Hook kommt aus /audit-Skill (reports/outreach-<domain>-*.txt). Keine Branche-Keywords nötig, weil der personalisierte Befund den Hook trägt."
+---
+{name},
+
+{audit_hook}
+
+Wenn Sie möchten, schicke ich Ihnen einen kurzen Befund-Report (1 PDF, 2 Seiten) mit den genauen URLs und einer 3-Punkte-Empfehlung. Ein kurzes "Ja" per Antwort genügt.
+
+Mit freundlichen Grüßen
+Georg Stopfer
+
+---
+
+MaxContentSEO – Inhaber Georg Stopfer
+An den Höfen 1a, 04626 Schmölln
+E-Mail: georg@maxcontentseo.de
+Web: maxcontentseo.de
+
+Hinweis nach UWG/DSGVO:
+Sie erhalten diese Mail als gewerblicher Ansprechpartner
+Ihrer Website. Rechtsgrundlage: berechtigtes Interesse
+(Art. 6 Abs. 1 lit. f DSGVO) zur Anbahnung einer
+B2B-Geschäftsbeziehung im Bereich SEO-Dienstleistungen.
+Sollte ich keine Rückmeldung erhalten, sende ich einmalig
+eine kurze Erinnerung – danach nicht weiter.
+
+Kein Interesse? Eine kurze Antwort mit "Bitte streichen"
+genügt – ich entferne Ihre Adresse umgehend und dauerhaft.
+Widerspruch nach Art. 21 DSGVO ist jederzeit möglich.

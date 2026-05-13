@@ -33,6 +33,20 @@ from ..templates.engine import (
 )
 
 
+def _derive_lead_domain(lead) -> str:
+    """Liefert die Domain für audit_hook-Lookup. WEBSITE > EMAIL > "".
+
+    WEBSITE-Wert kann mit/ohne Protokoll, mit/ohne `www.`, mit/ohne Trailing-Slash
+    kommen — audit_hook.sanitize_domain normalisiert das nochmal.
+    """
+    website = (lead.data.get("WEBSITE") or "").strip()
+    if website:
+        return website
+    if "@" in lead.email:
+        return lead.email.split("@", 1)[1]
+    return ""
+
+
 @dataclass
 class SendRunResult:
     template_name: str
@@ -123,9 +137,42 @@ def run_send(
     sync_failures: list[tuple[str, str]] = []  # (email, reason) — non-fatal
     is_live_send = transport.name() != "dry-run"
 
+    # audit_hook-Detection: Template-aware. Wenn das Template `{audit_hook}` enthält,
+    # müssen wir pro Lead die Domain → reports/outreach-<domain>-*.txt auflösen.
+    # getattr-Fallback für Test-Stubs die kein vollständiges Template-Objekt nutzen.
+    _body_tpl = getattr(template, "body_tpl", "") or ""
+    _subj_tpl = getattr(template, "subject_tpl", "") or ""
+    needs_audit_hook = (
+        "{audit_hook}" in _body_tpl
+        or "{audit_hook}" in _subj_tpl
+    )
+    if needs_audit_hook:
+        from ..audit_hook import (
+            AuditHookExtractError,
+            AuditHookNotFoundError,
+            get_audit_hook,
+        )
+
     for idx, fl in enumerate(filtered, start=1):
+        # Per-Lead render_vars (Kopie, damit wir audit_hook injecten können)
+        lead_vars = dict(fl.render_vars)
+        if needs_audit_hook:
+            domain = _derive_lead_domain(fl.lead)
+            if not domain:
+                render_errors.append((
+                    fl.email,
+                    "WEBSITE-Spalte leer — Audit-Hook-Domain nicht ableitbar.",
+                ))
+                continue
+            try:
+                lead_vars["audit_hook"] = get_audit_hook(domain)
+            except (AuditHookNotFoundError, AuditHookExtractError) as e:
+                # Volle Fehlermeldung inkl. "Lösung: '/audit <domain>'" beibehalten —
+                # User-Spec verlangt explizit den Hinweis "/audit <domain> zuerst ausführen".
+                render_errors.append((fl.email, str(e)))
+                continue
         try:
-            subject, body = render(template, fl.render_vars)
+            subject, body = render(template, lead_vars)
         except MissingTemplateVariableError as e:
             render_errors.append((fl.email, str(e)))
             continue
