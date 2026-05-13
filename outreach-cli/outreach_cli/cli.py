@@ -372,7 +372,7 @@ def send(
     ),
     skip_verification: bool = typer.Option(
         False, "--skip-verification",
-        help="ZeroBounce-Check überspringen (nur mit --confirm-live). Bounce-Risiko erhöht; "
+        help="Email-Verifier-Check überspringen (nur mit --confirm-live). Bounce-Risiko erhöht; "
              "24h-Auto-Bounce-Check ist Safety-Net.",
     ),
     rate_limit: float = typer.Option(
@@ -479,7 +479,7 @@ def send(
             raise typer.Exit(0)
 
         typer.secho(
-            f"\n⚠️  --skip-verification: ZeroBounce-Check ÜBERSPRUNGEN.",
+            f"\n⚠️  --skip-verification: {_active_provider_name()}-Check ÜBERSPRUNGEN.",
             fg="yellow",
         )
         typer.secho(
@@ -503,7 +503,7 @@ def send(
                 apply_sheet_updates=True,
             )
         except SystemExit as e:
-            # ZeroBounce API-Key fehlt oder ungültig
+            # Provider-Key fehlt (weder NB noch ZB) oder ungültig
             typer.secho(str(e), fg="red", err=True)
             raise typer.Exit(2) from e
         _render_verify_report(verify_report, scope=tab)
@@ -739,10 +739,28 @@ def _render_send_result(
         raise typer.Exit(2)
 
 
+def _active_provider_name() -> str:
+    """Welcher Verifier-Provider würde JETZT genutzt werden? Spiegelt
+    pipeline._select_provider_client-Logik (NB primary, ZB fallback).
+
+    Wird für UI-Labels verwendet. Wenn weder NB noch ZB konfiguriert ist
+    (z.B. pure cache-only Run vorm crash), gibt "Email-Verifier" zurück.
+    """
+    import os
+    nb = (os.getenv("NEVERBOUNCE_API_KEY") or "").strip()
+    if nb and not nb.upper().startswith(("REPLACE_", "YOUR_", "CHANGE_ME")):
+        return "NeverBounce"
+    zb = (os.getenv("ZEROBOUNCE_API_KEY") or "").strip()
+    if zb and not zb.upper().startswith(("REPLACE_", "YOUR_", "CHANGE_ME")):
+        return "ZeroBounce"
+    return "Email-Verifier"
+
+
 def _render_verify_report(report, *, scope: str) -> None:
     """Tabular-Anzeige + Counts. report: VerifyReport"""
     from .verifier import VerificationBucket
-    typer.secho(f"\nEMAIL-VERIFIKATION (ZeroBounce): {scope}", fg="cyan")
+    provider = _active_provider_name()
+    typer.secho(f"\nEMAIL-VERIFIKATION ({provider}): {scope}", fg="cyan")
     typer.echo(f"  Total geprüft: {report.total}  "
                f"(API: {report.batch.api_calls_made}, Cache: {report.batch.cache_hits})")
     typer.secho(f"  ✓ Send (valid):       {report.n_send}", fg="green")
@@ -797,7 +815,7 @@ def verify_emails_cmd(
     dry_run: bool = typer.Option(False, "--dry-run", help="Nur prüfen, kein Sheet-Update."),
     json_out: bool = typer.Option(False, "--json"),
 ) -> None:
-    """E-Mail-Adressen via ZeroBounce verifizieren — vor --confirm-live wird das automatisch ausgeführt.
+    """E-Mail-Adressen via NeverBounce (primary) / ZeroBounce (fallback) verifizieren — vor --confirm-live automatisch.
 
     Drei Input-Modi (mutex):
       --tab X         : Lädt mit den gleichen Filtern wie send (--score-min/--status/--limit/--hwg-filter)
