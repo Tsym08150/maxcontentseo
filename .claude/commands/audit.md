@@ -47,6 +47,24 @@ Mindestens eine dieser Formulierungen im Hook:
 - "In der geprüften Suche..."
 - "Aktuell zeigt sich..."
 
+## Hook-Profil bestimmen (v2.1)
+
+Vor Hook-Erstellung das Profil aus Ubersuggest-Daten ableiten (siehe `docs/pipeline-v2.md`):
+
+- **Profil A — Schwache Sichtbarkeit:** Top-KW Pos > 10 ODER Traffic < 200 ODER < 5 indexierte Seiten ODER > 80 % Brand
+- **Profil B — Starkes Top-KW + Service-Lücke:** Pos ≤ 10 UND Traffic > 500 UND Service-Subseiten schwach UND Brand < 50 %
+
+**Pflicht im Audit-MD:** Zeile `Hook-Profil: [A|B] — Begründung: [...]`
+
+## Pflicht-Verifikation bei Profil B (v2.1, Lesson-Learned aus Soulistas-Halluzination)
+
+1. Live-Scrape von `<domain>/angebot.html` / `/leistungen.html` / Hauptmenü
+2. Service-Namen **wörtlich** kopieren (keine Paraphrase, keine Übersetzung)
+3. Pro Service einzelne `site:`-Suche: `site:<domain> "<Service-Name>"`
+   - Hit → Service hat eigene URL → NICHT im Hook als fehlend nennen
+   - No hit → kann im Hook genannt werden
+4. Im Audit-MD: `Verifizierte Top-3-Services ohne eigene URL: [...]`
+
 ## Quality-Gates (alle pflicht)
 
 | Gate | Limit / Bedingung |
@@ -58,7 +76,10 @@ Mindestens eine dieser Formulierungen im Hook:
 | Konsequenz-Satz vorhanden | Pflicht: "Mitbewerber" + Konsequenz-Verb |
 | Verifizierungsstand-Hedging | mind. 1 Marker (Mir ist aufgefallen / Bei meiner Recherche / In der geprüften Suche) |
 | **Top-3-Services namentlich genannt** | drei konkrete Service-Bezeichnungen aus der Website |
-| **site:-Befund quantifiziert (X Seiten)** | exakte Zahl, nicht "einige" / "wenige" |
+| **site:-Befund quantifiziert (X Seiten)** | exakte Zahl bei Profil A. Bei Profil B optional (widerspricht Wertschätzungs-Logik). |
+| **Hook-Profil dokumentiert (v2.1)** | Im Audit-MD: `Hook-Profil: [A\|B] — Begründung: [...]` |
+| **Service-Namen wörtlich von Website verifiziert (v2.1)** | Bei Profil B Pflicht: Audit-MD-Zeile `Service-Quelle: <URL>` mit den exakten Originalnamen |
+| **Behauptung "keine eigene URL" per site:-Test geprüft (v2.1)** | Bei Profil B Pflicht: pro im Hook genanntem Service ein `site:`-Test, Ergebnis im Audit-MD dokumentiert |
 | Subject-Format | "Kurze Frage zu Ihrem {Business-Type} in {Stadt}" |
 | UTF-8 Encoding | ohne BOM |
 | `[NAME]` / `[ABSENDER]` Platzhalter | drin gelassen wenn nicht auflösbar |
