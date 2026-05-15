@@ -106,7 +106,7 @@ nav .cta-sm:hover { background: var(--accent-dark); }
 }
 .hero-inner {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(240px, 0.85fr);
   gap: clamp(3rem, 7vw, 5rem);
   align-items: center;
 }
@@ -123,7 +123,7 @@ nav .cta-sm:hover { background: var(--accent-dark); }
 }
 .hero h1 {
   font-family: var(--serif);
-  font-size: clamp(2.55rem, 5.5vw, 4.85rem);
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
   line-height: 1.07;
   font-weight: 400;
   margin-bottom: 1.75rem;
@@ -212,7 +212,7 @@ nav .cta-sm:hover { background: var(--accent-dark); }
   position: relative;
   z-index: 1;
   overflow: hidden;
-  width: min(100%, 390px);
+  width: min(100%, 340px);
   aspect-ratio: 4 / 5;
   border-radius: 14px;
   border: 1px solid var(--border);
@@ -513,8 +513,48 @@ section { padding: var(--section-pad); }
   flex-direction: column;
   gap: 2rem;
 }
+.case-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+.case-metric {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.15rem;
+}
+.case-metric-value {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(1.45rem, 2.4vw, 2rem);
+  line-height: 1.05;
+  color: var(--accent);
+  letter-spacing: -0.015em;
+  margin-bottom: 0.35rem;
+}
+.case-metric-label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+.case-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.25rem;
+}
 .case-block {
   min-width: 0;
+}
+.case-situation,
+.case-result {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+.case-situation {
+  background: var(--bg);
 }
 .case-block-label {
   font-size: 0.78rem;
@@ -548,8 +588,8 @@ section { padding: var(--section-pad); }
   font-weight: 700;
 }
 .case-result {
-  border-top: 1px solid var(--border);
-  padding-top: 2rem;
+  background: var(--accent-light);
+  border-color: rgba(27,107,74,0.18);
 }
 .case-result-value {
   font-family: var(--serif);
@@ -573,6 +613,12 @@ section { padding: var(--section-pad); }
     position: static;
   }
 }
+@media (max-width: 767px) {
+  .case-metrics,
+  .case-split {
+    grid-template-columns: 1fr;
+  }
+}
 @media (max-width: 600px) {
   .case-card {
     padding: 1.25rem;
@@ -584,9 +630,6 @@ section { padding: var(--section-pad); }
   .case-logo {
     width: 52px;
     height: 52px;
-  }
-  .case-result {
-    padding-top: 1.5rem;
   }
 }
 
@@ -1134,9 +1177,32 @@ footer .footer-links a { margin: 0 1rem; }
         </aside>
 
         <div class="case-content">
-          <div class="case-block">
-            <div class="case-block-label">Ausgangslage</div>
-            <p class="case-copy">Hochwertige Praxis mit geringer Sichtbarkeit bei relevanten Suchanfragen rund um Haarausfall, Kopfhautbehandlung und TCM. Bestehende Inhalte waren vorhanden, jedoch nicht gezielt auf Suchintention und Keywords ausgerichtet.</p>
+          <div class="case-metrics" aria-label="Kennzahlen der LingQi Case Study">
+            <div class="case-metric">
+              <span class="case-metric-value">12+</span>
+              <span class="case-metric-label">Keywords mit Ranking-Potenzial</span>
+            </div>
+            <div class="case-metric">
+              <span class="case-metric-value">München</span>
+              <span class="case-metric-label">Wettbewerbsanalyse im lokalen Umfeld</span>
+            </div>
+            <div class="case-metric">
+              <span class="case-metric-value">Content-Plan</span>
+              <span class="case-metric-label">priorisierte Keywords und konkrete nächste Schritte</span>
+            </div>
+          </div>
+
+          <div class="case-split">
+            <div class="case-block case-situation">
+              <div class="case-block-label">Ausgangslage</div>
+              <p class="case-copy">Hochwertige Praxis mit geringer Sichtbarkeit bei relevanten Suchanfragen rund um Haarausfall, Kopfhautbehandlung und TCM. Bestehende Inhalte waren vorhanden, jedoch nicht gezielt auf Suchintention und Keywords ausgerichtet.</p>
+            </div>
+
+            <div class="case-block case-result">
+              <div class="case-block-label">Ergebnis</div>
+              <div class="case-result-value">12+ Keywords mit Ranking-Potenzial</div>
+              <p class="case-result-note">Klare SEO-Strategie mit priorisierten Keywords und konkretem Content-Plan als Grundlage für organische Sichtbarkeit bei relevanten Suchanfragen.</p>
+            </div>
           </div>
 
           <div class="case-block">
@@ -1147,12 +1213,6 @@ footer .footer-links a { margin: 0 1rem; }
               <li>Wettbewerbsanalyse im lokalen Umfeld</li>
               <li>Strukturierte Content-Strategie inkl. interner Verlinkung und FAQ-Struktur</li>
             </ul>
-          </div>
-
-          <div class="case-block case-result">
-            <div class="case-block-label">Ergebnis</div>
-            <div class="case-result-value">12+ Keywords mit Ranking-Potenzial</div>
-            <p class="case-result-note">Klare SEO-Strategie mit priorisierten Keywords und konkretem Content-Plan als Grundlage für organische Sichtbarkeit bei relevanten Suchanfragen.</p>
           </div>
         </div>
       </div>
