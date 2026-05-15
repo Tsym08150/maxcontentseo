@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LingQi Case Study | MaxContentSEO</title>
+<meta name="description" content="LingQi — TCM Head Spa München: Ausgangslage, Audit-Erkenntnisse und priorisierte Maßnahmen für lokale SEO-Sichtbarkeit.">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --bg-alt: #F2F1ED;
+  --text: #141414;
+  --text-muted: #6B6B6B;
+  --accent: #1B6B4A;
+  --accent-light: #E8F5EE;
+  --accent-dark: #134D35;
+  --border: #E2E0DA;
+  --white: #FFFFFF;
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --max-w: 1100px;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 8rem;
+  --shadow-soft: 0 18px 48px rgba(20, 20, 20, 0.06);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+
+.container {
+  width: min(calc(100% - (var(--space-sm) * 2)), var(--max-w));
+  margin: 0 auto;
+}
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid rgba(226, 224, 218, 0.85);
+  background: rgba(250, 250, 248, 0.82);
+  backdrop-filter: blur(14px);
+}
+
+.site-nav__inner {
+  min-height: 4.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand {
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.brand span { color: var(--accent); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.94rem;
+}
+
+.nav-links a:hover { color: var(--accent); }
+
+.button-primary,
+.button-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.85rem;
+  padding-inline: 1.2rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-size: 0.96rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.button-primary {
+  background: var(--accent);
+  color: var(--white);
+  border-color: var(--accent);
+}
+
+.button-secondary {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.hero,
+.section { padding-block: clamp(var(--space-lg), 9vw, var(--space-xl)); }
+.section-alt { background: var(--bg-alt); }
+
+.eyebrow,
+.pill {
+  width: fit-content;
+  border-radius: 999px;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 0.83rem;
+  font-weight: 700;
+}
+
+.eyebrow { padding: 0.45rem 0.85rem; }
+.pill { padding: 0.35rem 0.75rem; }
+
+.hero__grid,
+.summary-grid,
+.detail-grid,
+.cta-box {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.hero__title,
+.section-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  line-height: 1.02;
+}
+
+.hero__title { font-size: clamp(2.35rem, 6vw, 4.2rem); max-width: 12ch; }
+.section-title { font-size: clamp(2rem, 4vw, 3.2rem); }
+
+.hero__lead,
+.section-intro,
+.card p,
+.text-block p,
+.site-footer p { color: var(--text-muted); }
+
+.hero__lead,
+.section-intro { margin: 0; max-width: 62ch; font-size: clamp(1rem, 2vw, 1.1rem); }
+
+.hero-card,
+.card,
+.text-block,
+.cta-box,
+.site-footer {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+}
+
+.hero-card {
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.hero-card__image {
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  width: 100%;
+}
+
+.card-grid {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.card {
+  padding: 1.1rem 1.15rem;
+}
+
+.card strong {
+  display: block;
+  font-size: 1.8rem;
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+
+.card h3,
+.card h4,
+.text-block h3 {
+  margin: 0 0 0.35rem;
+}
+
+.card p,
+.text-block p {
+  margin: 0;
+}
+
+.text-block {
+  padding: clamp(1.35rem, 3vw, 1.75rem);
+}
+
+.detail-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.6rem;
+  color: var(--text-muted);
+}
+
+.callout {
+  border-left: 3px solid var(--accent);
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.cta-box {
+  padding: clamp(1.35rem, 3vw, 1.8rem);
+}
+
+.site-footer {
+  margin: var(--space-lg) auto;
+  padding: 1rem 1.2rem;
+}
+
+.site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem 1rem;
+  margin-bottom: 0.7rem;
+}
+
+.site-footer__links a {
+  text-decoration: none;
+  color: var(--text-muted);
+}
+
+@media (min-width: 768px) {
+  .hero__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+    align-items: center;
+  }
+
+  .summary-grid,
+  .detail-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .detail-grid--two,
+  .cta-box {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  }
+}
+
+@media (max-width: 767px) {
+  .nav-links a:first-child,
+  .nav-links a:nth-child(2) { display: none; }
+}
+</style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Navigation">
+    <div class="container site-nav__inner">
+      <a class="brand" href="../index.html">Max<span>ContentSEO</span></a>
+      <div class="nav-links">
+        <a href="../index.html">Startseite</a>
+        <a href="../cases.html">Cases</a>
+        <a class="button-primary" href="../index.html#kontakt">Kostenlose Potenzialanalyse</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="container hero__grid">
+        <div style="display:grid; gap:1.15rem;">
+          <div class="eyebrow">LingQi Case Study</div>
+          <div class="pill">TCM-Praxis · München</div>
+          <h1 class="hero__title">Klare SEO-Grundlage für lokale Sichtbarkeit rund um Head Spa und TCM</h1>
+          <p class="hero__lead">Die Fallstudie zeigt, wie aus einer hochwertigen Praxis mit geringer Sichtbarkeit ein klar priorisiertes SEO-Setup wurde. Der Fokus lag auf kaufnahen Suchanfragen, lokaler Einordnung und einer Content-Struktur, die sich tatsächlich weiter umsetzen lässt.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:0.9rem;">
+            <a class="button-primary" href="../index.html#kontakt">Ähnliches Potenzial prüfen lassen</a>
+            <a class="button-secondary" href="../cases.html">Zur Case-Übersicht</a>
+          </div>
+        </div>
+        <article class="hero-card">
+          <img class="hero-card__image" src="/assets/georg.jpg" alt="Georg Stopfer von MaxContentSEO">
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <div style="display:grid; gap: 1rem; margin-bottom: clamp(var(--space-md), 5vw, var(--space-lg));">
+          <div class="pill">Executive Summary</div>
+          <h2 class="section-title">Worum es in diesem Case geht</h2>
+          <p class="section-intro">Nicht ein „großer Erfolgscase“ mit aufgeblähten Versprechen, sondern ein sauber belegter Audit-Fall: Ausgangssituation, priorisierte Erkenntnisse und die nächsten sinnvollen Schritte.</p>
+        </div>
+        <div class="card-grid summary-grid">
+          <article class="card">
+            <strong>12+</strong>
+            <h3>Keywords</h3>
+            <p>mit Ranking-Potenzial wurden im Audit identifiziert und priorisiert.</p>
+          </article>
+          <article class="card">
+            <strong>München</strong>
+            <h3>Lokaler Fokus</h3>
+            <p>Wettbewerbsanalyse im relevanten Umfeld als Grundlage für weitere Inhalte.</p>
+          </article>
+          <article class="card">
+            <strong>Content-Plan</strong>
+            <h3>Nächster Schritt</h3>
+            <p>Klare SEO-Strategie mit priorisierten Themen und Struktur für organische Sichtbarkeit.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div style="display:grid; gap: 1rem; margin-bottom: clamp(var(--space-md), 5vw, var(--space-lg));">
+          <div class="pill">Ausgangslage und Ergebnis</div>
+          <h2 class="section-title">Von geringer Sichtbarkeit zu klaren Prioritäten</h2>
+        </div>
+        <div class="detail-grid detail-grid--two">
+          <article class="text-block">
+            <h3>Ausgangssituation</h3>
+            <p>Hochwertige Praxis mit geringer Sichtbarkeit bei relevanten Suchanfragen rund um Haarausfall, Kopfhautbehandlung und TCM. Bestehende Inhalte waren vorhanden, jedoch nicht gezielt auf Suchintention und Keywords ausgerichtet.</p>
+          </article>
+          <article class="text-block">
+            <h3>Ergebnis</h3>
+            <p>Klare SEO-Strategie mit priorisierten Keywords und konkretem Content-Plan als Grundlage für organische Sichtbarkeit bei relevanten Suchanfragen.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <div style="display:grid; gap: 1rem; margin-bottom: clamp(var(--space-md), 5vw, var(--space-lg));">
+          <div class="pill">Audit-Inhalte</div>
+          <h2 class="section-title">Was im Audit konkret erarbeitet wurde</h2>
+        </div>
+        <div class="detail-grid detail-grid--two">
+          <article class="text-block">
+            <h3>Vorgehen</h3>
+            <ul class="detail-list">
+              <li>SEO-Analyse der gesamten Website</li>
+              <li>Keyword-Recherche mit Fokus auf kaufnahe Suchanfragen</li>
+              <li>Wettbewerbsanalyse im lokalen Umfeld</li>
+              <li>Strukturierte Content-Strategie inklusive interner Verlinkung und FAQ-Struktur</li>
+            </ul>
+          </article>
+          <article class="text-block callout">
+            <h3>Projekt-Hinweis</h3>
+            <p>Im Repo liegt keine originale Kundenstimme von LingQi vor. Diese Detailseite zeigt deshalb ausschließlich belegte Audit-Ergebnisse und keine erfundene Referenzquote.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container cta-box">
+        <div>
+          <div class="pill">Nächster Schritt</div>
+          <h2 class="section-title">Sie möchten wissen, wie Ihr Studio lokal gefunden wird?</h2>
+          <p class="section-intro">Ich prüfe Ihre Website, zeige die größten Sichtbarkeitslücken und sortiere, welche Inhalte oder Seiten zuerst wirklich sinnvoll wären.</p>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:flex-start;">
+          <a class="button-primary" href="../index.html#kontakt">Kostenlose Potenzialanalyse</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container site-footer">
+    <div class="site-footer__links">
+      <a href="../index.html">Startseite</a>
+      <a href="../cases.html">Cases</a>
+      <a href="../index.html#impressum">Impressum</a>
+      <a href="../index.html#datenschutz">Datenschutz</a>
+      <a href="mailto:georg@maxcontentseo.de">georg@maxcontentseo.de</a>
+    </div>
+    <p>© 2026 Max Content SEO — Georg Stopfer</p>
+  </footer>
+</body>
+</html>

@@ -249,7 +249,7 @@ textarea {
   font-size: clamp(2.3rem, 6vw, 4.5rem);
   line-height: 0.98;
   font-weight: 400;
-  max-width: 12ch;
+  max-width: 100%;
 }
 
 .hero__lead {
@@ -840,7 +840,7 @@ textarea {
 
 @media (min-width: 768px) {
   .hero__grid {
-    grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
   }
 
   .hero__metrics {
@@ -1266,6 +1266,10 @@ textarea {
               <h4>Projekt-Hinweis</h4>
               <p>Im Repo liegt keine originale Kundenstimme von LingQi vor. Diese Case Study zeigt deshalb ausschließlich belegte Audit-Ergebnisse und keine erfundene Referenzquote.</p>
             </div>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:0.9rem; margin-top:1.25rem;">
+            <a class="button-primary" href="cases/lingqi.html">Vollständige Fallstudie lesen</a>
+            <a class="button-secondary" href="cases.html">Alle Cases ansehen</a>
           </div>
         </div>
       </div>
