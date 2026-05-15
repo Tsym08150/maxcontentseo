@@ -246,7 +246,7 @@ textarea {
 .hero__title {
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(2.3rem, 6vw, 4.5rem);
+  font-size: clamp(2rem, 3.2vw, 3.4rem);
   line-height: 0.98;
   font-weight: 400;
   max-width: 100%;
@@ -294,7 +294,7 @@ textarea {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 100%;
+  min-height: clamp(240px, 30vw, 380px);
 }
 
 .hero__blob {
@@ -840,7 +840,7 @@ textarea {
 
 @media (min-width: 768px) {
   .hero__grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+    grid-template-columns: minmax(0, 1fr) 400px;
   }
 
   .hero__metrics {
@@ -950,7 +950,7 @@ textarea {
           <div class="hero__metrics" aria-label="Kurze Kennzahlen">
             <div class="hero__metric">
               <strong>1</strong>
-              <span>Aktiver Referenzkunde: LingQi TCM München</span>
+              <span>Veröffentlichter Case: LingQi TCM München</span>
             </div>
             <div class="hero__metric">
               <strong>490€</strong>
@@ -973,23 +973,23 @@ textarea {
       </div>
     </section>
 
-    <section class="logo-strip" aria-label="Platzhalter-Logos">
+    <section class="logo-strip" aria-label="Logo-Leiste">
       <div class="container logo-strip__inner">
         <div class="logo-strip__label">Bereits vertraut von:</div>
         <div class="logo-strip__list">
-          <svg class="logo-strip__logo" viewBox="0 0 120 40" role="img" aria-label="Logo Platzhalter 1">
+          <svg class="logo-strip__logo" viewBox="0 0 120 40" role="img" aria-label="Logo 1">
             <rect x="0.5" y="0.5" width="119" height="39" rx="9.5" fill="white"/>
             <circle cx="24" cy="20" r="8" fill="#C7C4BC"/>
             <rect x="40" y="15" width="54" height="4" rx="2" fill="#C7C4BC"/>
             <rect x="40" y="22" width="38" height="4" rx="2" fill="#D8D5CF"/>
           </svg>
-          <svg class="logo-strip__logo" viewBox="0 0 120 40" role="img" aria-label="Logo Platzhalter 2">
+          <svg class="logo-strip__logo" viewBox="0 0 120 40" role="img" aria-label="Logo 2">
             <rect x="0.5" y="0.5" width="119" height="39" rx="9.5" fill="white"/>
             <rect x="18" y="12" width="16" height="16" rx="4" fill="#C7C4BC"/>
             <rect x="42" y="15" width="52" height="4" rx="2" fill="#C7C4BC"/>
             <rect x="42" y="22" width="44" height="4" rx="2" fill="#D8D5CF"/>
           </svg>
-          <svg class="logo-strip__logo" viewBox="0 0 120 40" role="img" aria-label="Logo Platzhalter 3">
+          <svg class="logo-strip__logo" viewBox="0 0 120 40" role="img" aria-label="Logo 3">
             <rect x="0.5" y="0.5" width="119" height="39" rx="9.5" fill="white"/>
             <path d="M20 27L27 13L34 27H20Z" fill="#C7C4BC"/>
             <rect x="42" y="15" width="48" height="4" rx="2" fill="#C7C4BC"/>
@@ -1012,7 +1012,7 @@ textarea {
         <div class="card-grid metrics-grid">
           <article class="card metric-card">
             <strong>1</strong>
-            <h3>Aktiver Referenzkunde</h3>
+            <h3>Veröffentlichter Case</h3>
             <p>LingQi TCM München</p>
           </article>
           <article class="card metric-card">
@@ -1262,10 +1262,6 @@ textarea {
                 <li>Strukturierte Content-Strategie inklusive interner Verlinkung und FAQ-Struktur</li>
               </ul>
             </div>
-            <div class="case-study__callout">
-              <h4>Projekt-Hinweis</h4>
-              <p>Im Repo liegt keine originale Kundenstimme von LingQi vor. Diese Case Study zeigt deshalb ausschließlich belegte Audit-Ergebnisse und keine erfundene Referenzquote.</p>
-            </div>
           </div>
           <div style="display:flex; flex-wrap:wrap; gap:0.9rem; margin-top:1.25rem;">
             <a class="button-primary" href="cases/lingqi.html">Vollständige Fallstudie lesen</a>
@@ -1488,12 +1484,11 @@ textarea {
         <details open>
           <summary>Impressum <span aria-hidden="true">+</span></summary>
           <div class="legal__content">
-            <p><strong>Angaben gemäß § 5 TMG</strong></p>
+            <p><strong>Angaben gemäß § 5 DDG</strong></p>
             <p>Georg Stopfer<br>An den Höfen 1a<br>04626 Drogen<br>Deutschland</p>
             <p>E-Mail: <a href="mailto:georg@maxcontentseo.de">georg@maxcontentseo.de</a></p>
             <p><strong>Tätigkeit</strong><br>Freiberufliche Tätigkeit im Bereich SEO-Content-Erstellung und Online-Marketing</p>
             <p><strong>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</strong><br>Georg Stopfer, An den Höfen 1a, 04626 Drogen</p>
-            <p><strong>EU-Streitschlichtung</strong><br>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noreferrer">https://ec.europa.eu/consumers/odr/</a><br>Ich bin nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
           </div>
         </details>
         <details id="datenschutz">
