@@ -107,7 +107,7 @@ if col is None and date_header == H_ANTWORT:
 ### HI-01 — Real-looking SHEET_ID committed in `.env.example`
 
 **File:** `.env.example:5`
-**Issue:** `SHEET_ID=19ak15Thx3icvmcviMLePG6d22psdWocBChTBNykorL0` — this looks like a real Google Spreadsheet ID, not a placeholder. If it IS the production sheet, anyone with read access to the repo plus the (separately-distributed) service-account JSON can read/write the lead database. Even if the JSON is properly secret, the ID is a piece of information that narrows attack surface considerably. The placeholder pattern is `SHEET_ID=your-spreadsheet-id-here`.
+**Issue:** `SHEET_ID=<real-google-spreadsheet-id>` — a real-looking Google Spreadsheet ID was committed as the example value, not a placeholder. *(Redacted on 2026-05-15 in security-fix; original value rotated/scrubbed before public release.)* If it IS the production sheet, anyone with read access to the repo plus the (separately-distributed) service-account JSON can read/write the lead database. Even if the JSON is properly secret, the ID is a piece of information that narrows attack surface considerably. The placeholder pattern is `SHEET_ID=your-spreadsheet-id-here`.
 **Fix:** Replace with placeholder; document the real ID in private notes / 1Password. Also check git history — if previously committed, the ID is already public.
 ```ini
 SHEET_ID=REPLACE_WITH_YOUR_SPREADSHEET_ID

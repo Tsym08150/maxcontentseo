@@ -1,1 +1,22 @@
+.env
+.env.*
+!.env.example
+outreach-cli/.env
+
+# Audit-Outputs (Drittfirma-PII + interne Sales-Strategie)
+reports/audit-*.md
+reports/audit-*.pdf
+reports/outreach-*.md
+reports/outreach-*.txt
 audit-queue.md
+
+# Operatives Live-Wissen (Hot-Leads, Pricing, Privatadresse)
+PROJECT_BRIEF.md
+
+# Local Claude Code settings
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# Sonstiger lokaler Müll
+nul
+*.lnk
