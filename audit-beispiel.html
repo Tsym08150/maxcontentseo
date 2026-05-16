@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Premium-Audit Muster | MaxContentSEO</title>
-<meta name="description" content="Ein Beispiel, wie ein Premium-Audit von MaxContentSEO aufgebaut sein kann.">
+<meta name="description" content="Anonymisiertes Muster eines Premium-SEO-Audits mit drei zentralen Befunden, Audit-Aufbau und Lieferumfang.">
 <style>
 :root {
   --bg: #FAFAF8;
@@ -16,6 +16,10 @@
   --accent-dark: #134D35;
   --border: #E2E0DA;
   --white: #FFFFFF;
+  --blue: #1B4F72;
+  --orange: #E67E22;
+  --red: #C0392B;
+  --navy: #142235;
   --serif: Georgia, 'Times New Roman', serif;
   --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --max-w: 1100px;
@@ -25,6 +29,7 @@
   --space-md: 2rem;
   --space-lg: 4rem;
   --space-xl: 8rem;
+  --shadow-soft: 0 18px 48px rgba(20, 20, 20, 0.06);
 }
 
 *,
@@ -119,20 +124,20 @@ button, input { font: inherit; }
 .hero__copy {
   display: grid;
   gap: 1.2rem;
-  max-width: 760px;
+  max-width: 820px;
 }
 
 .hero h1 {
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(2.4rem, 6vw, 4.8rem);
+  font-size: clamp(2.35rem, 6vw, 4.7rem);
   line-height: 0.98;
   font-weight: 400;
 }
 
 .hero p {
   margin: 0;
-  max-width: 58ch;
+  max-width: 62ch;
   color: var(--text-muted);
   font-size: clamp(1.05rem, 2vw, 1.2rem);
 }
@@ -141,78 +146,213 @@ button, input { font: inherit; }
   padding-block: clamp(var(--space-lg), 8vw, var(--space-xl));
 }
 
-.audit-layout {
+.section-alt { background: var(--bg-alt); }
+
+.section-head {
   display: grid;
-  gap: clamp(var(--space-md), 5vw, var(--space-lg));
+  gap: 1rem;
+  margin-bottom: clamp(var(--space-md), 5vw, var(--space-lg));
 }
 
-.audit-preview {
-  position: relative;
+.section-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.05;
+  font-weight: 400;
+}
+
+.section-intro {
+  margin: 0;
+  max-width: 66ch;
+  color: var(--text-muted);
+  font-size: clamp(1rem, 2vw, 1.1rem);
+}
+
+.audit-page {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.audit-header {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: 1rem 1.2rem;
+  background: var(--navy);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.audit-body {
+  padding: clamp(1.2rem, 4vw, 2rem);
+}
+
+.client-info {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border);
+}
+
+.client-info h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 2.65rem);
+  line-height: 1.08;
+  font-weight: 400;
+}
+
+.client-info p { margin: 0; color: var(--text-muted); }
+
+.finding-grid {
   display: grid;
   gap: var(--space-sm);
 }
 
-.audit-section {
-  padding: clamp(1.2rem, 3vw, 1.6rem);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--white);
-}
-
-.audit-section h2,
-.audit-section h3,
-.audit-section p,
-.audit-section ul { margin-top: 0; }
-
-.audit-section h2,
-.audit-section h3 {
-  font-family: var(--serif);
-  font-weight: 400;
-  line-height: 1.12;
-}
-
-.audit-section p,
-.audit-section li { color: var(--text-muted); }
-
-.audit-section ul {
-  margin-bottom: 0;
-  padding-left: 1.1rem;
-}
-
-.locked-audit {
-  position: relative;
-  max-height: 18rem;
-  overflow: hidden;
-}
-
-.locked-audit .audit-section {
-  filter: blur(5px);
-  user-select: none;
-}
-
-.locked-audit::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(250,250,248,0.15), rgba(250,250,248,0.96));
-  pointer-events: none;
-}
-
-.request-box {
+.finding-card {
   display: grid;
   gap: 1rem;
-  padding: clamp(1.35rem, 3vw, 1.8rem);
+  padding: 1rem;
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+.metric-box {
+  display: grid;
+  align-content: center;
+  min-height: 7.5rem;
+  padding: 1rem;
+  border-radius: var(--radius);
+  color: #fff;
+}
+
+.metric-box strong {
+  display: block;
+  font-size: clamp(1.65rem, 4vw, 2.2rem);
+  line-height: 1;
+}
+
+.metric-box span {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.metric-box--blue { background: var(--blue); }
+.metric-box--orange { background: var(--orange); }
+.metric-box--red { background: var(--red); }
+
+.finding-copy h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.08rem;
+  line-height: 1.3;
+}
+
+.finding-copy p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.audit-note {
+  margin: var(--space-md) 0 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: var(--space-md);
+}
+
+.stat-item {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   background: var(--white);
 }
 
-.request-box h2 {
+.stat-item strong {
+  display: block;
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.stat-item span {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.chapter-list,
+.check-list,
+.source-table {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.chapter-row,
+.check-row,
+.source-row {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+}
+
+.chapter-row strong,
+.source-row strong { color: var(--accent-dark); }
+
+.check-row {
+  grid-template-columns: auto 1fr;
+  align-items: start;
+}
+
+.check-row strong { color: var(--accent); }
+
+.source-row {
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+}
+
+.lead-section {
+  padding-block: clamp(var(--space-lg), 8vw, var(--space-xl));
+}
+
+.lead-box {
+  display: grid;
+  gap: var(--space-md);
+  padding: clamp(1.35rem, 4vw, 2rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+.lead-box h2 {
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(1.7rem, 4vw, 2.5rem);
+  font-size: clamp(1.9rem, 4vw, 3rem);
   line-height: 1.08;
   font-weight: 400;
+}
+
+.lead-box p {
+  margin: 0;
+  color: var(--text-muted);
 }
 
 .form-grid {
@@ -248,7 +388,6 @@ button, input { font: inherit; }
 }
 
 .checkbox-field input { margin-top: 0.28rem; }
-
 .checkbox-field a { color: var(--accent); }
 
 .site-footer {
@@ -277,18 +416,21 @@ button, input { font: inherit; }
 }
 
 .site-footer a:hover { color: var(--accent); }
-
 .site-footer p { margin: 0; }
 
-@media (min-width: 900px) {
-  .audit-layout {
-    grid-template-columns: minmax(0, 1fr) 360px;
-    align-items: start;
+@media (min-width: 720px) {
+  .finding-card {
+    grid-template-columns: minmax(11rem, 0.36fr) minmax(0, 1fr);
+    align-items: stretch;
   }
 
-  .request-box {
-    position: sticky;
-    top: 6rem;
+  .stat-strip {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .lead-box {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    align-items: start;
   }
 }
 
@@ -300,18 +442,20 @@ button, input { font: inherit; }
   }
 
   .nav-links { padding-bottom: 1rem; }
+  .audit-header { flex-direction: column; }
+  .source-row { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
   <nav class="site-nav" aria-label="Hauptnavigation">
     <div class="container site-nav__inner">
-      <a class="brand" href="/#top">Max<span>ContentSEO</span></a>
+      <a class="brand" href="index.html#top">Max<span>ContentSEO</span></a>
       <div class="nav-links">
-        <a href="/cases.html">Referenzen</a>
-        <a href="/blog/index.html">Blog</a>
-        <a href="/audit-beispiel.html" aria-current="page">Premium-Audit Muster</a>
-        <a class="nav-cta" href="/#kontakt">Kostenlose Potenzialanalyse</a>
+        <a href="cases.html">Referenzen</a>
+        <a href="blog/index.html">Blog</a>
+        <a href="audit-beispiel.html" aria-current="page">Premium-Audit Muster</a>
+        <a class="nav-cta" href="index.html#kontakt">Kostenlose Potenzialanalyse</a>
       </div>
     </div>
   </nav>
@@ -319,41 +463,136 @@ button, input { font: inherit; }
   <main>
     <section class="hero">
       <div class="container hero__copy">
-        <h1>So sieht ein Premium-Audit aus</h1>
-        <p>So könnte Ihr Premium-Audit aussehen</p>
+        <h1>So könnte Ihr Premium-Audit aussehen</h1>
+        <p>Ein anonymisiertes Muster aus der Praxis — drei zentrale Befunde aus einem echten SEO-Audit.</p>
       </div>
     </section>
 
     <section class="section">
-      <div class="container audit-layout">
-        <div class="audit-preview">
-          <article class="audit-section">
-            <h2>Ausgangslage</h2>
-            <p>Zu Beginn wird geprüft, wie die Website aktuell aufgebaut ist, welche Seiten für lokale Suchanfragen sichtbar werden und wo wichtige Einstiegsseiten fehlen.</p>
-          </article>
-          <article class="audit-section">
-            <h2>Suchintention und Seitenstruktur</h2>
-            <p>Das Audit ordnet Suchanfragen nach Absicht: Information, Vergleich und konkrete Anfrage. Daraus entsteht eine klare Reihenfolge, welche Seiten zuerst überarbeitet oder ergänzt werden sollten.</p>
-          </article>
-          <article class="audit-section">
-            <h2>Google Business Profil</h2>
-            <p>Das Profil wird auf Kategorien, Leistungsbezeichnungen, Fotos, Bewertungen und lokale Signale geprüft. Ziel ist eine saubere Grundlage für bessere Sichtbarkeit bei kaufnahen lokalen Suchanfragen.</p>
-          </article>
-          <div class="locked-audit" aria-hidden="true">
-            <article class="audit-section">
-              <h3>Technische Prüfung</h3>
-              <p>Hier folgen Hinweise zu Indexierung, internen Links, Seitentiteln, Beschreibungen und möglichen Reibungspunkten auf Mobilgeräten.</p>
+      <div class="container audit-page">
+        <div class="audit-header">
+          <span>PREMIUM SEO AUDIT · Vorab-Analyse · Drei zentrale Befunde</span>
+          <span>MaxContentSEO · georg@maxcontentseo.de</span>
+        </div>
+        <div class="audit-body">
+          <div class="client-info">
+            <h2>Kosmetikstudio München</h2>
+            <p>Inhaberin · München · Analysiert: April 2026 · Georg Stopfer, MaxContentSEO</p>
+            <p>Die folgenden drei Befunde habe ich in einer ersten Analyse identifiziert. Sie zeigen, wo aktuell konkretes Sichtbarkeitspotenzial verloren geht.</p>
+          </div>
+
+          <div class="finding-grid">
+            <article class="finding-card">
+              <div class="metric-box metric-box--blue">
+                <strong>1.300</strong>
+                <span>Suchanfragen / Monat</span>
+              </div>
+              <div class="finding-copy">
+                <h3>Befund 01 · Verlorenes Suchvolumen: Laser Haarentfernung München</h3>
+                <p>Für diese lokale Suchanfrage besteht relevantes Nachfragepotenzial. Die aktuelle Seitenstruktur fängt dieses Thema nicht klar genug ab, sodass eine wichtige Leistungsseite für kaufnahe Suchanfragen fehlt oder zu wenig eindeutig ausgerichtet ist.</p>
+              </div>
             </article>
-            <article class="audit-section">
-              <h3>Priorisierte Maßnahmen</h3>
-              <p>Die Empfehlungen werden nach Wirkung, Aufwand und Reihenfolge sortiert, damit die nächsten Schritte nicht im Bauchgefühl hängen bleiben.</p>
+
+            <article class="finding-card">
+              <div class="metric-box metric-box--orange">
+                <strong>8,58 s</strong>
+                <span>Mobile Ladezeit</span>
+              </div>
+              <div class="finding-copy">
+                <h3>Befund 02 · Mobile Ladezeit 3,4-fach über Google-Empfehlung</h3>
+                <p>Die mobile Ladezeit liegt deutlich über der Empfehlung. Gerade bei lokalen Suchanfragen wechseln Nutzerinnen schnell zurück zu Google, wenn eine Seite langsam reagiert. Das schwächt die erste Kontaktchance, bevor Inhalt oder Angebot überhaupt gelesen werden.</p>
+              </div>
+            </article>
+
+            <article class="finding-card">
+              <div class="metric-box metric-box--red">
+                <strong>29</strong>
+                <span>fehlerhafte Links</span>
+              </div>
+              <div class="finding-copy">
+                <h3>Befund 03 · 29 Seiten mit kaputtem internen Link</h3>
+                <p>Mehrere interne Verweise führen auf einen nicht mehr gültigen Pfad wie <code>/[Menüpunkt]/</code>. Solche Fehler erschweren Crawling, stören Nutzerwege und schwächen die interne Weitergabe von Relevanz an wichtige Leistungsseiten.</p>
+              </div>
             </article>
           </div>
+
+          <p class="audit-note">Das sind drei von insgesamt 35+ Befunden. Alle weiteren Analysen und der 24-Punkte-Maßnahmenplan sind im Vollaudit enthalten.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Was der vollständige Audit enthält</h2>
+          <p class="section-intro">Das vollständige Dokument bündelt Analyse, Priorisierung und konkrete Empfehlungen in einer klaren Reihenfolge.</p>
         </div>
 
-        <form class="request-box" action="https://formspree.io/f/mqenpryl" method="POST">
-          <h2>Vollständiges Muster anfordern</h2>
+        <div class="stat-strip" aria-label="Audit-Kennzahlen">
+          <div class="stat-item"><strong>15</strong><span>Seiten</span></div>
+          <div class="stat-item"><strong>11</strong><span>Kapitel</span></div>
+          <div class="stat-item"><strong>13</strong><span>Keywords</span></div>
+          <div class="stat-item"><strong>24</strong><span>Maßnahmen</span></div>
+          <div class="stat-item"><strong>3</strong><span>Wettbewerber</span></div>
+        </div>
+
+        <div class="chapter-list">
+          <div class="chapter-row"><strong>01 Executive Summary</strong><span>Top-10-Probleme im Überblick</span></div>
+          <div class="chapter-row"><strong>02 Stärken der Website</strong><span>Was bereits gut funktioniert</span></div>
+          <div class="chapter-row"><strong>03 Kritische Fehler</strong><span>Broken Links, Duplicate Meta, Tippfehler etc.</span></div>
+          <div class="chapter-row"><strong>04 Ranking-Analyse</strong><span>13 Keywords</span></div>
+          <div class="chapter-row"><strong>05 Technisches SEO</strong><span>Technische Grundlage und Crawlbarkeit</span></div>
+          <div class="chapter-row"><strong>06 Keyword-Chancen</strong><span>Themen mit lokalem Potenzial</span></div>
+          <div class="chapter-row"><strong>07 Content SEO</strong><span>Seitenstruktur, Suchintention und Inhalte</span></div>
+          <div class="chapter-row"><strong>08 Local SEO</strong><span>Lokale Signale und Google Business Profil</span></div>
+          <div class="chapter-row"><strong>09 Konkurrenzanalyse</strong><span>3 Wettbewerber</span></div>
+          <div class="chapter-row"><strong>10 24-Punkte-Maßnahmenplan</strong><span>Priorisierte Umsetzung</span></div>
+          <div class="chapter-row"><strong>11 Nächste Schritte</strong><span>Empfohlene Reihenfolge</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Was Sie erhalten</h2>
+          <p class="section-intro">Der Lieferumfang ist auf konkrete Entscheidungen ausgelegt: Was ist wichtig, was kommt zuerst und welche Seiten brauchen Aufmerksamkeit.</p>
+        </div>
+
+        <div class="check-list">
+          <div class="check-row"><strong>✓</strong><span>15-seitiges PDF mit allen Befunden, Daten und Empfehlungen</span></div>
+          <div class="check-row"><strong>✓</strong><span>24-Punkte-Maßnahmenplan in 3 Prioritätsstufen</span></div>
+          <div class="check-row"><strong>✓</strong><span>Konkrete Title-Tag- und Meta-Description-Vorschläge</span></div>
+          <div class="check-row"><strong>✓</strong><span>Identifikation der Top-3-Umsatzhebel</span></div>
+          <div class="check-row"><strong>✓</strong><span>Keyword-Liste mit Volumen, Schwierigkeit und Empfehlung</span></div>
+          <div class="check-row"><strong>✓</strong><span>Konkurrenzanalyse: 3 Wettbewerber mit Gap-Auswertung</span></div>
+          <div class="check-row"><strong>✓</strong><span>Persönliche Strategie-Einschätzung per E-Mail</span></div>
+        </div>
+
+        <div class="section-head" style="margin-top: clamp(2rem, 5vw, 3.5rem);">
+          <h2 class="section-title">Datenquellen</h2>
+          <p class="section-intro">Die Einschätzung kombiniert Tooldaten, Crawl-Ergebnisse und manuelle Prüfung.</p>
+        </div>
+
+        <div class="source-table" aria-label="Datenquellen">
+          <div class="source-row"><strong>Ubersuggest</strong><span>Keyword-Daten, Volumen und Wettbewerbssignale</span></div>
+          <div class="source-row"><strong>Live-Crawl</strong><span>Technische Prüfung der erreichbaren Seiten</span></div>
+          <div class="source-row"><strong>ChatGPT Deep Research</strong><span>Strukturierte Recherche und Einordnung</span></div>
+          <div class="source-row"><strong>Backlink-Datenbank</strong><span>Hinweise auf externe Signale</span></div>
+          <div class="source-row"><strong>Manuelle Prüfung</strong><span>Bewertung von Seitenlogik, Suchintention und Nutzerführung</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="lead-section section-alt">
+      <div class="container lead-box">
+        <div>
+          <h2>Vollständiges Premium-Audit als kostenloses Muster anfordern</h2>
+          <p>Name und E-Mail genügen — ich sende das vollständige Muster innerhalb von 24 Stunden.</p>
+        </div>
+        <form action="https://formspree.io/f/mqenpryl" method="POST">
           <div class="form-grid">
+            <input type="hidden" name="subject" value="Premium-Audit Muster angefordert">
             <div class="form-field">
               <label for="name">Name *</label>
               <input id="name" name="name" type="text" autocomplete="name" required>
@@ -364,9 +603,9 @@ button, input { font: inherit; }
             </div>
             <label class="checkbox-field">
               <input name="datenschutz" type="checkbox" required>
-              <span>Ich habe die <a href="/#datenschutz">Datenschutzerklärung</a> gelesen</span>
+              <span>Ich habe die <a href="index.html#datenschutz">Datenschutzerklärung</a> gelesen</span>
             </label>
-            <button class="button-primary" type="submit">Vollständiges Audit zusenden</button>
+            <button class="button-primary" type="submit">Kostenloses Muster anfordern</button>
           </div>
         </form>
       </div>
@@ -376,9 +615,9 @@ button, input { font: inherit; }
   <footer class="site-footer">
     <div class="container site-footer__inner">
       <div class="site-footer__links">
-        <a href="/#impressum">Impressum</a>
-        <a href="/#datenschutz">Datenschutz</a>
-        <a href="/branchen/kosmetikstudios.html">SEO für Kosmetikstudios</a>
+        <a href="index.html#impressum">Impressum</a>
+        <a href="index.html#datenschutz">Datenschutz</a>
+        <a href="branchen/kosmetikstudios.html">SEO für Kosmetikstudios</a>
         <a href="mailto:georg@maxcontentseo.de">georg@maxcontentseo.de</a>
       </div>
       <p>© 2026 Max Content SEO — Georg Stopfer</p>
