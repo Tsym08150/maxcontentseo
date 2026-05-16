@@ -229,6 +229,8 @@ button, input { font: inherit; }
 .case-card__title {
   margin: 0;
   font-size: clamp(1.4rem, 3vw, 1.8rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .metric-row {
@@ -358,6 +360,7 @@ button, input { font: inherit; }
       <div class="nav-links">
         <a href="cases.html" aria-current="page">Referenzen</a>
         <a href="blog/index.html">Blog</a>
+        <a href="/audit-beispiel.html">Premium-Audit Muster</a>
         <a class="button-primary" href="index.html#kontakt">Kostenlose Potenzialanalyse</a>
       </div>
     </div>
@@ -369,12 +372,10 @@ button, input { font: inherit; }
         <div>
           <div class="eyebrow">Belegte Fallstudien</div>
           <h1 class="page-hero__title">Echte Ausgangslagen, klare Maßnahmen, sichtbare Ergebnisse</h1>
-          <p class="page-hero__lead">Hier finden Sie die Fälle, die ich öffentlich zeigen kann. Aktuell ist genau ein Case veröffentlicht: LingQi — TCM Head Spa München. Statt Marketing-Floskeln sehen Sie Ausgangssituation, Analyse und die konkreten Schritte, die daraus entstanden sind.</p>
+          <p class="page-hero__lead">Fallstudien mit echten Ausgangssituationen, konkreten Maßnahmen und belegten Ergebnissen — ohne Marketing-Floskeln.</p>
         </div>
         <div class="hero-sidepanel">
-          <div class="pill">Aktuell veröffentlicht</div>
-          <h3>1 echter Case</h3>
-          <p>Keine erfundenen Referenzen, keine aufgeblähten Erfolgsgeschichten. Nur das, was im Projekt wirklich belegt ist.</p>
+          <h3>LingQi TCM München</h3>
           <a class="button-secondary" href="cases/lingqi.html">LingQi im Detail ansehen</a>
         </div>
       </div>
@@ -391,14 +392,14 @@ button, input { font: inherit; }
         <div class="card-grid" style="grid-template-columns: minmax(0, 1fr);">
           <article class="case-card">
             <div class="case-card__media">
-              <img src="/assets/linqi.PNG" alt="LingQi TCM München" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+              <img src="/assets/lingqi-foto.webp" alt="LingQi TCM Head Spa München" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
             </div>
             <div class="case-card__body">
               <div class="case-card__meta">
                 <div class="pill">LingQi</div>
                 <span>TCM-Praxis · München</span>
               </div>
-              <h3 class="case-card__title">Von geringer Sichtbarkeit zu einer klar priorisierten SEO-Grundlage für lokale Suchanfragen</h3>
+              <h3 class="case-card__title">LingQi TCM Head Spa München</h3>
               <p>Für LingQi — TCM Head Spa München wurden im Audit 12+ Keywords mit Ranking-Potenzial identifiziert. Dazu kamen eine lokale Wettbewerbsanalyse und ein priorisierter Content-Plan für kaufnahe Suchanfragen.</p>
               <div class="metric-row">
                 <article class="metric-card">
@@ -424,30 +425,6 @@ button, input { font: inherit; }
             </div>
           </article>
         </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container lead-magnet">
-        <div class="lead-magnet__content">
-          <div class="pill">Lead-Magnet</div>
-          <h2 class="lead-magnet__title">So sieht ein Premium-Audit aus</h2>
-          <p>Wenn Sie sehen möchten, wie ich Probleme, Prioritäten und Umsetzungshebel in einem Audit strukturieren würde, sende ich Ihnen ein Beispiel per E-Mail. Ohne Verkaufsgespräch, ohne Agentur-Vertrag.</p>
-          <p>Sie erhalten damit ein besseres Gefühl dafür, wie tief die Analyse geht und worauf ich bei lokalen Beauty-, Wellness- und TCM-Studios achte.</p>
-        </div>
-        <form class="lead-magnet__form">
-          <div class="form-grid">
-            <div class="form-field">
-              <label for="lead-name">Name</label>
-              <input id="lead-name" name="name" type="text" placeholder="Ihr Name">
-            </div>
-            <div class="form-field">
-              <label for="lead-email">E-Mail *</label>
-              <input id="lead-email" name="email" type="email" placeholder="ihre@email.de" required>
-            </div>
-            <a href="mailto:georg@maxcontentseo.de" class="btn-primary">Audit-Beispiel per E-Mail anfordern</a>
-          </div>
-        </form>
       </div>
     </section>
 
