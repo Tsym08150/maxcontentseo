@@ -178,6 +178,23 @@ textarea {
   color: var(--accent);
 }
 
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-links a:not(.nav-cta) {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.94rem;
+  font-weight: 600;
+}
+
+.nav-links a:not(.nav-cta):hover {
+  color: var(--accent);
+}
+
 .nav-cta,
 .button-primary,
 .button-secondary {
@@ -196,7 +213,7 @@ textarea {
 .nav-cta,
 .button-primary {
   background: var(--accent);
-  color: var(--white);
+  color: #fff !important;
   border: 1px solid var(--accent);
 }
 
@@ -335,6 +352,88 @@ textarea {
   background:
     radial-gradient(circle at top left, rgba(255, 255, 255, 0.9), transparent 48%),
     linear-gradient(145deg, var(--accent-light), var(--bg-alt));
+}
+
+.feature-board {
+  padding-block: clamp(var(--space-lg), 8vw, 6rem);
+}
+
+.feature-board__grid {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.feature-column {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.feature-column__head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  align-items: end;
+}
+
+.feature-column__head h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.85rem, 4vw, 2.75rem);
+  line-height: 1.05;
+  font-weight: 400;
+}
+
+.feature-card {
+  display: grid;
+  min-height: 18rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: inherit;
+  text-decoration: none;
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+.feature-card--static {
+  box-shadow: none;
+}
+
+.feature-card__media {
+  min-height: 11rem;
+  background: #E2E0DA;
+}
+
+.feature-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.feature-card__body {
+  display: grid;
+  gap: 0.7rem;
+  padding: clamp(1.2rem, 3vw, 1.55rem);
+}
+
+.feature-card__tag {
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.feature-card h3,
+.feature-card p {
+  margin: 0;
+}
+
+.feature-card h3 {
+  font-size: clamp(1.25rem, 3vw, 1.65rem);
+  line-height: 1.12;
+}
+
+.feature-card p {
+  color: var(--text-muted);
 }
 
 .logo-strip {
@@ -857,6 +956,11 @@ textarea {
     justify-content: flex-end;
   }
 
+  .feature-board__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
   .metrics-grid,
   .problems-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -908,6 +1012,15 @@ textarea {
     font-size: 0.82rem;
   }
 
+  .nav-links {
+    gap: 0.75rem;
+  }
+
+  .nav-links a:not(.nav-cta) {
+    display: none;
+    font-size: 0.88rem;
+  }
+
   .hero__visual {
     order: 2;
   }
@@ -932,7 +1045,11 @@ textarea {
   <nav class="site-nav" aria-label="Hauptnavigation">
     <div class="container site-nav__inner">
       <a class="brand" href="#top">Max<span>ContentSEO</span></a>
-      <a class="nav-cta" href="#kontakt">Kostenlose Potenzialanalyse</a>
+      <div class="nav-links">
+        <a href="cases.html">Referenzen</a>
+        <a href="blog/index.html">Blog</a>
+        <a class="nav-cta" href="#kontakt">Kostenlose Potenzialanalyse</a>
+      </div>
     </div>
   </nav>
 
@@ -968,6 +1085,64 @@ textarea {
           </svg>
           <div class="hero-photo">
             <img src="/assets/georg.jpg" alt="Georg Stopfer von MaxContentSEO">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="feature-board" aria-labelledby="feature-board-title">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Referenzen &amp; Blog</div>
+          <h2 class="section-title" id="feature-board-title">Echte Beispiele und nützliche SEO-Impulse</h2>
+          <p class="section-intro">Ein kompakter Einstieg in veröffentlichte Arbeit und Inhalte rund um lokale Sichtbarkeit.</p>
+        </div>
+        <div class="feature-board__grid">
+          <div class="feature-column">
+            <div class="feature-column__head">
+              <h2>Referenzen</h2>
+            </div>
+            <a class="feature-card" href="cases/lingqi.html">
+              <div class="feature-card__media">
+                <img src="assets/linqi.PNG" alt="LingQi TCM Head Spa München">
+              </div>
+              <div class="feature-card__body">
+                <div class="feature-card__tag">TCM · München</div>
+                <h3>LingQi TCM</h3>
+                <p>Fallstudie zur lokalen Sichtbarkeit rund um Head Spa und TCM.</p>
+              </div>
+            </a>
+            <article class="feature-card feature-card--static">
+              <div class="feature-card__media" aria-hidden="true"></div>
+              <div class="feature-card__body">
+                <div class="feature-card__tag">Medical Beauty</div>
+                <h3>Medical Beauty</h3>
+                <p>Referenz in Vorbereitung</p>
+              </div>
+            </article>
+          </div>
+          <div class="feature-column">
+            <div class="feature-column__head">
+              <h2>Blog</h2>
+            </div>
+            <a class="feature-card" href="blog/google-bewertung-loeschen.html">
+              <div class="feature-card__media" aria-hidden="true"></div>
+              <div class="feature-card__body">
+                <div class="feature-card__tag">Local SEO</div>
+                <h3>Google Bewertung löschen</h3>
+                <p>Was Kosmetikstudios bei problematischen Bewertungen prüfen sollten.</p>
+              </div>
+            </a>
+            <a class="feature-card" href="blog/lingqi-haarausfall.html">
+              <div class="feature-card__media">
+                <img src="assets/linqi.PNG" alt="LingQi TCM Head Spa München">
+              </div>
+              <div class="feature-card__body">
+                <div class="feature-card__tag">TCM · Haarausfall</div>
+                <h3>Haarausfall LingQi</h3>
+                <p>Artikel rund um Haarausfall und TCM aus dem LingQi-Kontext.</p>
+              </div>
+            </a>
           </div>
         </div>
       </div>
