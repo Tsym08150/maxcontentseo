@@ -137,8 +137,7 @@ button, input { font: inherit; }
 .eyebrow { padding: 0.45rem 0.85rem; }
 .pill { padding: 0.35rem 0.75rem; }
 
-.page-hero__grid,
-.lead-magnet {
+.page-hero__grid {
   display: grid;
   gap: var(--space-md);
 }
@@ -157,7 +156,6 @@ button, input { font: inherit; }
 .page-hero__lead,
 .section-intro,
 .card p,
-.lead-magnet p,
 .site-footer p { color: var(--text-muted); }
 
 .page-hero__lead,
@@ -170,7 +168,6 @@ button, input { font: inherit; }
 
 .case-card,
 .metric-card,
-.lead-magnet__form,
 .hero-sidepanel,
 .footer-cta,
 .site-footer {
@@ -259,25 +256,6 @@ button, input { font: inherit; }
   font-size: 0.94rem;
 }
 
-.lead-magnet {
-  align-items: start;
-}
-
-.lead-magnet__content,
-.lead-magnet__form {
-  padding: clamp(1.35rem, 3vw, 1.8rem);
-}
-
-.lead-magnet__content {
-  border-left: 3px solid var(--accent);
-  background: rgba(255, 255, 255, 0.45);
-}
-
-.lead-magnet__title {
-  margin: 0 0 0.65rem;
-  font-size: clamp(1.5rem, 3vw, 2rem);
-}
-
 .form-grid {
   display: grid;
   gap: 1rem;
@@ -336,7 +314,6 @@ button, input { font: inherit; }
 
 @media (min-width: 768px) {
   .page-hero__grid,
-  .lead-magnet,
   .footer-cta {
     grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
   }
