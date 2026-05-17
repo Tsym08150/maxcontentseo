@@ -33,18 +33,18 @@
 
 ## Was wurde bewusst nicht geändert
 - Keine Commits, Pushes oder Deployments.
-- Die gewünschten Card-Bilder `assets/medical-beauty.png` und `assets/haarausfall-stress.png` wurden nicht eingebunden, weil beide Dateien lokal nicht existieren.
+- Die gewünschten Card-Bilder `assets/kosmetikstudio-muenchen.png` und `assets/haarausfall-stress.png` wurden nicht eingebunden, weil beide Dateien lokal nicht existieren.
 - Es wurden keine neuen Bilddateien erzeugt oder hinzugefügt, da dafür keine Asset-Lizenz im Repo vorliegt.
 - `cases.html` und `cases/lingqi.html` wurden nicht geändert, weil dort keine Medical-Beauty- oder Haarausfall-Blog-Card mit den genannten Bild-/Titelstellen vorhanden ist.
 
 ## Offene Fragen für Human Review
-- Bitte `assets/medical-beauty.png` und `assets/haarausfall-stress.png` als lizenzierte lokale Assets bereitstellen, falls die Card-Bilder wie gewünscht umgestellt werden sollen.
+- Bitte `assets/kosmetikstudio-muenchen.png` und `assets/haarausfall-stress.png` als lizenzierte lokale Assets bereitstellen, falls die Card-Bilder wie gewünscht umgestellt werden sollen.
 - Soll der Google-Bewertung-Artikel später vollständig aus dem WordPress-Export bereinigt werden? Es gibt noch alte WordPress-URLs in Schema-/Asset-/Script-Kontexten, aber keine alten WordPress-`href`-Links mehr.
 
 ## Asset- und Lizenzhinweise
 - Keine neuen Assets hinzugefügt.
 - Keine externen Bilder, Fonts oder Social-Profile ergänzt.
-- Fehlende Assets: `assets/medical-beauty.png`, `assets/haarausfall-stress.png`.
+- Fehlende Assets: `assets/kosmetikstudio-muenchen.png`, `assets/haarausfall-stress.png`.
 
 ## Lighthouse-Score
 - Nicht gemessen. Änderungen betreffen Links, Meta-Tags und kleine Card-Texte; kein Lighthouse-Lauf durchgeführt.

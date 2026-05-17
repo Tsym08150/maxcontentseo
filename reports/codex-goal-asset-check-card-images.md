@@ -10,7 +10,7 @@
 
 ## Was wurde geändert
 - Keine Website-Dateien geändert.
-- Geprüft, ob `assets/medical-beauty.png` und `assets/haarausfall-stress.png` lokal vorhanden sind.
+- Geprüft, ob `assets/kosmetikstudio-muenchen.png` und `assets/haarausfall-stress.png` lokal vorhanden sind.
 
 ## Was wurde bewusst nicht geändert
 - Card-Bilder wurden nicht eingebunden, weil die exakt angefragten Dateien nicht existieren.
@@ -21,7 +21,7 @@
 - Keine Commits, Pushes oder Deployments.
 
 ## Offene Fragen für Human Review
-- Sollen die vorhandenen Dateien umbenannt werden zu `assets/haarausfall-stress.png` und `assets/medical-beauty.png`?
+- Sollen die vorhandenen Dateien umbenannt werden zu `assets/haarausfall-stress.png` und `assets/kosmetikstudio-muenchen.png`?
 - Oder sollen die Cards direkt auf die vorhandenen Dateinamen mit Leerzeichen/Umlaut zeigen?
 
 ## Asset- und Lizenzhinweise

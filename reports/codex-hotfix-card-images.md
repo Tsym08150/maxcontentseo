@@ -2,14 +2,14 @@
 
 ## Geänderte Dateien
 - `assets/Haarausfall durch Stress.png` → `assets/haarausfall-stress.png`
-- `assets/medicalBeautyMünchen.png` → `assets/medical-beauty.png`
+- `assets/kosmetikstudio-muenchen.png`
 - `index.html`
 - `blog/index.html`
 - `reports/codex-hotfix-card-images.md`
 
 ## Untracked Dateien
 - `assets/haarausfall-stress.png`
-- `assets/medical-beauty.png`
+- `assets/kosmetikstudio-muenchen.png`
 - `reports/codex-hotfix-card-images.md`
 - `reports/codex-goal-asset-check-card-images.md` war bereits vor diesem Run untracked.
 - `reports/codex-hotfix-links-images.md` war bereits vor diesem Run untracked.
@@ -17,7 +17,7 @@
 
 ## Was wurde geändert
 - Die beiden Bilddateien wurden auf URL-sichere Namen umbenannt.
-- In `index.html` wurde die Medical-Beauty-Card mit `/assets/medical-beauty.png` ergänzt.
+- In `index.html` wurde die Kosmetikstudio-München-Card mit `assets/kosmetikstudio-muenchen.png` ergänzt.
 - In `index.html` wurde die Haarausfall-Card auf `/assets/haarausfall-stress.png` umgestellt.
 - In `blog/index.html` wurde die vorhandene Haarausfall-Card auf `/assets/haarausfall-stress.png` umgestellt.
 
