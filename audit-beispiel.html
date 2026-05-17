@@ -533,7 +533,7 @@ button, input { font: inherit; }
 
           <p class="audit-note">Das sind drei von insgesamt 35+ Befunden. Alle weiteren Analysen und der 24-Punkte-Maßnahmenplan sind im Vollaudit enthalten.</p>
           <div class="cta-mid">
-            <a href="#formular" class="btn-primary">
+            <a href="#audit-form" class="btn-primary">
               Vollständiges Audit-Muster kostenlos ansehen
             </a>
             <p class="cta-sub">15-seitiges PDF · anonymisiert · keine Verpflichtung</p>
@@ -610,9 +610,8 @@ button, input { font: inherit; }
         <div>
           <h2>Vollständiges Premium-Audit als kostenloses Muster anfordern</h2>
         </div>
-        <form id="formular" action="https://formspree.io/f/mqenpryl" method="POST">
+        <form id="audit-form" action="https://formspree.io/f/mqenpryl" method="POST">
           <div class="form-grid">
-            <input type="hidden" name="_next" value="https://maxcontentseo.de/danke.html">
             <div class="form-field">
               <label for="name">Name *</label>
               <input id="name" name="name" type="text" autocomplete="name" required>
@@ -639,5 +638,24 @@ button, input { font: inherit; }
       <p>© 2026 Max Content SEO — Georg Stopfer</p>
     </div>
   </footer>
+  <script>
+document.getElementById('audit-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  var form = e.target;
+  fetch('https://formspree.io/f/mqenpryl', {
+    method: 'POST',
+    body: new FormData(form),
+    headers: { 'Accept': 'application/json' }
+  }).then(function(response) {
+    if (response.ok) {
+      window.location.href = '/danke.html';
+    } else {
+      alert('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.');
+    }
+  }).catch(function() {
+    alert('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.');
+  });
+});
+</script>
 </body>
 </html>
