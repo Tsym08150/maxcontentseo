@@ -87,6 +87,17 @@ img { max-width: 100%; display: block; }
 
 .nav-links a:hover { color: var(--accent); }
 
+.breadcrumb {
+  padding-top: var(--space-md);
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  color: var(--accent);
+}
+
 .button-primary,
 .button-secondary {
   display: inline-flex;
@@ -272,7 +283,7 @@ img { max-width: 100%; display: block; }
     <div class="container site-nav__inner">
       <a class="brand" href="../index.html">Max<span>ContentSEO</span></a>
       <div class="nav-links">
-        <a href="../cases.html">Referenzen</a>
+        <a href="./" aria-current="page">Cases</a>
         <a href="../blog/index.html">Blog</a>
         <a href="/audit-beispiel.html">Premium-Audit Muster</a>
         <a class="button-primary" href="../index.html#kontakt">Kostenlose Potenzialanalyse</a>
@@ -281,6 +292,10 @@ img { max-width: 100%; display: block; }
   </nav>
 
   <main>
+    <div class="container breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Startseite</a> / <a href="./">Cases</a> / LingQi
+    </div>
+
     <section class="hero">
       <div class="container hero__grid">
         <div style="display:grid; gap:1.15rem;">
@@ -290,7 +305,7 @@ img { max-width: 100%; display: block; }
           <p class="hero__lead">Die Fallstudie zeigt, wie aus einer hochwertigen Praxis mit geringer Sichtbarkeit ein klar priorisiertes SEO-Setup wurde. Der Fokus lag auf kaufnahen Suchanfragen, lokaler Einordnung und einer Content-Struktur, die sich tatsächlich weiter umsetzen lässt.</p>
           <div style="display:flex; flex-wrap:wrap; gap:0.9rem;">
             <a class="button-primary" href="../index.html#kontakt">Ähnliches Potenzial prüfen lassen</a>
-            <a class="button-secondary" href="../cases.html">Zur Case-Übersicht</a>
+            <a class="button-secondary" href="./">Zur Case-Übersicht</a>
           </div>
         </div>
         <article class="hero-card">
@@ -382,7 +397,7 @@ img { max-width: 100%; display: block; }
   <footer class="container site-footer">
     <div class="site-footer__links">
       <a href="../index.html">Startseite</a>
-      <a href="../cases.html">Cases</a>
+      <a href="./">Cases</a>
       <a href="../index.html#impressum">Impressum</a>
       <a href="../index.html#datenschutz">Datenschutz</a>
       <a href="mailto:georg@maxcontentseo.de">georg@maxcontentseo.de</a>
