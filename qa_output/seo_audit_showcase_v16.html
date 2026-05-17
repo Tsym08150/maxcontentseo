@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>SEO Audit Showcase V16</title>
+  <style>
+  @page portrait { size: A4 portrait; margin: 0; }
+  @page landscape { size: A4 landscape; margin: 0; }
+
+  * {
+    box-sizing: border-box;
+    hyphens: none;
+    -webkit-hyphens: none;
+    word-break: normal;
+    overflow-wrap: normal;
+    text-align: left;
+    letter-spacing: normal;
+    text-rendering: optimizeLegibility;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    color: #1f2933;
+    background: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-size: 9.25pt;
+    line-height: 1.3;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .sheet {
+    position: relative;
+    break-after: page;
+    page-break-after: always;
+    background: #ffffff;
+    overflow: hidden;
+  }
+
+  .sheet:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .portrait {
+    page: portrait;
+    width: 210mm;
+    height: 297mm;
+    padding: 14mm 16mm 17mm;
+  }
+
+  .landscape {
+    page: landscape;
+    width: 297mm;
+    height: 210mm;
+    padding: 15mm 16mm 17mm;
+  }
+
+  main {
+    width: 100%;
+  }
+
+  footer {
+    position: absolute;
+    left: 16mm;
+    right: 16mm;
+    bottom: 5mm;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #d9ded8;
+    padding-top: 3mm;
+    color: #65707c;
+    font-size: 7pt;
+    line-height: 1;
+  }
+
+  .cover-title {
+    margin: 0 0 5mm;
+    color: #1f2933;
+    font-size: 25pt;
+    line-height: 1.05;
+    font-weight: 800;
+  }
+
+  h1 {
+    margin: 4.2mm 0 2.2mm;
+    color: #1b6b4a;
+    font-size: 14.4pt;
+    line-height: 1.15;
+    font-weight: 800;
+  }
+
+  h2 {
+    margin: 3.4mm 0 1.8mm;
+    color: #1f2933;
+    font-size: 10.7pt;
+    line-height: 1.2;
+    font-weight: 800;
+  }
+
+  p {
+    margin: 0 0 2mm;
+  }
+
+  .lead {
+    font-size: 10.2pt;
+    margin-bottom: 2.5mm;
+  }
+
+  .small {
+    color: #2f3b46;
+    font-size: 7.8pt;
+    line-height: 1.35;
+  }
+
+  .signature {
+    margin-bottom: 1.6mm;
+  }
+
+  ul {
+    margin: 0 0 2.5mm 4.5mm;
+    padding: 0;
+  }
+
+  li {
+    margin: 0 0 1mm;
+    padding-left: 1mm;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin: 1.7mm 0 2.4mm;
+    font-size: 7.8pt;
+    line-height: 1.24;
+  }
+
+  th,
+  td {
+    border: 1px solid #d9ded8;
+    padding: 1.8mm 2mm;
+    vertical-align: top;
+    white-space: normal;
+  }
+
+  th {
+    background: #e9f3ed;
+    font-weight: 800;
+  }
+
+  .kv {
+    font-size: 8.9pt;
+  }
+
+  .kv th,
+  .kv td {
+    width: 33.33%;
+  }
+
+  .problems th:first-child,
+  .problems td:first-child,
+  .plan th:first-child,
+  .plan td:first-child {
+    width: 12mm;
+  }
+
+  .problems th:last-child,
+  .problems td:last-child {
+    width: 34mm;
+  }
+
+  .rankings th:first-child,
+  .rankings td:first-child {
+    width: 14mm;
+  }
+
+  .rankings th:nth-child(3),
+  .rankings td:nth-child(3),
+  .rankings th:nth-child(4),
+  .rankings td:nth-child(4) {
+    width: 24mm;
+  }
+
+  .rankings th:last-child,
+  .rankings td:last-child {
+    width: 29mm;
+  }
+
+  .compact th,
+  .compact td {
+    padding-top: 2mm;
+    padding-bottom: 2mm;
+  }
+
+  .plan {
+    font-size: 8pt;
+    line-height: 1.24;
+    margin-bottom: 3.2mm;
+  }
+
+  .plan th,
+  .plan td {
+    padding: 2mm 2.2mm;
+  }
+
+  .plan th:nth-child(3),
+  .plan td:nth-child(3) {
+    width: 30mm;
+  }
+
+  .plan th:nth-child(4),
+  .plan td:nth-child(4) {
+    width: 78mm;
+  }
+
+  .offer {
+    font-size: 8.1pt;
+    line-height: 1.26;
+  }
+
+  .offer th:first-child,
+  .offer td:first-child {
+    width: 58mm;
+  }
+
+  .offer th:nth-child(2),
+  .offer td:nth-child(2) {
+    width: 58mm;
+  }
+
+  .competitors {
+    font-size: 8.1pt;
+  }
+</style>
+</head>
+<body>
+  <section class="sheet portrait">
+    <main>
+      <h1 class="cover-title">SEO Audit Report</h1>
+      <p class="lead">Anonymisiertes Beispielaudit auf Basis von Live-Crawl, Rankingdaten und manueller Prüfung</p>
+      <table class="kv"><tr><th>Projekt</th><th>Lokales Beauty-Studio in einer deutschen Großstadt (anonymisiert)</th><th>[Website vertraulich]</th></tr><tr><td>Profil</td><td>etablierter Standort</td><td>inhabergeführter Betrieb</td></tr><tr><td>Vertrauen</td><td>externe Vertrauenssignale vorhanden</td><td>Stand: 2026</td></tr><tr><td>Kontakt</td><td>MaxContentSEO</td><td>georg@maxcontentseo.de</td></tr></table>
+      <p class="small">Hinweis: Keywords und Standortangaben sind beispielhaft aus der Branche - im echten Audit individuell auf Ihren Standort angepasst.</p>
+      <h1>Datenbasis dieses Audits</h1>
+      <p>Vollständige Datenbasis: Verifizierte Live-Website-Analyse, Google-Suchergebnisse, KI-gestützte Tiefenrecherche, Ubersuggest Site Audit (36 Seiten gecrawlt, 72 SEO-Issues identifiziert), Ubersuggest Rank Tracking (13 Keywords), Ubersuggest Competitor Analysis, Backlink-Analyse (ca. 35-40 Verweisdomains, über 2.000 Backlinks) sowie vollständige Site-Speed-Messung für Desktop und Mobile.</p>
+      <p class="small">Hinweis: Suchvolumen, CPC, SEO Difficulty, Traffic- und Backlink-Werte sind Tool-Schätzungen aus Ubersuggest und dienen der Priorisierung. Sie ersetzen keine Daten aus Google Search Console, GA4 oder Google Ads.</p>
+      <h1>1. Executive Summary</h1>
+      <table>
+    <thead><tr><th>Kennzahl</th><th>Wert</th><th>Bewertung</th></tr></thead>
+    <tbody><tr><td>On-Page Score</td><td>68 / 100</td><td>Mittel - optimierbar</td></tr><tr><td>SEO-Issues</td><td>72</td><td>auf 36 Seiten</td></tr><tr><td>Org. Traffic</td><td>ca. 190</td><td>Visits / Monat</td></tr><tr><td>Verweisdomains</td><td>ca. 35-40</td><td>über 2.000 Backlinks gesamt</td></tr></tbody>
+  </table>
+      <p>Lokales Beauty-Studio in einer deutschen Großstadt (anonymisiert) hat eine solide Basis: On-Page Score 68/100, ca. 190 organische Visits, starkes Bewertungsprofil und externe Vertrauenssignale vorhanden. Gleichzeitig verschenkt die Website durch konkret messbare Probleme erhebliches Potenzial.</p>
+      <p>Die zwei wichtigsten Suchbegriffe der Branche - &quot;laser haarentfernung [Großstadt]&quot; mit 1.300 Suchvolumen/Monat und &quot;hydrafacial kosten&quot; mit 880 Suchvolumen/Monat - werden aktuell nicht ausreichend abgefangen.</p>
+      <p>Hinzu kommt ein kritisches Mobile-Performance-Problem: 8,58 Sekunden Ladezeit auf Mobile. Das liegt deutlich über dem empfohlenen Zielwert und kostet zusätzlich Rankings und Conversions.</p>
+      <h2>Top-Probleme - Sofort-Erkenntnisse</h2>
+      <table class="problems">
+    <thead><tr><th>#</th><th>Problem</th><th>Auswirkung</th></tr></thead>
+    <tbody><tr><td>1</td><td>Mobile Load Time 8,58s (POOR) - deutlich über Zielwert</td><td>KRITISCH</td></tr><tr><td>2</td><td>29 Seiten haben einen Broken Link zu /kategorie-seite-alt/ (404-Fehler)</td><td>KRITISCH</td></tr><tr><td>3</td><td>24 Seiten mit identischer Meta-Description</td><td>KRITISCH</td></tr><tr><td>4</td><td>Markennamen-Tippfehler auf 6+ Seiten</td><td>KRITISCH</td></tr><tr><td>5</td><td>Keyword &quot;laser haarentfernung [Großstadt]&quot; (1.300 Vol.) nicht rankend</td><td>VERLUST</td></tr><tr><td>6</td><td>Keyword &quot;hydrafacial kosten&quot; (880 Vol.) nicht rankend</td><td>VERLUST</td></tr><tr><td>7</td><td>Kein Blog / Content Funnel - informationaler Traffic wird verschenkt</td><td>HOCH</td></tr><tr><td>8</td><td>Geräte-/Lasertyp-Inkonsistenz - Trust-Problem</td><td>HOCH</td></tr></tbody>
+  </table>
+    </main>
+    <footer><span>MaxContentSEO · SEO Audit Report · anonymisiertes Beispielaudit</span><span>Seite 1</span></footer>
+  </section>
+<section class="sheet portrait">
+    <main>
+      <table class="problems continuation">
+    <thead><tr><th>#</th><th>Problem</th><th>Auswirkung</th></tr></thead>
+    <tbody><tr><td>9</td><td>Wiederholter Hautanalyse-Block auf 4+ Seiten</td><td>MITTEL</td></tr><tr><td>10</td><td>/bestaetigungsseite-a/ und /bestaetigungsseite-b/ indexiert</td><td>MITTEL</td></tr></tbody>
+  </table>
+      <h1>2. Stärken der Website</h1>
+      <ul><li>On-Page SEO Score von 68/100 - solide Ausgangsbasis.</li><li>Ca. 190 organische Visits/Monat laut Ubersuggest.</li><li>Domain-Authority basiert auf ca. 35-40 Verweisdomains, darunter eine besonders starke Verweisquelle.</li><li>Desktop Site Speed: Load Time 1,04s, Interactivity 4,50ms, CLS 0,00 - alles stark.</li><li>Dreistelliges Bewertungsprofil mit Spitzenbewertung - starker Social Proof.</li><li>Externe Vertrauenssignale vorhanden - starkes Vertrauenssignal.</li><li>Breite Leistungsstruktur: 30+ erfolgreich gecrawlte Seiten.</li><li>Laser-Haarentfernung-Seite: stärkste Asset-Seite mit Preisliste, FAQ, Sitzungsanzahl und Hauttypen.</li><li>Top-3 Rankings für Brand- und Standort-Keywords: [Brand-Keyword] (Pos. 1), [Service-Keyword A] (Pos. 2), [lokales Studio-Keyword] (Pos. 3).</li><li>Relevante Top-Liste eines Branchenportals enthält Backlink mit mittlerer bis guter Autorität.</li><li>Langjährige Erfahrung der Geschäftsführung - starkes E-E-A-T-Signal.</li></ul>
+      <h1>3. Kritische Fehler - sofort beheben</h1>
+      <h2>3.1 29 Seiten mit Broken Link zu /kategorie-seite-alt/</h2>
+      <p>Befund laut Ubersuggest Site Audit: 29 von 36 gecrawlten Seiten haben einen Link mit dem Anker &quot;Technologien&quot;, der zu /kategorie-seite-alt/ führt. Diese URL gibt einen 404-Fehler zurück. Die korrekte Zielseite ist /kategorie-seite/.</p>
+      <h2>Betroffene Seiten, Auszug:</h2>
+      <ul><li>Startseite und mehrere Behandlungsseiten.</li><li>Rechtliche Seiten, Kontaktseiten und Gutscheinseiten.</li><li>Sogar /bestaetigungsseite-a/, obwohl diese Seite gar nicht indexiert sein sollte.</li></ul>
+      <p>Fix: WordPress-Menü öffnen und den fehlerhaften Link auf die korrekte URL ändern oder einen 301-Redirect von /kategorie-seite-alt/ auf /kategorie-seite/ einrichten. Aufwand: ca. 5 Minuten.</p>
+      <h2>3.2 24 Seiten mit identischer Meta-Description</h2>
+      <p>Befund: 24 Seiten haben exakt die gleiche generische Meta-Description. Auswirkung: Google differenziert die Seiten in den Suchergebnissen nicht sauber. Die Click-Through-Rate ist dadurch niedriger als möglich. Jeder Searcher sieht denselben Snippet-Text - egal ob er nach Aknebehandlung, Laser-Haarentfernung oder Hydrafacial sucht.</p>
+      <p>Fix: Pro Seite eine individuelle Meta-Description schreiben, jeweils mit 155-160 Zeichen. Mit Yoast SEO oder Rank Math ist das in 2-3 Stunden machbar.</p>
+      <h2>3.3 Markennamen-Tippfehler auf 6+ Seiten</h2>
+      <p>Im Template beziehungsweise in wiederverwendeten Seitenblöcken befinden sich Tippfehler, die sich über mehrere Seiten ziehen.</p>
+      <table>
+    <thead><tr><th>URL / Stelle</th><th>Tippfehler / Problem</th><th>Prio</th></tr></thead>
+    <tbody><tr><td>/behandlungsseite-a/</td><td>[Studioname] falsch geschrieben</td><td>P1</td></tr><tr><td>/behandlungsseite-b/</td><td>[Studioname] falsch geschrieben</td><td>P1</td></tr><tr><td>/behandlungsseite-c/</td><td>[Studioname] falsch geschrieben</td><td>P1</td></tr></tbody>
+  </table>
+    </main>
+    <footer><span>MaxContentSEO · SEO Audit Report · anonymisiertes Beispielaudit</span><span>Seite 2</span></footer>
+  </section>
+<section class="sheet portrait">
+    <main>
+      <table>
+    <thead><tr><th>URL / Stelle</th><th>Tippfehler / Problem</th><th>Prio</th></tr></thead>
+    <tbody><tr><td>/behandlungsseite-d/</td><td>[Studioname] falsch geschrieben, mehrfach</td><td>P1</td></tr><tr><td>/behandlungsseite-e/</td><td>[Studioname] falsch geschrieben</td><td>P1</td></tr><tr><td>/behandlungsseite-f/</td><td>[Studioname] falsch geschrieben, zweite Variante</td><td>P1</td></tr><tr><td>Startseite Fließtext</td><td>Grammatikfehler im Fließtext</td><td>P1</td></tr><tr><td>Footer aller Seiten</td><td>Rechtschreibfehler in Standortbezeichnung</td><td>P1</td></tr><tr><td>/behandlungsseite-g/</td><td>Tippfehler plus Markenfehler</td><td>P1</td></tr></tbody>
+  </table>
+      <p>Fix: WordPress-Template und alle betroffenen Seiten prüfen, alle Vorkommen ersetzen. Aufwand: ca. 15 Minuten.</p>
+      <h2>3.4 Geräte-/Lasertyp-Inkonsistenz - Trust-Problem</h2>
+      <p>Auf der Startseite wird eine Gerätevariante betont. Auf der Laser-Seite und in den FAQs wird eine andere Geräte- beziehungsweise Modellvariante genannt. Recherchierende Kunden können solche Inkonsistenzen bemerken. Fix: Einheitliche Bezeichnung festlegen. Danach alle Seiten konsistent anpassen.</p>
+      <h2>3.5 Copyright-Zeile: falscher Markenname</h2>
+      <p>Footer aller Seiten: &quot;Copyright (C) [Gerätehersteller]. Alle Rechte vorbehalten.&quot; [Gerätehersteller] ist der Gerätehersteller, nicht das Studio. Das wirkt wie ein Hersteller-Template und nicht wie ein professioneller Studiobetrieb. Korrekte Version: &quot;Copyright (C) 2026 [Studioname].&quot;</p>
+      <h2>3.6 Indexierte Bestätigungsseiten</h2>
+      <p>/bestaetigungsseite-a/ und /bestaetigungsseite-b/ sind in Google indexiert, obwohl sie keinen Suchnutzen haben. /bestaetigungsseite-b/ hat zudem keine H1-Überschrift. Fix: Beide Seiten auf noindex setzen. Aufwand: ca. 5 Minuten.</p>
+      <h1>4. Ranking-Analyse - wo steht die Website?</h1>
+      <h2>4.1 Aktuelle Rankings laut Ubersuggest</h2>
+      <p>13 getrackte Keywords - Verteilung: Top 3 Positionen: 3 Keywords, alle Brand- beziehungsweise Standort-Keywords. Top 100 Positionen: 4 weitere Keywords. Nicht rankend: 6 Keywords, darunter die wertvollsten.</p>
+      <table class="rankings">
+    <thead><tr><th>Pos.</th><th>Keyword</th><th>Volumen</th><th>SEO Diff.</th><th>Bewertung</th></tr></thead>
+    <tbody><tr><td>1</td><td>[Brand-Keyword]</td><td>0</td><td>12</td><td>BRAND</td></tr><tr><td>2</td><td>[Service-Keyword A]</td><td>0</td><td>17</td><td>BRAND</td></tr><tr><td>3</td><td>[lokales Studio-Keyword]</td><td>0</td><td>12</td><td>BRAND</td></tr><tr><td>11</td><td>[lokales Hautpflege-Keyword]</td><td>0</td><td>12</td><td>OK</td></tr><tr><td>12</td><td>[Laser-Service-Keyword]</td><td>70</td><td>26</td><td>POTENZIAL</td></tr><tr><td>18</td><td>[Medical-Beauty-Standortkeyword]</td><td>0</td><td>12</td><td>OK</td></tr><tr><td>35</td><td>medical beauty</td><td>1.900</td><td>39</td><td>HEBEL</td></tr><tr><td>-</td><td>laser haarentfernung [Großstadt]</td><td>1.300</td><td>27</td><td>KRITISCH</td></tr><tr><td>-</td><td>laser haarentfernung kosten [Großstadt]</td><td>10</td><td>28</td><td>VERLOREN</td></tr><tr><td>-</td><td>[Behandlungskeyword A]</td><td>0</td><td>12</td><td>VERLOREN</td></tr><tr><td>-</td><td>[lokales Studio-Keyword B]</td><td>10</td><td>41</td><td>VERLOREN</td></tr></tbody>
+  </table>
+      <h2>4.2 Der große Verlust: &quot;laser haarentfernung [Großstadt]&quot;</h2>
+    </main>
+    <footer><span>MaxContentSEO · SEO Audit Report · anonymisiertes Beispielaudit</span><span>Seite 3</span></footer>
+  </section>
+<section class="sheet portrait">
+    <main>
+      <p>Die Domain hat eine starke Laser-Seite mit Preisen, FAQs, Hauttypen und Sitzungsanzahl. Trotzdem rankt sie nicht für &quot;laser haarentfernung [Großstadt]&quot; mit 1.300 Suchvolumen/Monat. Bei einer SEO-Difficulty von 27 ist das ein erreichbares Ziel.</p>
+      <p>Was Ubersuggest selbst empfiehlt: Im Bereich &quot;SEO Opportunities&quot; ist &quot;Create new content for laser haarentfernung [Großstadt]&quot; als Priorität 2 aufgelistet - direkt nach den Broken Links.</p>
+      <h2>4.3 Top Pages by Traffic - Realitätscheck</h2>
+      <table>
+    <thead><tr><th>Seite</th><th>Visits/Monat</th><th>Backlinks</th></tr></thead>
+    <tbody><tr><td>Startseite</td><td>ca. 110</td><td>über 2.000</td></tr><tr><td>Behandlungsseite A</td><td>ca. 40</td><td>0</td></tr><tr><td>Kontaktseite</td><td>ca. 20</td><td>wenige</td></tr><tr><td>Behandlungsseite B</td><td>unter 10</td><td>0</td></tr><tr><td>Behandlungsseite C</td><td>unter 10</td><td>wenige</td></tr><tr><td>Behandlungsseite D</td><td>unter 10</td><td>0</td></tr><tr><td>Behandlungsseite E</td><td>unter 10</td><td>0</td></tr><tr><td>Laser-Haarentfernung-Seite</td><td>unter 10</td><td>wenige</td></tr></tbody>
+  </table>
+      <p>Auffälliger Befund: Die Laser-Haarentfernung-Seite - die stärkste Asset-Seite der Domain - bekommt nur sehr wenig organischen Traffic. Eine andere Behandlungsseite erhält ein Vielfaches davon, obwohl sie inhaltlich schwächer ist. Hier liegt das größte ungenutzte Potenzial.</p>
+      <h1>5. Technisches SEO</h1>
+      <h2>5.1 Site Audit Zusammenfassung laut Ubersuggest</h2>
+      <table>
+    <thead><tr><th>Metrik</th><th>Wert</th><th>Bewertung</th></tr></thead>
+    <tbody><tr><td>On-Page Score</td><td>68 / 100</td><td>MITTEL</td></tr><tr><td>Pages Crawled</td><td>36</td><td>OK</td></tr><tr><td>SEO Issues entdeckt</td><td>72</td><td>HOCH</td></tr><tr><td>Successful Pages</td><td>30</td><td>OK</td></tr><tr><td>Redirected Pages</td><td>5</td><td>OK</td></tr><tr><td>Broken Pages</td><td>1 (/kategorie-seite-alt/)</td><td>FIXEN</td></tr></tbody>
+  </table>
+      <h2>5.2 Site Speed - kritisches Mobile-Problem</h2>
+      <p>Desktop-Performance ist exzellent. Mobile dagegen liegt bei 8,58 Sekunden Ladezeit. Das ist deutlich über dem von Google empfohlenen Zielwert. Da ein großer Teil lokaler Suchanfragen mobil erfolgt, ist das ein zentrales Problem.</p>
+      <table>
+    <thead><tr><th>Metrik</th><th>Desktop</th><th>Mobile</th></tr></thead>
+    <tbody><tr><td>Load Time</td><td>1,04s GREAT</td><td>8,58s POOR</td></tr><tr><td>Interactivity</td><td>4,50ms GREAT</td><td>23,50ms GREAT</td></tr><tr><td>Visual Stability (CLS)</td><td>0,00 GREAT</td><td>0,00 GREAT</td></tr></tbody>
+  </table>
+      <h2>Was 8,58s Mobile Load Time bedeutet:</h2>
+      <ul><li>Schlechte Mobile-Performance kann Nutzerverhalten, Conversion und SEO-Signale negativ beeinflussen.</li><li>Mobile Nutzer brechen bei langen Ladezeiten häufiger ab.</li><li>Bei 8,58s verliert die Website wahrscheinlich einen relevanten Teil der mobilen Besucher, bevor die Seite vollständig geladen ist.</li><li>Die schwache Mobile-Performance kann ein zusätzlicher Faktor sein, erklärt den geringen Traffic aber nicht allein.</li></ul>
+    </main>
+    <footer><span>MaxContentSEO · SEO Audit Report · anonymisiertes Beispielaudit</span><span>Seite 4</span></footer>
+  </section>
+<section class="sheet portrait">
+    <main>
+      <p>Quick Win: Bilder optimieren, WebP einsetzen, Lazy Loading aktivieren und Bildgrößen komprimieren. Dadurch kann die Mobile Load Time erfahrungsgemäß deutlich reduziert werden. Aufwand: 30-60 Minuten mit einem Plugin wie Smush oder ShortPixel.</p>
+      <h2>5.3 Title Tags - zu lang oder zu kurz</h2>
+      <p>Ubersuggest hat 11 Seiten mit problematischen Title Tags identifiziert.</p>
+      <table>
+    <thead><tr><th>URL</th><th>Title, gekürzt</th></tr></thead>
+    <tbody><tr><td>/behandlungsseite-e/</td><td>[Studioname] - Fadenlifting in [Großstadt]: innovative Anti-Aging-Behandlung ...</td></tr><tr><td>/behandlungsseite-i/</td><td>[Studioname] - Peeling [Großstadt]: innovative Peeling-Behandlungen ...</td></tr><tr><td>/behandlungsseite-j/</td><td>[Studioname] - Microdermabrasion [Großstadt] ...</td></tr><tr><td>/behandlungsseite-h/</td><td>Premium Aquafacial und Gesichtsbehandlungen in [Großstadt] ...</td></tr><tr><td>/interne-seite-a/</td><td>[Studioname] - AGB</td></tr><tr><td>/behandlungsseite-f/</td><td>Aknebehandlung [Großstadt]</td></tr><tr><td>/behandlungsseite-k/</td><td>Dermakosmetik in [Großstadt]</td></tr><tr><td>/behandlungsseite-l/</td><td>Faltenbehandlung in [Großstadt]</td></tr></tbody>
+  </table>
+      <h2>5.4 Backlink-Profil - ca. 35-40 Verweisdomains, gemischte Qualität</h2>
+      <table>
+    <thead><tr><th>Quelle</th><th>Autorität</th><th>Spam-Risiko</th></tr></thead>
+    <tbody><tr><td>Externes Portal A</td><td>hoch</td><td>niedrig</td></tr><tr><td>Externes Portal B</td><td>mittel bis hoch</td><td>mittel</td></tr><tr><td>Externes Branchenverzeichnis C</td><td>mittel</td><td>erhöht</td></tr><tr><td>Bewertungsportal D</td><td>mittel</td><td>mittel</td></tr><tr><td>Telefon-/Bewertungsportal E</td><td>mittel</td><td>mittel</td></tr><tr><td>Anonymisiertes Branchenportal F</td><td>mittel bis gut</td><td>niedrig</td></tr></tbody>
+  </table>
+      <ul><li>Mehrere nahezu identische Pressemitteilungs-Backlinks mit ähnlichem Anchor-Text zu einem Service-Keyword. Das wirkt wie ein Linkspam-Pattern.</li><li>Anchor-Texte sind überwiegend generisch, zum Beispiel &quot;website&quot; oder &quot;[Website vertraulich]&quot;, statt keyword-orientiert.</li><li>Eine hochwertige Erwähnung in einer Top-Liste eines relevanten Branchenportals ist vorhanden.</li></ul>
+      <h1>6. Keyword-Chancen mit echten Daten</h1>
+      <h2>6.1 Hydrafacial-Cluster - Suchvolumen vorhanden, kein Ranking</h2>
+      <table class="compact">
+    <thead><tr><th>Keyword</th><th>Volumen</th><th>CPC</th><th>SEO Diff.</th><th>Prio</th></tr></thead>
+    <tbody><tr><td>hydrafacial kosten</td><td>880</td><td>EUR 1,14</td><td>22</td><td>P1</td></tr><tr><td>hydrafacial behandlung kosten</td><td>110</td><td>EUR 0,90</td><td>7</td><td>P1</td></tr><tr><td>hydrafacial kosten krankenkasse</td><td>70</td><td>EUR 0,00</td><td>9</td><td>P1</td></tr><tr><td>hydrafacial preisliste</td><td>20</td><td>EUR 0,70</td><td>41</td><td>P2</td></tr></tbody>
+  </table>
+    </main>
+    <footer><span>MaxContentSEO · SEO Audit Report · anonymisiertes Beispielaudit</span><span>Seite 5</span></footer>
+  </section>
+<section class="sheet portrait">
+    <main>
+      <p>Quick Win: &quot;hydrafacial behandlung kosten&quot; hat eine SEO Difficulty von 7. Das ist sehr leicht erreichbar. Aufgrund der niedrigen SEO Difficulty ist das Keyword ein guter Kandidat für priorisierte Content-Optimierung. Ein Top-10-Ranking ist möglich, aber nicht garantierbar.</p>
+      <h2>6.2 Laser-Cluster - größte Chance</h2>
+      <table class="compact">
+    <thead><tr><th>Keyword</th><th>Volumen</th><th>CPC</th><th>SEO Diff.</th><th>Prio</th></tr></thead>
+    <tbody><tr><td>laser haarentfernung [Großstadt]</td><td>1.300</td><td>EUR 5,97</td><td>27</td><td>P1</td></tr><tr><td>laser haarentfernung schulung [Großstadt]</td><td>20</td><td>EUR 1,01</td><td>28</td><td>P3</td></tr></tbody>
+  </table>
+      <p>Modellrechnung: Bei 1.300 Suchanfragen/Monat und einem CPC von EUR 5,97 kann ein starkes organisches Ranking rechnerisch einen relevanten Anzeigenwert ersetzen. Der tatsächliche Wert hängt von CTR, Conversion Rate und Buchungswert ab.</p>
+      <h2>6.3 Ubersuggests eigene SEO Opportunities</h2>
+      <table>
+    <thead><tr><th>Prio</th><th>Typ</th><th>Opportunity</th></tr></thead>
+    <tbody><tr><td>1</td><td>SEO ISSUE</td><td>29 Seiten mit Broken Links beheben</td></tr><tr><td>2</td><td>NEW CONTENT</td><td>Neuen Content erstellen für &quot;laser haarentfernung [Großstadt]&quot;</td></tr><tr><td>3</td><td>OPTIMIZE</td><td>Seite kann höher ranken für [Service-/Branchenkeyword A]</td></tr><tr><td>4</td><td>OPTIMIZE</td><td>Seite kann höher ranken für [Service-/Branchenkeyword B]</td></tr><tr><td>5</td><td>OPTIMIZE</td><td>Seite kann höher ranken für [Service-/Branchenkeyword C]</td></tr><tr><td>6</td><td>OPTIMIZE</td><td>Seite kann höher ranken für [Service-/Branchenkeyword D]</td></tr><tr><td>7</td><td>OPTIMIZE</td><td>Seite kann höher ranken für [Service-/Branchenkeyword E]</td></tr><tr><td>8</td><td>OPTIMIZE</td><td>Seite kann höher ranken für [Service-/Branchenkeyword F]</td></tr><tr><td>9</td><td>OPTIMIZE</td><td>Seite kann höher ranken für [Service-/Branchenkeyword G]</td></tr></tbody>
+  </table>
+      <h1>7. Content SEO</h1>
+      <h2>7.1 Duplicate Content - wiederholter Hautanalyse-Block auf 4+ Seiten</h2>
+      <p>Ein nahezu identischer Block zu einer Hautanalyse-Technologie erscheint auf mehreren Seiten, unter anderem auf Seiten zu apparativen Gesichtsbehandlungen, Gesichtspflege, Peeling und Aknebehandlung. Dazu kommen stark herstellerzentrierte Produktbeschreibungen, die sich wiederholen.</p>
+    </main>
+    <footer><span>MaxContentSEO · SEO Audit Report · anonymisiertes Beispielaudit</span><span>Seite 6</span></footer>
+  </section>
+<section class="sheet portrait">
+    <main>
+      <h2>7.2 Hersteller-Sprache statt Expertencontent</h2>
+      <p>Mehrere Service-Seiten lesen sich wie Produktkataloge.</p>
+      <table>
+    <thead><tr><th>Was fehlt</th><th>Warum wichtig</th></tr></thead>
+    <tbody><tr><td>Konkrete Kosten und Preise</td><td>Nutzer entscheiden häufig nach Preis. Ohne Preise springen sie leichter zur Konkurrenz.</td></tr><tr><td>Sitzungsanzahl und Ablauf</td><td>Reduziert Unsicherheit vor dem Termin.</td></tr><tr><td>Ausfallzeit und Kontraindikationen</td><td>Wichtig für Kaufentscheidungen bei medizin-nahen Treatments.</td></tr><tr><td>Vorher-/Nachher-Bilder</td><td>Mehrere direkte Wettbewerber nutzen solche Elemente als zentrales Vertrauenselement. Nur einsetzen, wenn für die jeweilige Behandlungsart rechtlich zulässig und sauber dokumentiert.</td></tr><tr><td>Eignung für Hauttypen</td><td>Differenziert die Seite von generischen Angeboten.</td></tr></tbody>
+  </table>
+      <h2>7.3 Kein Blog vorhanden</h2>
+      <p>Die Domain verpasst den gesamten informationsgetriebenen Traffic. Die wertvollsten Keywords aus Kapitel 6 erfordern dedizierten Blog-Content.</p>
+      <h1>8. Local SEO</h1>
+      <table>
+    <thead><tr><th>Kriterium</th><th>Status</th><th>Bewertung</th></tr></thead>
+    <tbody><tr><td>Google-Bewertungen</td><td>starkes Bewertungsprofil</td><td>STARK</td></tr><tr><td>NAP onsite</td><td>Konsistent auf Start- und Kontaktseite</td><td>OK</td></tr><tr><td>NAP offsite</td><td>In einem externen Branchenverzeichnis sind falsche Öffnungszeiten hinterlegt</td><td>PROBLEM</td></tr><tr><td>LocalBusiness Schema-Markup</td><td>Fehlt komplett</td><td>FEHLT</td></tr><tr><td>Relevantes Buchungsportal</td><td>Nicht gelistet</td><td>FEHLT</td></tr><tr><td>Stadtteil-Landingpages</td><td>Nicht vorhanden</td><td>FEHLT</td></tr><tr><td>Standort-Signal im Content</td><td>Nur schwach verankert</td><td>SCHWACH</td></tr></tbody>
+  </table>
+      <h1>9. Konkurrenzanalyse - anonymisierte Vergleichsdaten</h1>
+      <table class="competitors">
+    <thead><tr><th>Domain</th><th>Gemeinsame Keywords</th><th>Keyword-Gap</th><th>Geschätzter Traffic</th><th>Backlinks</th></tr></thead>
+    <tbody><tr><td>[Website vertraulich]</td><td>-</td><td>-</td><td>ca. 190</td><td>über 2.000</td></tr><tr><td>Wettbewerber A</td><td>ca. 20</td><td>ca. 40</td><td>ca. 150-200 Visits/Monat</td><td>200-300</td></tr><tr><td>Wettbewerber B</td><td>ca. 10</td><td>ca. 50</td><td>ca. 200-250 Visits/Monat</td><td>unter 100</td></tr><tr><td>Wettbewerber C</td><td>nicht ausgewiesen</td><td>ca. 30</td><td>unter 100 Visits/Monat</td><td>200-300</td></tr></tbody>
+  </table>
+      <ul><li>Lokales Beauty-Studio in einer deutschen Großstadt (anonymisiert) hat mehr organischen Traffic als zwei der drei betrachteten Wettbewerber, aber weniger als der stärkste Vergleichswettbewerber.</li><li>Der Keyword-Gap zum stärksten Wettbewerber liegt grob bei ca. 50 Keywords. Das ist die direkte Content-Roadmap.</li><li>Die auditierte Website hat zwar über 2.000 Backlinks, aber nur ca. 35-40 Verweisdomains. Die Backlink-Diversität ist niedriger, als die reine Backlink-Zahl vermuten lässt.</li><li>Ein Wettbewerber erreicht mit deutlich weniger Backlinks mehr Traffic. Das deutet auf bessere Content-Qualität und bessere Keyword-Abdeckung hin.</li></ul>
+    </main>
+    <footer><span>MaxContentSEO · SEO Audit Report · anonymisiertes Beispielaudit</span><span>Seite 7</span></footer>
+  </section>
+<section class="sheet landscape">
+    <main>
+      <h1>10. Priorisierter Maßnahmenplan</h1>
+      <h2>Priorität 1 - Quick Wins, 0-14 Tage</h2>
+      <table class="plan">
+    <thead><tr><th>#</th><th>Maßnahme</th><th>Aufwand</th><th>Effekt</th></tr></thead>
+    <tbody><tr><td>1</td><td>Broken Link /kategorie-seite-alt/ beheben, 29 Seiten</td><td>5 Min.</td><td>Saubere interne Verlinkung, weniger Fehlerseiten</td></tr><tr><td>2</td><td>Tippfehler im Template korrigieren, alle 6+ Stellen</td><td>15 Min.</td><td>Vertrauen, Markenkonsistenz</td></tr><tr><td>3</td><td>Geräte-/Lasertyp vereinheitlichen</td><td>30 Min.</td><td>Trust-Signal</td></tr><tr><td>4</td><td>Copyright: [Gerätehersteller] -&gt; [Studioname]</td><td>5 Min.</td><td>E-E-A-T-Signal</td></tr><tr><td>5</td><td>/bestaetigungsseite-a/ und /bestaetigungsseite-b/ auf noindex setzen</td><td>5 Min.</td><td>Weniger Fehlerseiten, bessere Nutzererfahrung</td></tr><tr><td>6</td><td>24 Duplicate Meta Descriptions individualisieren</td><td>2-3 Std.</td><td>CTR, Ranking-Differenzierung</td></tr><tr><td>7</td><td>Title Tags zu lang/zu kurz fixen, 11 Seiten</td><td>1-2 Std.</td><td>Bessere CTR, Click-Through</td></tr><tr><td>8</td><td>Bilder optimieren: WebP, Lazy Loading - Mobile Load Time von 8,58s auf unter 3s senken</td><td>30-60 Min.</td><td>Kritisch: Mobile Speed, Core Web Vitals, Conversions</td></tr><tr><td>9</td><td>LocalBusiness Schema-Markup einrichten</td><td>30 Min.</td><td>Lokale Sichtbarkeit</td></tr><tr><td>10</td><td>Falsche Öffnungszeiten in externem Branchenverzeichnis korrigieren</td><td>15 Min.</td><td>NAP-Konsistenz</td></tr></tbody>
+  </table>
+      <h2>Priorität 2 - Wachstum, 30-90 Tage</h2>
+      <table class="plan">
+    <thead><tr><th>#</th><th>Maßnahme</th><th>Aufwand</th><th>Effekt</th></tr></thead>
+    <tbody><tr><td>11</td><td>Laser-Seite gezielt für &quot;laser haarentfernung [Großstadt]&quot; optimieren</td><td>4-6 Std.</td><td>1.300 Suchvolumen/Monat erschließen</td></tr><tr><td>12</td><td>Blog-Artikel: &quot;Hydrafacial Kosten [Großstadt]&quot; (Vol. 880, SEO-Diff. 22)</td><td>Mittel</td><td>Hochvolumiges Keyword erschließen</td></tr><tr><td>13</td><td>Blog-Artikel: &quot;Hydrafacial Behandlung Kosten&quot; (Vol. 110, SEO-Diff. 7)</td><td>Mittel</td><td>Sehr leicht erreichbares Top-10-Ranking</td></tr><tr><td>14</td><td>Interne Verlinkung: Footer-only -&gt; contextual</td><td>3-4 Std.</td><td>Link-Juice, Crawling</td></tr><tr><td>15</td><td>Wiederholte Hautanalyse-Blöcke individualisieren</td><td>Mittel</td><td>Content-Einzigartigkeit</td></tr><tr><td>16</td><td>Profil auf relevantem Buchungsportal erstellen</td><td>2-3 Std.</td><td>Zusätzlicher Buchungskanal</td></tr><tr><td>17</td><td>Stadtteil-Landingpage für lokales Studio-Keyword erstellen</td><td>Mittel</td><td>Stadtteil-Suchanfragen</td></tr><tr><td>18</td><td>Bewertungsstrategie: QR-Code + WhatsApp-Follow-up</td><td>Laufend</td><td>Mehr Bewertungen</td></tr></tbody>
+  </table>
+    </main>
+    <footer><span>MaxContentSEO · SEO Audit Report · anonymisiertes Beispielaudit</span><span>Seite 8</span></footer>
+  </section>
+<section class="sheet landscape">
+    <main>
+      <h2>Priorität 2 - Wachstum, 30-90 Tage</h2>
+      <table class="plan">
+    <thead><tr><th>#</th><th>Maßnahme</th><th>Aufwand</th><th>Effekt</th></tr></thead>
+    <tbody><tr><td>19</td><td>Medienhinweis prominent auf Startseite platzieren</td><td>1 Std.</td><td>Vertrauen, USP</td></tr></tbody>
+  </table>
+      <h2>Priorität 3 - langfristig, 3-12 Monate</h2>
+      <table class="plan">
+    <thead><tr><th>#</th><th>Maßnahme</th><th>Aufwand</th><th>Effekt</th></tr></thead>
+    <tbody><tr><td>20</td><td>Content-Cluster: Laser als Pillar + 5 Cluster-Artikel</td><td>Hoch</td><td>Thematische Autorität</td></tr><tr><td>21</td><td>Service-Seiten neu schreiben: Expertencontent statt Herstellertext</td><td>Hoch</td><td>Differenzierung, E-E-A-T</td></tr><tr><td>22</td><td>Backlink-Aufbau: hochwertige Branchenseiten, PR</td><td>Hoch</td><td>Domain-Authority steigern</td></tr><tr><td>23</td><td>Google Search Console laufend monitoren</td><td>Laufend</td><td>Früherkennung, Monitoring</td></tr></tbody>
+  </table>
+    </main>
+    <footer><span>MaxContentSEO · SEO Audit Report · anonymisiertes Beispielaudit</span><span>Seite 9</span></footer>
+  </section>
+<section class="sheet landscape">
+    <main>
+      <h1>11. Was bedeutet das für Ihr Studio?</h1>
+      <p>Dieses Audit zeigt drei Dinge klar: Welche Fehler aktuell Umsatz kosten, welche Maßnahmen zuerst kommen sollten und welche Themen langfristig Wachstum bringen. Der nächste Schritt muss kein großes Projekt sein - die Quick Wins aus Priorität 1 lassen sich in wenigen Stunden umsetzen.</p>
+      <h2>Angebot &amp; nächste Schritte</h2>
+      <p>Das größte Sofort-Potenzial: Die Laser-Seite optimieren. Dadurch können die 1.300 monatlichen Suchanfragen nach &quot;laser haarentfernung [Großstadt]&quot; tatsächlich erschlossen werden.</p>
+      <p>Modellrechnung: Bei 1.300 Suchanfragen/Monat und einem CPC von EUR 5,97 kann ein starkes organisches Ranking rechnerisch einen relevanten Anzeigenwert ersetzen. Der tatsächliche Wert hängt von CTR, Conversion Rate und Buchungswert ab.</p>
+      <p>Bereits ein einziger Neukunde über Google kann dieses Audit mehrfach refinanzieren.</p>
+      <table class="offer">
+    <thead><tr><th>Paket</th><th>Preis</th><th>Leistung</th></tr></thead>
+    <tbody><tr><td>Premium-Audit + Quick Fix</td><td>490 EUR (Audit) + 200 EUR Umsetzung*</td><td>10 Quick Wins (Prio 1): Broken Links beheben; Tippfehler korrigieren; Geräte-/Lasertyp vereinheitlichen; 24 Meta Descriptions neu schreiben; 11 Title Tags fixen; Bilder optimieren; Schema-Markup einrichten; NAP bereinigen.</td></tr><tr><td>SEO Wachstumspaket</td><td>990 EUR / Monat</td><td>Laufende Betreuung: 2 SEO-Artikel/Monat; Laser-Seite Richtung Top-10 optimieren; Hydrafacial-Cluster aufbauen; Stadtteil-Landingpages erstellen; GBP + relevantes Buchungsportal optimieren; Bewertungsstrategie einrichten; monatliches Reporting.</td></tr><tr><td>Premium SEO</td><td>1.490 EUR / Monat</td><td>Vollständige Betreuung: Alles aus dem Wachstumspaket; 4 Artikel pro Monat; Service-Seiten neu schreiben; Backlink-Aufbau; Tech SEO laufend; Konkurrenz-Monitoring.</td></tr></tbody>
+  </table>
+      <p class="small">*Der Audit-Betrag (490 EUR) wird vollständig auf das Quick Fix Paket angerechnet. Effektiver Gesamtpreis: 690 EUR.</p>
+      <p>Möchten Sie wissen, welche 3 Punkte auf Ihrer Website zuerst geprüft werden sollten? Senden Sie mir Ihre Website - ich schicke Ihnen eine kurze Ersteinschätzung.</p>
+      <p class="signature">MaxContentSEO</p>
+      <p class="signature">Georg Stopfer</p>
+      <p class="signature">georg@maxcontentseo.de</p>
+      <p class="signature">maxcontentseo.de</p>
+      <p class="small">Stand: 2026 - Befunde basieren auf Live-Website-Analyse, Google-Suche, Konkurrenzrecherche, KI-gestützte Tiefenrecherche, Ubersuggest Site Audit, Rank Tracking, Competitor Analysis und Backlink-Daten.</p>
+    </main>
+    <footer><span>MaxContentSEO · SEO Audit Report · anonymisiertes Beispielaudit</span><span>Seite 10</span></footer>
+  </section>
+</body>
+</html>
