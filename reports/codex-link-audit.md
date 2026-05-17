@@ -131,7 +131,7 @@ Gefundene alte WordPress-Ziele:
 - `https://maxcontentseo-dfkesda1v3.live-website.com/kontakt` — kein Statuscode erhalten
 - `https://maxcontentseo-dfkesda1v3.live-website.com/privacy-policy` — kein Statuscode erhalten
 - `https://maxcontentseo-dfkesda1v3.live-website.com/seo-audit-lingqi-head-spa-muenchen` — `200 OK`
-- `https://maxcontentseo-dfkesda1v3.live-website.com/seo-audit-medical-beauty-muenchen` — `200 OK`
+- `https://maxcontentseo-dfkesda1v3.live-website.com/seo-audit-Kosmetikstudio München` — `200 OK`
 
 ## Nicht-HTTP-Links
 
