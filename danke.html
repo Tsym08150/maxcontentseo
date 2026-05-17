@@ -191,7 +191,7 @@ a { color: inherit; }
         <h1>Ihr Audit-Muster ist bereit</h1>
         <p>Klicken Sie unten um das PDF sofort herunterzuladen.</p>
         <div>
-          <a class="button-primary" href="assets/audit-beispiel.pdf">PDF herunterladen</a>
+          <a class="button-primary" href="assets/audit-beispiel.pdf" download="Muster-Premium-Audit-Kosmetikstudio.pdf">PDF herunterladen</a>
         </div>
       </div>
     </section>
@@ -208,5 +208,12 @@ a { color: inherit; }
       <p>© 2026 Max Content SEO — Georg Stopfer</p>
     </div>
   </footer>
+  <script>
+    window.onload = function() {
+      setTimeout(function() {
+        window.location.href = 'assets/audit-beispiel.pdf';
+      }, 1000);
+    }
+  </script>
 </body>
 </html>
