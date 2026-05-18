@@ -197,6 +197,10 @@ jeder kopierte Stockfoto-Look schwächt das Geschäft. Im Zweifel:
 weniger ist mehr.
 ## PowerShell Outreach Scripts — Pflicht-Checks vor Live-Versand
 
+### Outreach-Wording
+- Anrede: `Hallo [NAME],` — niemals `Sehr geehrte/r`
+- Keine URLs im Outreach-Body
+
 ### Encoding-Checks (vor jedem Batch)
 - `-Encoding UTF8` im Send-MailMessage-Aufruf gesetzt?
 - SMTP-Body-String explizit als UTF-8 kodiert?

@@ -14,6 +14,12 @@ Führe einen vollständigen Domain-Audit für `$ARGUMENTS` aus.
 
 **File-Naming:** `<sanitized-domain>` = lowercased, `.` → `-`.
 
+## Hard Constraints Outreach
+
+- Anrede IMMER `Hallo [NAME],` — niemals `Sehr geehrte/r`.
+- KEIN direkter Link im Outreach-Body.
+- Website-Hinweis nur als Satz ohne URL: `Auf meiner Website zeige ich, wie eine solche Analyse konkret aussieht.`
+
 ## Hook-Standard v2 — HYBRID-FORMAT (Pflicht)
 
 Kombiniert Codex-Wertschätzung mit Claude-Code-Beweisführung. Single-Paragraph-Template:
