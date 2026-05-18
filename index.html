@@ -686,10 +686,33 @@ textarea {
   gap: var(--space-md);
 }
 
+.pricing-block {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.pricing-block__head {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.pricing-block__head h3 {
+  margin: 0;
+  font-size: clamp(1.35rem, 3vw, 1.7rem);
+}
+
+.pricing-divider {
+  border: 0;
+  border-top: 1px solid var(--border);
+  width: 100%;
+  margin: 0;
+}
+
 .pricing-card {
   position: relative;
   display: grid;
   gap: 1rem;
+  align-content: start;
 }
 
 .pricing-card--featured {
@@ -719,6 +742,12 @@ textarea {
   color: var(--text-muted);
   display: grid;
   gap: 0.55rem;
+}
+
+.pricing-card .button-primary,
+.pricing-card .button-secondary {
+  align-self: end;
+  justify-content: center;
 }
 
 .pricing-note {
@@ -978,9 +1007,12 @@ textarea {
   }
 
   .solutions-grid,
-  .process-grid,
-  .pricing-grid {
+  .process-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .pricing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .credibility-grid {
@@ -997,10 +1029,6 @@ textarea {
 
   .pricing-grid {
     align-items: stretch;
-  }
-
-  .pricing-card--featured {
-    transform: translateY(-0.45rem);
   }
 
   .contact-grid {
@@ -1082,7 +1110,7 @@ textarea {
               <span>Referenzkunde aktiv: LingQi TCM München</span>
             </div>
             <div class="hero__metric">
-              <strong>490€</strong>
+              <strong>1.299€</strong>
               <span>Audit-Einstieg ohne Agentur-Vertrag</span>
             </div>
             <div class="hero__metric">
@@ -1178,7 +1206,7 @@ textarea {
             <p>LingQi TCM München</p>
           </article>
           <article class="card metric-card">
-            <strong>490€</strong>
+            <strong>1.299€</strong>
             <h3>Audit-Einstieg</h3>
             <p>Ohne Agentur-Vertrag</p>
           </article>
@@ -1421,62 +1449,93 @@ textarea {
         <div class="section-head">
           <div class="section-kicker">Preise ohne Vertragsdruck</div>
           <h2 class="section-title">Ein klarer Einstieg, danach entscheiden Sie</h2>
-          <p class="section-intro">Sie können mit einem einmaligen Audit starten oder direkt eine laufende Betreuung wählen. Die Preise bleiben übersichtlich, und Sie entscheiden, wie viel Unterstützung Sie wirklich brauchen.</p>
+          <p class="section-intro">Sie können mit einem einmaligen Audit starten oder eine laufende Betreuung wählen. Die Preise bleiben übersichtlich, und Sie entscheiden, wie viel Unterstützung Sie wirklich brauchen.</p>
         </div>
-        <div class="card-grid pricing-grid">
-          <article class="card pricing-card">
-            <div>
-              <h3>Premium-Audit</h3>
-              <div class="pricing-card__price">
-                <strong>490€</strong>
-                <span>einmalig · Referenzaktion, statt 1.290€</span>
+
+        <div class="pricing-block">
+          <div class="pricing-block__head">
+            <h3>Einmaliger Einstieg</h3>
+          </div>
+          <div class="card-grid pricing-grid">
+            <article class="card pricing-card pricing-card--featured">
+              <div class="pill">Empfohlen</div>
+              <div>
+                <h3>Premium-Audit</h3>
+                <div class="pricing-card__price">
+                  <strong>1.299€</strong>
+                  <span>einmalig · zzgl. MwSt.</span>
+                </div>
               </div>
-            </div>
-            <ul>
-              <li>15-seitiges PDF</li>
-              <li>24 Maßnahmen</li>
-              <li>11 Kapitel</li>
-              <li>3 Wettbewerber</li>
-              <li>Persönliche Strategie-Einschätzung per E-Mail</li>
-            </ul>
-            <a class="button-secondary" href="#kontakt">Audit anfragen</a>
-          </article>
-          <article class="card pricing-card pricing-card--featured">
-            <div class="pill">Meist gewählt</div>
-            <div>
-              <h3>SEO-Betreuung</h3>
-              <div class="pricing-card__price">
-                <strong>ab 499€</strong>
-                <span>pro Monat</span>
+              <ul>
+                <li>15-seitiges PDF</li>
+                <li>24 Maßnahmen</li>
+                <li>11 Kapitel</li>
+                <li>3 Wettbewerber</li>
+                <li>Persönliche Strategie-Einschätzung per E-Mail</li>
+              </ul>
+              <a class="button-primary" href="#kontakt">Audit anfragen</a>
+            </article>
+            <article class="card pricing-card">
+              <div>
+                <h3>Quick Fix</h3>
+                <div class="pricing-card__price">
+                  <strong>699€</strong>
+                  <span>einmalig · aufbauend auf Audit</span>
+                </div>
               </div>
-            </div>
-            <ul>
-              <li>2 Artikel plus Report</li>
-              <li>Priorisierte Umsetzung statt Dauer-Meeting</li>
-              <li>Für Studios, die sichtbar wachsen wollen</li>
-            </ul>
-            <a class="button-primary" href="#kontakt">Betreuung anfragen</a>
-          </article>
-          <article class="card pricing-card">
-            <div>
-              <h3>Premium</h3>
-              <div class="pricing-card__price">
-                <strong>ab 899€</strong>
-                <span>pro Monat</span>
-              </div>
-            </div>
-            <ul>
-              <li>4 Artikel plus Tech-SEO und Google Business Profil</li>
-              <li>Mehr Umsetzungstiefe für lokale Sichtbarkeit</li>
-              <li>Für Studios mit höherem Bedarf an Content und Struktur</li>
-            </ul>
-            <a class="button-secondary" href="#kontakt">Premium anfragen</a>
-          </article>
+              <ul>
+                <li>Umsetzung der Top-3-Hebel</li>
+                <li>Kein Agentur-Vertrag</li>
+                <li>Ergebnis in 5–7 Werktagen</li>
+              </ul>
+              <a class="button-secondary" href="#kontakt">Quick Fix anfragen</a>
+            </article>
+          </div>
         </div>
+
+        <hr class="pricing-divider">
+
+        <div class="pricing-block">
+          <div class="pricing-block__head">
+            <div class="section-kicker">Laufende Betreuung</div>
+            <h3>Monatlich kündbar</h3>
+          </div>
+          <div class="card-grid pricing-grid">
+            <article class="card pricing-card">
+              <div>
+                <h3>SEO-Betreuung</h3>
+                <div class="pricing-card__price">
+                  <strong>ab 499€</strong>
+                  <span>pro Monat</span>
+                </div>
+              </div>
+              <ul>
+                <li>2 Artikel plus Report</li>
+                <li>Priorisierte Umsetzung</li>
+                <li>Kein Dauer-Meeting</li>
+              </ul>
+              <a class="button-secondary" href="#kontakt">Betreuung anfragen</a>
+            </article>
+            <article class="card pricing-card">
+              <div>
+                <h3>Premium</h3>
+                <div class="pricing-card__price">
+                  <strong>ab 899€</strong>
+                  <span>pro Monat</span>
+                </div>
+              </div>
+              <ul>
+                <li>4 Artikel plus Tech-SEO</li>
+                <li>Google Business Profil</li>
+                <li>Mehr Umsetzungstiefe</li>
+              </ul>
+              <a class="button-secondary" href="#kontakt">Premium anfragen</a>
+            </article>
+          </div>
+        </div>
+
         <div class="pricing-note">
           <p class="muted">Keine Mindestlaufzeit · Alle Preise zzgl. MwSt.</p>
-          <p class="muted">Quick Fix: 690€ — Umsetzung der Top-3-Hebel aus dem Audit.</p>
-          <div class="pill">Monatlich kündbar</div>
         </div>
       </div>
     </section>
