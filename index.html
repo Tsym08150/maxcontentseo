@@ -410,6 +410,14 @@ textarea {
   object-fit: cover;
 }
 
+.feature-card__media--contain {
+  background: #142037;
+}
+
+.feature-card__media--contain img {
+  object-fit: contain;
+}
+
 .feature-card__body {
   display: grid;
   gap: 0.7rem;
@@ -1131,7 +1139,9 @@ textarea {
               <h2>Blog</h2>
             </div>
             <a class="feature-card" href="blog/google-bewertung-loeschen.html">
-              <div class="feature-card__media" aria-hidden="true"></div>
+              <div class="feature-card__media feature-card__media--contain">
+                <img src="/assets/google-bewertung-loeschen.png" alt="Negative Google-Bewertung löschen lassen">
+              </div>
               <div class="feature-card__body">
                 <div class="feature-card__tag">Local SEO</div>
                 <h3>Google Bewertung löschen</h3>
