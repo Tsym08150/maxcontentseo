@@ -167,6 +167,14 @@ img { display: block; max-width: 100%; }
   object-fit: cover;
 }
 
+.blog-card__media--contain {
+  background: #142037;
+}
+
+.blog-card__media--contain img {
+  object-fit: contain;
+}
+
 .blog-card__body {
   display: grid;
   gap: 0.7rem;
@@ -264,7 +272,9 @@ img { display: block; max-width: 100%; }
     <section class="section">
       <div class="container blog-grid">
         <a class="blog-card" href="google-bewertung-loeschen.html">
-          <div class="blog-card__media" aria-hidden="true"></div>
+          <div class="blog-card__media blog-card__media--contain">
+            <img src="/assets/google-bewertung-loeschen.png" alt="Negative Google-Bewertung löschen lassen">
+          </div>
           <div class="blog-card__body">
             <div class="blog-card__tag">Local SEO</div>
             <h2>Google Bewertung löschen</h2>
