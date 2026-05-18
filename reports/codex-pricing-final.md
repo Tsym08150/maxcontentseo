@@ -7,7 +7,7 @@
 
 ## Untracked Dateien
 
-- `reports/codex-pricing-final.md`
+- Keine. Der Report war bereits vorhanden und wurde für diesen Run aktualisiert.
 
 ## Was wurde geändert
 
@@ -18,7 +18,10 @@
     - SEO-Audit für `499€`
     - Premium-Audit für `1.299€` mit `Empfohlen`-Badge und grünem Rahmen
   - Hinweis unter Block 1 ergänzt: `Nach dem Audit optional: Quick Fix — Umsetzung der Top-3-Hebel für 699€.`
-  - Block `Laufende Betreuung · Monatlich kündbar` mit SEO-Betreuung und Premium aktualisiert.
+  - Block `Laufende Betreuung · Monatlich kündbar` mit SEO-Betreuung und Premium aktualisiert:
+    - SEO-Betreuung: `2 SEO-Artikel pro Monat`, `Monatlicher Ranking-Report (GSC)*`, `Keyword-Anpassungen bei Bedarf`, `Kein Mindestvertrag`.
+    - Premium: `4 SEO-Artikel pro Monat`, `Monatlicher Ranking-Report (GSC)*`, `Tech-SEO & Google Business Profil`, `Mehr Umsetzungstiefe`.
+  - Sternchen-Hinweis unter Block 2 ergänzt: `* Für den monatlichen Report wird ein GSC-Lesezugang oder Screenshot benötigt. Einrichtung dauert 5 Minuten.`
   - Block `Einzelne Blogartikel · Ohne Abo` mit 1 Blogartikel und 3 Artikel-Paket ergänzt.
   - Fußzeile `Keine Mindestlaufzeit · Alle Preise zzgl. MwSt.` beibehalten.
   - Pricing-CSS angepasst:
@@ -27,6 +30,7 @@
     - CTA-Buttons haben `margin-top: 1rem`.
     - Dreispaltiger Desktop-Modifier für den ersten Pricing-Block ergänzt.
     - Sekundärer Kartenhintergrund und kleine Hinweisbox ergänzt.
+    - Kleine sekundäre Fußnote für den GSC-Hinweis ergänzt.
 
 ## Was wurde bewusst nicht geändert
 
