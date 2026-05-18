@@ -2,25 +2,27 @@
 subject: "Kurze Frage zu Ihrer Website in {stadt}"
 version: "audit-v2"
 created_at: "2026-05-13"
-description: "5-Absatz-Sales-Struktur: Problem (Hook P1) → Konsequenz (Hook P2) → Hoffnung → Audit-Wertigkeit → CTA. Hook (P1+P2) kommt aus /audit Skill — reports/outreach-<domain>-*.txt. Keine Tool-Sprache, Konsequenz-Satz Pflicht (Anfragen → Mitbewerber)."
+description: "5-Absatz-Sales-Struktur: Problem (Hook P1) -> Konsequenz (Hook P2) -> Hoffnung -> Audit-Wertigkeit -> CTA. Hook (P1+P2) kommt aus /audit Skill - reports/outreach-<domain>-*.txt. Keine Tool-Sprache, Konsequenz-Satz Pflicht (Anfragen -> Mitbewerber)."
 ---
-{name},
+Hallo [NAME],
 
 {audit_hook}
 
-Die gute Nachricht: oft reichen wenige gezielte Anpassungen, um wieder lokal sichtbar zu werden — das Angebot stimmt ja.
+Die gute Nachricht: oft reichen wenige gezielte Anpassungen, um wieder lokal sichtbar zu werden - das Angebot stimmt ja.
 
-Wenn Sie möchten, schicke ich Ihnen einen kurzen Sichtbarkeitscheck mit den 3 wichtigsten Stellschrauben in priorisierter Reihenfolge — konkret auf Ihre Seite bezogen, ohne Werbeaussagen.
+Wenn Sie moechten, schicke ich Ihnen einen kurzen Sichtbarkeitscheck mit den 3 wichtigsten Stellschrauben in priorisierter Reihenfolge - konkret auf Ihre Seite bezogen, ohne Werbeaussagen.
 
-Ein kurzes „Ja" per Antwort genügt.
+Auf meiner Website zeige ich, wie eine solche Analyse konkret aussieht.
 
-Mit freundlichen Grüßen
+Ein kurzes "Ja" per Antwort genuegt.
+
+Mit freundlichen Gruessen
 Georg Stopfer
 
 ---
 
-MaxContentSEO – Inhaber Georg Stopfer
-An den Höfen 1a, 04626 Schmölln
+MaxContentSEO - Inhaber Georg Stopfer
+An den Hoefen 1a, 04626 Schmoelln
 E-Mail: georg@maxcontentseo.de
 Web: maxcontentseo.de
 
@@ -28,10 +30,10 @@ Hinweis nach UWG/DSGVO:
 Sie erhalten diese Mail als gewerblicher Ansprechpartner
 Ihrer Website. Rechtsgrundlage: berechtigtes Interesse
 (Art. 6 Abs. 1 lit. f DSGVO) zur Anbahnung einer
-B2B-Geschäftsbeziehung im Bereich SEO-Dienstleistungen.
-Sollte ich keine Rückmeldung erhalten, sende ich einmalig
-eine kurze Erinnerung – danach nicht weiter.
+B2B-Geschaeftsbeziehung im Bereich SEO-Dienstleistungen.
+Sollte ich keine Rueckmeldung erhalten, sende ich einmalig
+eine kurze Erinnerung - danach nicht weiter.
 
 Kein Interesse? Eine kurze Antwort mit "Bitte streichen"
-genügt – ich entferne Ihre Adresse umgehend und dauerhaft.
-Widerspruch nach Art. 21 DSGVO ist jederzeit möglich.
+genuegt - ich entferne Ihre Adresse umgehend und dauerhaft.
+Widerspruch nach Art. 21 DSGVO ist jederzeit moeglich.
