@@ -138,6 +138,34 @@ Vollständige Liste in `audit.md`. Highlights v2.1:
 
 Stufen 1+2 sind das Two-Source-Verifikations-Setup. Stufen 3+4 sind Sales-Layer-Reviews, keine zusätzliche Tool-Verifikation.
 
+## Pipeline-v2-Scoring
+
+### Kriterien
+
+1. Kein Blog: +1
+2. Technische Fehler (SSL, Speed oder Crawl-Score < 60): +1
+3. DA < 15: +1
+4. Traffic < 50 pro Monat: +1
+5. Ranking schwach (nicht Seite 1, kein Local Pack): +2
+6. GMB schwach (< 20 Bewertungen oder < 4,0 Sterne): +1
+7. Brand-Traffic-Abhaengigkeit: +1
+
+### Kriterium 7: Brand-Traffic-Abhaengigkeit
+
++1 wenn mehr als 80 % des organischen Traffics ueber den Studionamen oder andere Brand-Keywords laufen und gleichzeitig wichtige Service-Keywords (z. B. "Jetpeel Hamburg") nicht auf Seite 1 stehen.
+
+0 Punkte, wenn ein ausgewogener Traffic-Mix aus Brand- und Service-Keywords vorliegt.
+
+**Begruendung:** Studios mit starker Marke, aber schwacher Service-Sichtbarkeit sind hochwertige Leads. Das alte System unterschaetzt sie, weil vorhandener Brand-Traffic die echte Local-SEO-Luecke verdeckt.
+
+### Prioritaet
+
+- Score 6-8: Pipeline v2 Audit
+- Score 4-5: Variante C
+- Score < 4: Nicht kontaktieren
+
+Maximaler Score: 8 Punkte.
+
 ## Status-Tracking
 
 Siehe `audit-queue.md` — Tracking-Tabelle mit den vier Spalten Codex / Claude Code / Claude.ai / Send. BLOCKED-Status mit aktiver Blocker-Sektion für Re-Run-Anweisungen.
