@@ -310,6 +310,50 @@ footer .footer-links a { margin: 0 1rem; }
   }
 }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://maxcontentseo.de/#organization",
+      "name": "MaxContentSEO",
+      "description": "SEO-Beratung für Kosmetik- und Wellnessstudios in Deutschland",
+      "url": "https://maxcontentseo.de/",
+      "email": "georg@maxcontentseo.de",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Hauptstr. 29",
+        "postalCode": "85551",
+        "addressLocality": "Kirchheim b. München",
+        "addressCountry": "DE"
+      },
+      "founder": {"@id": "https://maxcontentseo.de/#georg"},
+      "areaServed": [
+        {"@type": "City", "name": "München"},
+        {"@type": "City", "name": "Hamburg"},
+        {"@type": "City", "name": "Frankfurt"},
+        {"@type": "City", "name": "Berlin"}
+      ],
+      "knowsAbout": [
+        "Local SEO",
+        "Suchmaschinenoptimierung für Beauty-Studios",
+        "Suchmaschinenoptimierung für Wellness-Studios",
+        "Suchmaschinenoptimierung für TCM-Praxen"
+      ],
+      "priceRange": "€€"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://maxcontentseo.de/#georg",
+      "name": "Georg Stopfer",
+      "url": "https://maxcontentseo.de/",
+      "jobTitle": "SEO-Berater",
+      "worksFor": {"@id": "https://maxcontentseo.de/#organization"}
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -470,8 +514,8 @@ footer .footer-links a { margin: 0 1rem; }
 <footer>
   <div class="container">
     <div class="footer-links">
-      <a href="/index.html#impressum">Impressum</a>
-      <a href="/index.html#datenschutz">Datenschutz</a>
+      <a href="/impressum.html">Impressum</a>
+      <a href="/datenschutz.html">Datenschutz</a>
       <a href="mailto:georg@maxcontentseo.de">E-Mail</a>
     </div>
     <p>© 2026 MaxContentSEO — Georg Stopfer</p>
