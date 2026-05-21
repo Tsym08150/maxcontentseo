@@ -462,6 +462,41 @@ button, input { font: inherit; }
   .source-row { grid-template-columns: 1fr; }
 }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": "https://maxcontentseo.de/audit-beispiel.html#service",
+      "name": "Premium SEO-Audit für Kosmetikstudios",
+      "description": "Umfassender SEO-Audit speziell für lokale Kosmetik-, Wellness- und TCM-Studios. 15-seitiges PDF mit 24 priorisierten Maßnahmen, Keyword-Analyse, Wettbewerbsanalyse und Strategie-Einschätzung.",
+      "serviceType": "SEO-Audit",
+      "provider": {"@id": "https://maxcontentseo.de/#organization"},
+      "areaServed": {"@type": "Country", "name": "DE"},
+      "audience": {
+        "@type": "BusinessAudience",
+        "audienceType": "Kosmetikstudios, Wellness-Studios, TCM-Praxen"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "1299",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "url": "https://maxcontentseo.de/audit-beispiel.html",
+        "category": "SEO-Audit",
+        "description": "Premium SEO-Audit, 15-seitiges PDF mit 24 Maßnahmen und 3 Wettbewerber-Analysen"
+      }
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://maxcontentseo.de/#organization",
+      "name": "MaxContentSEO",
+      "url": "https://maxcontentseo.de/"
+    }
+  ]
+}
+</script>
 </head>
 <body>
   <nav class="site-nav" aria-label="Hauptnavigation">
