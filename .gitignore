@@ -2,6 +2,7 @@
 .env.*
 !.env.example
 outreach-cli/.env
+tools/config.ps1
 
 # Audit-Outputs (Drittfirma-PII + interne Sales-Strategie)
 reports/audit-*.md
