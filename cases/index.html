@@ -202,6 +202,13 @@ img { display: block; max-width: 100%; }
   border-radius: var(--radius);
 }
 
+.case-card__media .case-card__image--lingqi {
+  width: min(100%, 16rem);
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+
 .case-card__placeholder {
   width: min(100%, 18rem);
   aspect-ratio: 4 / 5;
@@ -345,7 +352,7 @@ img { display: block; max-width: 100%; }
         <div class="case-grid">
           <article class="case-card">
             <div class="case-card__media">
-              <img src="../assets/lingqi-foto.webp" alt="LingQi TCM Head Spa München">
+              <img class="case-card__image--lingqi" src="../assets/lingqi-foto.webp" alt="LingQi TCM Head Spa München">
             </div>
             <div class="case-card__body">
               <div class="case-card__meta">
