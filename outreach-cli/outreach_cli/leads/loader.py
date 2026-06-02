@@ -15,7 +15,9 @@ import re
 from dataclasses import dataclass, field
 from typing import Optional
 
+from ..config import EXCLUDED_SEND_STATUSES
 from ..sheets import LeadRow, SheetClient
+from ..suppression import load_suppression
 
 # HWG-Trigger-Worte. Word-boundary regex Match in BRANCHE+FIRMA, NICHT substring
 # (Fix REVIEW-send CR-01, 2026-05-11):
@@ -69,10 +71,14 @@ class FilteredLead:
 @dataclass
 class FilterStats:
     total_in_tab: int = 0
+    after_dnc: int = 0
+    after_status_exclusion: int = 0
     after_score: int = 0
     after_status: int = 0
     after_hwg: int = 0
     after_limit: int = 0
+    dnc_excluded: list[str] = field(default_factory=list)
+    status_excluded: list[str] = field(default_factory=list)
     hwg_excluded: list[str] = field(default_factory=list)
     skipped_no_render_vars: list[str] = field(default_factory=list)  # HIGH-03 Fix
 
@@ -166,10 +172,16 @@ def load_filtered_leads(
     """Lädt Leads aus Sheet-Tab + wendet Filter an.
 
     Filter-Reihenfolge:
+      0a. DNC-Datei-Exklusion (do_not_contact.txt) — HART, nicht abschaltbar
+      0b. Status-Exklusion (EXCLUDED_SEND_STATUSES) — HART, nicht abschaltbar
       1. Score >= score_min (wenn score_min > 0)
       2. Recherche_Status == status (wenn status gesetzt)
       3. HWG-Exklusion (wenn exclude_hwg)
       4. Limit (wenn limit > 0)
+
+    Schritt 0a/0b laufen IMMER und VOR allem anderen — auch wenn kein
+    Status-/Score-Filter gesetzt ist. Ein DNC-Lead oder ein Lead in einem
+    Endzustand (Bounce/DNC/kein Interesse) kann so nie in einen Batch geraten.
 
     Returns: (FilteredLead-Liste, FilterStats fürs Logging)
     """
@@ -186,6 +198,31 @@ def load_filtered_leads(
         raise RuntimeError(f"Fehler beim Lesen von Tab {tab!r}: {e}") from e
 
     stats.total_in_tab = len(all_leads)
+
+    # 0a. DNC-Datei-Exklusion (zentrale do_not_contact.txt) — HART.
+    suppressed = load_suppression()
+    if suppressed:
+        kept = []
+        for l in all_leads:
+            if l.email.strip().lower() in suppressed:
+                stats.dnc_excluded.append(f"{l.email} ({l.firma}) — DNC-Liste")
+            else:
+                kept.append(l)
+        all_leads = kept
+    stats.after_dnc = len(all_leads)
+
+    # 0b. Status-Exklusion (Endzustaende + manuelle Sperre) — HART, unabhaengig
+    #     vom positiven Status-Filter weiter unten.
+    kept = []
+    for l in all_leads:
+        if l.recherche_status in EXCLUDED_SEND_STATUSES:
+            stats.status_excluded.append(
+                f"{l.email} ({l.firma}) — Status={l.recherche_status!r}"
+            )
+        else:
+            kept.append(l)
+    all_leads = kept
+    stats.after_status_exclusion = len(all_leads)
 
     # 1. Score-Filter
     if score_min > 0:

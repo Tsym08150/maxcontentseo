@@ -24,7 +24,16 @@ ALLOWED_STATUSES: tuple[str, ...] = (
     "Bounce",
     "Email-Ungültig",
     "Nicht kontaktiert",
+    "DNC",
 )
+
+# Stati die einen Lead HART vom Versand ausschliessen — unabhaengig vom
+# positiven Status-Filter in load_filtered_leads. Endzustaende + manuelle Sperre.
+EXCLUDED_SEND_STATUSES: frozenset[str] = frozenset({
+    "DNC",
+    "Bounce",
+    "Geantwortet - kein Interesse",
+})
 
 # ---------------------------------------------------------------------------
 # Standard-Header-Namen. Echte Sheet-Header werden via HEADER_ALIASES gematcht.
