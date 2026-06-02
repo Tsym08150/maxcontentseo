@@ -85,7 +85,7 @@ audit-queue.md
 | Datei | Zeile | Inhalt | Warum problematisch |
 |---|---|---|---|
 | `PROJECT_BRIEF.md` | 5 | `Inhaber: Georg Stopfer, georg@maxcontentseo.de` | (= Impressum, OK) |
-| `PROJECT_BRIEF.md` | 6 | `Adresse: An den Höfen 1a, 04626 Schmölln` | Privat-/Business-Adresse — im Impressum auf maxcontentseo.de zwar öffentlich (dort "04626 Drogen"), aber im Repo keine Notwendigkeit |
+| `PROJECT_BRIEF.md` | 6 | `Adresse: Hauptstr. 29, 85551 Kirchheim b. München` | Privat-/Business-Adresse — im Impressum auf maxcontentseo.de zwar öffentlich (jetzt einheitlich "85551 Kirchheim b. München"), aber im Repo keine Notwendigkeit |
 | `PROJECT_BRIEF.md` | 11 | Konkretes Pricing-Modell | Geschäftsstrategie — kein Sicherheitsproblem, aber wettbewerbsrelevant |
 | `PROJECT_BRIEF.md` | 35–37 | Versende-Datum & Follow-up-Datum pro Batch | Operative Live-Daten |
 | `PROJECT_BRIEF.md` | 40–41 | `Hot Leads: Vitaminbude/Robin … Beauty Club/Mustafa` | **Drittfirma-Klarnamen** mit Verkaufsstatus |
@@ -112,15 +112,15 @@ audit-queue.md
 
 | Datei | Zeile | Inhalt |
 |---|---|---|
-| `index.html` | 1228, 1231, 1241 | `Georg Stopfer, An den Höfen 1a, 04626 Drogen, Deutschland` (Impressum-Pflicht) |
-| `PROJECT_BRIEF.md` | 6 | `Adresse: An den Höfen 1a, 04626 Schmölln` |
-| `outreach-cli/outreach_cli/templates/variante_audit.txt` | 23 | `An den Höfen 1a, 04626 Schmölln` |
-| `outreach-cli/outreach_cli/templates/variante_c.txt` | 26 | `An den Höfen 1a, 04626 Schmölln` |
+| `index.html` | 1228, 1231, 1241 | `Georg Stopfer, Hauptstr. 29, 85551 Kirchheim b. München, Deutschland` (Impressum-Pflicht) |
+| `PROJECT_BRIEF.md` | 6 | `Adresse: Hauptstr. 29, 85551 Kirchheim b. München` |
+| `outreach-cli/outreach_cli/templates/variante_audit.txt` | 23 | `Hauptstr. 29, 85551 Kirchheim b. München` |
+| `outreach-cli/outreach_cli/templates/variante_c.txt` | 26 | `Hauptstr. 29, 85551 Kirchheim b. München` |
 
 **Risiko-Bewertung:**
 - `index.html` Impressum → **gewollt öffentlich** (Pflicht nach § 5 TMG / § 18 MStV).
 - Email-Templates → die Adresse landet in jeder versendeten Mail, ist also bei den Empfängern. Im Public-Repo ist sie aber dauerhaft indexierbar (Github-Suche, Archive.org).
-- **Hinweis Adress-Diskrepanz:** Impressum sagt "04626 Drogen", interne Dateien sagen "04626 Schmölln". Vermutlich Ortsteil-Schreibweise — vor Public-Release vereinheitlichen.
+- **Hinweis Adress-Diskrepanz:** Impressum und interne Dateien sagen jetzt einheitlich "85551 Kirchheim b. München" (vereinheitlicht 2026-05-21, vorher Drogen/Schmölln-Diskrepanz).
 
 **Empfehlung:** Templates bleiben drin (Adresse ist eh in jeder Mail), aber `PROJECT_BRIEF.md` siehe M-1.
 
@@ -262,7 +262,7 @@ Folgende Patterns wurden gesucht und **nicht gefunden**:
 
 ### Empfohlen
 
-6. Adress-Diskrepanz Drogen/Schmölln vereinheitlichen
+6. ~~Adress-Diskrepanz Drogen/Schmölln vereinheitlichen~~ (erledigt 2026-05-21: auf 85551 Kirchheim b. München umgestellt)
 7. `outreach-cli/v2_nachzieh.py` + `v3_restore_dirty_kont.py` aus Public-Repo entfernen (interne Migration-Scripts)
 8. `bin/firecrawl-pp-cli.exe` aus Repo entfernen, via Release-Tags bereitstellen
 9. `CONTEXT.md` auf operative Live-Daten prüfen (analog M-1)

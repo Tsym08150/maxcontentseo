@@ -15,13 +15,13 @@
 - `index.html`
   - Kontaktformular im Abschnitt `#kontakt` auf Formspree gesetzt: `action="https://formspree.io/f/mqenpryl"` und `method="POST"`.
   - Hidden Fields für `_subject` und `_next` ergänzt.
-  - Adresse im Impressum und Datenschutz von `04626 Drogen` auf `04626 Schmölln` geändert.
+  - Adresse im Impressum und Datenschutz auf `85551 Kirchheim b. München` umgestellt.
   - Impressum-Accordion geschlossen gesetzt, indem `open` entfernt wurde. Datenschutz war bereits geschlossen.
   - Sektion `Bereits vertraut von` inklusive Platzhalter-Logos entfernt.
   - Pricing-Karte 1 auf `Premium-Audit` mit 490€ Referenzaktion und den gewünschten Leistungsdetails geändert.
   - Quick-Fix-Hinweis unter den Pricing-Karten ergänzt.
 - `index-backup-20260515.html`
-  - Alte Ortsangabe `Drogen` in den dort vorhandenen Legal-Texten auf `Schmölln` geändert, weil der Auftrag `Drogen` überall ersetzen sollte.
+  - Alte Ortsangabe in den dort vorhandenen Legal-Texten auf `Kirchheim b. München` umgestellt.
   - Alte `Bereits vertraut von`-Logo-Platzhaltersektion entfernt.
 - `reports/codex-hotfix-mai18.md`
   - Dieser Run-Report wurde neu angelegt.
@@ -49,6 +49,6 @@
 ## Checks
 
 - `git pull origin main`: `Already up to date`.
-- `rg -n "Drogen|04626 Drogen" -g "*.html"`: keine Treffer.
+- `rg -n "Drogen|Schmölln|04626" -g "*.html"`: keine Treffer.
 - Kontaktformular in `index.html` enthält Formspree-Action, `method="POST"`, `_subject` und `_next`.
 - `audit-beispiel.html` enthält weiterhin nur die bestehende Audit-Form; keine neuen Hidden Fields ergänzt.
