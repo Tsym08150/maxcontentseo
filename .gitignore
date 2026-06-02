@@ -21,3 +21,8 @@ PROJECT_BRIEF.md
 # Sonstiger lokaler Müll
 nul
 *.lnk
+
+# Node / Playwright
+node_modules/
+test-results/
+playwright-report/

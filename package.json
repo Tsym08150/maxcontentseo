@@ -1,0 +1,27 @@
+{
+  "name": "maxcontentseo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tsym08150/maxcontentseo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Tsym08150/maxcontentseo/issues"
+  },
+  "homepage": "https://github.com/Tsym08150/maxcontentseo#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
+  }
+}
