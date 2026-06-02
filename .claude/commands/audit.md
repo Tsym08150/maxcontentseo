@@ -14,6 +14,11 @@ Führe einen vollständigen Domain-Audit für `$ARGUMENTS` aus.
 
 **File-Naming:** `<sanitized-domain>` = lowercased, `.` → `-`.
 
+## Hard Constraints — Pre-Audit (PFLICHT)
+
+- **Sheet-Check IMMER zuerst.** Vor Phase 0 (Redirect-Resolution) muss das Lead-Sheet auf Duplikate + DNC-Status geprüft werden. Siehe `audit`-Skill Phase −1. Kein Audit ohne Sheet-Check. Kein optionaler Schritt.
+- Bei DNC ("Nicht kontaktieren") oder aktivem OUTREACH_STATUS: STOP + User-Override abfragen, niemals stillschweigend überschreiben.
+
 ## Hard Constraints Outreach
 
 - Anrede IMMER `Hallo [NAME],` — niemals `Sehr geehrte/r`.
@@ -36,7 +41,9 @@ Kombiniert Codex-Wertschätzung mit Claude-Code-Beweisführung. Single-Paragraph
 
 > "Diese Anfragen gehen aktuell an Ihre Mitbewerber."
 
-Oder semantisch äquivalent: "landen bei Mitbewerbern" / "bekommen Ihre Mitbewerber".
+Oder semantisch äquivalent: "landen bei Mitbewerbern" / "bekommen Ihre Mitbewerber" / "Wettbewerber haben den klareren Einstiegspunkt" / "geht aktuell an die Konkurrenz".
+
+Akzeptierte Konkurrenz-Begriffe: **Mitbewerber**, **Wettbewerber**, **Konkurrenz** — alle drei erfüllen das Quality-Gate.
 
 ## Verbotene Sprache im Hook
 
@@ -79,7 +86,7 @@ Vor Hook-Erstellung das Profil aus Ubersuggest-Daten ableiten (siehe `docs/pipel
 | Body-Wortlimit (mit Template P3–P5) | ≤ 150 Wörter |
 | HWG-Sperrwörter | 0 Treffer im Body |
 | Keine Tool-Sprache im Body | 0 Treffer (site:, SISTRIX, Sichtbarkeitsindex, Tool-URLs) |
-| Konsequenz-Satz vorhanden | Pflicht: "Mitbewerber" + Konsequenz-Verb |
+| Konsequenz-Satz vorhanden | Pflicht: einer von "Mitbewerber" / "Wettbewerber" / "Konkurrenz" + Konsequenz-Verb |
 | Verifizierungsstand-Hedging | mind. 1 Marker (Mir ist aufgefallen / Bei meiner Recherche / In der geprüften Suche) |
 | **Top-3-Services namentlich genannt** | drei konkrete Service-Bezeichnungen aus der Website |
 | **site:-Befund quantifiziert (X Seiten)** | exakte Zahl bei Profil A. Bei Profil B optional (widerspricht Wertschätzungs-Logik). |

@@ -28,6 +28,68 @@ PageSpeed-Score bekommt **keine Cross-Verification** (single source, neutrale Di
 
 ## Workflow
 
+### Phase −1 — Sheet- + CSV-Cross-Check (PFLICHT, MUST RUN BEFORE EVERYTHING)
+
+**Kein Audit ODER Send ohne Sheet+CSV-Cross-Check. Kein optionaler Schritt.**
+
+Bevor irgendetwas läuft — Redirect-Check, Firecrawl, Ubersuggest, Send — IMMER zuerst BEIDE Datenquellen prüfen:
+1. **Google-Sheet** `Lead_Tracker_Gesamt` (Tabs Pipeline_v2_Qualified, Hamburg, Muenchen, Frankfurt, Frankfurt_Umland, Bad Homburg, Alle_Leads) — strategisch-manuelle Klassifizierung
+2. **`D:\000 SEO Business\Tools\leads.csv`** — operative Send-Pipeline mit status-Spalte (test/ready/sent/skip/error)
+
+**Update 2026-05-19**: Beide Quellen müssen "neu" oder "test" sagen, sonst kein Outreach.
+Lesson-Learned: Sheet zeigte "Follow-up gesendet", CSV zeigte "sent" — beide Hinweise vorhanden, einer alleine reichte aber nicht. 13 Leads wären beinahe zum 3. Mal angeschrieben worden.
+
+**Auto-Enforcement seit 2026-05-19:**
+- Tool: `D:\000 SEO Business\Tools\precheck_sheet_status.py`
+- Integration: `send_outreach.ps1` ruft das Tool ZWINGEND vor jedem Filter-Block
+- Verhalten: Liest alle ready-Rows aus leads.csv, prüft jede Email gegen alle relevanten Sheet-Tabs, setzt blockierte auf status=skip
+- Blocking-Status: Follow-up gesendet, Angeschrieben, Bounce, Nicht kontaktieren (DNC), sent, versendet, reply, closed, HOT, WARM
+- Audit-Log: `Tools\GoogleAutomationfürAutomtischen schreiben inDokumenten\GoogleSheetMcp\logs\precheck.log`
+
+**Lese Tab `Pipeline_v2_Qualified` aus Sheet `19ak15Thx3icvmcviMLePG6d22psdWocBChTBNykorL0`** via Service-Account-JWT (gsheets MCP optional, Direct-Read via Python ist Fallback):
+
+```python
+# Temp-Script: D:\000 SEO Business\Tools\_temp_sheet_check.py
+from google.oauth2.service_account import Credentials
+from googleapiclient.discovery import build
+CRED = r"D:\000 SEO Business\Tools\GoogleAutomationfürAutomtischen schreiben inDokumenten\GoogleSheetMcp\credentials\google-service-account.json"
+SHEET_ID = "19ak15Thx3icvmcviMLePG6d22psdWocBChTBNykorL0"
+creds = Credentials.from_service_account_file(CRED, scopes=["https://www.googleapis.com/auth/spreadsheets.readonly"])
+svc = build("sheets", "v4", credentials=creds, cache_discovery=False)
+# Check Pipeline_v2_Qualified UND Muenchen-Tab UND Hamburg-Tab (falls existent)
+for tab in ["Pipeline_v2_Qualified", "Muenchen", "Hamburg", "Frankfurt"]:
+    try:
+        res = svc.spreadsheets().values().get(spreadsheetId=SHEET_ID, range=f"{tab}!A1:Z").execute()
+        # Filter rows where WEBSITE column matches <input-domain>
+        ...
+    except: pass
+```
+
+**Auswertung:**
+
+| Status im Sheet | Aktion |
+|---|---|
+| Domain nicht gefunden | ✅ Weiter zu Phase 0 |
+| AUDIT_EMPFEHLUNG = "Nicht kontaktieren" (DNC) | 🛑 STOP. User-Override mit AskUserQuestion abfragen. Begründung im Audit-MD dokumentieren. |
+| OUTREACH_STATUS in {"Versendet", "Reply", "Closed", "HOT", "WARM"} | 🛑 STOP. Lead bereits in aktiver Bearbeitung — keine Doppelarbeit. User-Klärung. |
+| OUTREACH_STATUS = "Nicht kontaktiert" + SCORE_V2 ≥ 5 | ⚠️ Lead bekannt aber unbearbeitet — Audit-Refresh OK, im MD vermerken "Re-Audit bestehender Lead, SCORE_V2 alt = X" |
+| Domain in mehreren Tabs | 🛑 STOP. Tab-Konflikt klären. |
+
+**Pflicht im Audit-MD:**
+```
+## Sheet-Check (Phase −1)
+- Sheet-ID: 19ak15Thx3icvmcviMLePG6d22psdWocBChTBNykorL0
+- Tabs geprüft: Pipeline_v2_Qualified, Muenchen, Hamburg, Frankfurt
+- Domain-Status: [neu / bekannt (Score_V2=X) / DNC]
+- Override-Begründung: [bei DNC-Override: Datenpunkt der gestrige Bewertung kippt]
+```
+
+**Anti-Pattern Phase −1:**
+- ❌ Sheet-Check skippen weil "vermutlich nicht im Sheet" — IMMER verifizieren
+- ❌ Audit starten und Sheet-Check parallel fahren — sequentiell, Sheet-Check MUSS abgeschlossen sein bevor Phase 0 startet
+- ❌ DNC ignorieren ohne explizite User-Bestätigung
+- ❌ Wenn Sheet-API fehlschlägt (Auth-Error, Quota), Audit trotzdem starten — stattdessen STOP, Fehler an User melden
+
 ### Phase 0 — Redirect Resolution (sequentiell, MUST RUN FIRST)
 
 Bevor irgendetwas anderes passiert, prüfe ob die Input-Domain weiterleitet:
@@ -585,7 +647,8 @@ Regeln:
 
 ## Anti-Patterns
 
-- ❌ Sequentielle Tool-Calls — IMMER parallel in einem Turn (außer Phase 0 muss vor Phase 1 laufen)
+- ❌ **Phase −1 (Sheet-Check) skippen oder als optional behandeln** — IMMER zuerst, kein Audit ohne
+- ❌ Sequentielle Tool-Calls — IMMER parallel in einem Turn (außer Phase −1 → Phase 0 → Phase 1 die sequentiell zwingend sind)
 - ❌ Befunde als bestätigt ausgeben ohne Cross-Check — IMMER Verifikation-Status mitschreiben
 - ❌ Eigene Berechnungen oder Schätzungen wenn Daten `noData` sind — explizit `noData` im Report
 - ❌ Generische Empfehlungen — der Verdict-Block muss konkret und datengetrieben sein
