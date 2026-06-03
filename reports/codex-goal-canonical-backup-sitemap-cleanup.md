@@ -51,6 +51,13 @@ Hinweis: GitHub Pages ist statisches Hosting. Der Alias nutzt das vorhandene sta
   - `/google-bewertung-loeschen-kosmetikstudio/` lieferte 404.
   - `/sitemap_index.xml` lieferte 404.
   - `/index-backup-20260515.html` lieferte 200.
+- Nach Push live geprüft:
+  - `/blog/google-bewertung-loeschen.html` liefert 200 mit Canonical `https://maxcontentseo.de/blog/google-bewertung-loeschen.html`.
+  - `/google-bewertung-loeschen-kosmetikstudio/` liefert den statischen Alias mit Canonical auf den kanonischen Blogartikel und Meta-Refresh auf `/blog/google-bewertung-loeschen.html`.
+  - `/index-backup-20260515.html` liefert 404.
+  - `/backups/index-backup-20260515.html` liefert 404.
+  - `/sitemap.xml` liefert 200 und enthält keine Backup- oder alte Google-Bewertung-Duplikat-URL.
+  - `/sitemap_index.xml` liefert 404.
 
 ## Asset- und Lizenzhinweise
 - Keine neuen externen Assets, Fonts oder Scripts.
