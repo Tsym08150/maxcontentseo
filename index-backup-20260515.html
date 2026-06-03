@@ -1354,7 +1354,7 @@ footer .footer-links a { margin: 0 1rem; }
       </div>
       <div class="form-group">
         <label>Website</label>
-        <input type="url" placeholder="https://ihre-website.de">
+        <input type="text" inputmode="url" data-url-normalize="1" placeholder="z. B. www.ihr-studio.de">
       </div>
       <div class="form-group">
         <label>E-Mail <span style="color:red;">*</span></label>
@@ -1445,5 +1445,16 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 </script>
 
 
+<script>
+document.querySelectorAll('form').forEach(function(f){
+  f.addEventListener('submit', function(){
+    f.querySelectorAll('input[data-url-normalize]').forEach(function(u){
+      if (u.value && !/^https?:\/\//i.test(u.value)) {
+        u.value = 'https://' + u.value.trim();
+      }
+    });
+  });
+});
+</script>
 </body>
 </html>

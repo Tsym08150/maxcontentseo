@@ -93,7 +93,7 @@
             </div>
             <div class="field-group">
               <label for="lead-website">Website <span>optional</span></label>
-              <input id="lead-website" name="website" type="url" autocomplete="url" placeholder="https://">
+              <input id="lead-website" name="website" type="text" inputmode="url" data-url-normalize="1" autocomplete="url" placeholder="z. B. www.ihr-studio.de">
             </div>
             <input type="hidden" name="score" id="lead-score">
             <input type="hidden" name="bucket" id="lead-bucket">
@@ -116,6 +116,17 @@
     <a href="/datenschutz.html">Datenschutz</a>
   </footer>
 
+  <script>
+  document.querySelectorAll('form').forEach(function(f){
+    f.addEventListener('submit', function(){
+      f.querySelectorAll('input[data-url-normalize]').forEach(function(u){
+        if (u.value && !/^https?:\/\//i.test(u.value)) {
+          u.value = 'https://' + u.value.trim();
+        }
+      });
+    });
+  });
+  </script>
   <script src="/tools/seo-check.js" defer></script>
 </body>
 </html>

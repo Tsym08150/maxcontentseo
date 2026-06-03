@@ -1990,7 +1990,7 @@ textarea {
             </div>
             <div class="form-field">
               <label for="website">Website</label>
-              <input id="website" name="website" type="url" placeholder="https://ihre-website.de">
+              <input id="website" name="website" type="text" inputmode="url" data-url-normalize="1" placeholder="z. B. www.ihr-studio.de">
             </div>
             <div class="form-field">
               <label for="email">E-Mail *</label>
@@ -2025,6 +2025,17 @@ textarea {
     </div>
   </footer>
 
+<script>
+document.querySelectorAll('form').forEach(function(f){
+  f.addEventListener('submit', function(){
+    f.querySelectorAll('input[data-url-normalize]').forEach(function(u){
+      if (u.value && !/^https?:\/\//i.test(u.value)) {
+        u.value = 'https://' + u.value.trim();
+      }
+    });
+  });
+});
+</script>
 <script>
 document.querySelectorAll('a[href^="#"]').forEach((link) => {
   link.addEventListener('click', (event) => {
