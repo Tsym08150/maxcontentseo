@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KI-Audit für Unternehmen – Prozess &amp; Compliance | MaxContentSEO</title>
+<meta name="description" content="KI-Audit für den Mittelstand: Prozesse, Daten und Risiken strukturiert prüfen – mit DSGVO, EU AI Act und konkretem Pilotplan für erste Workflows.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:title" content="AI-Analyse für Firmen – KI im Mittelstand strukturiert einführen">
+<meta property="og:description" content="Erst der Prozess, dann das Tool. Nüchterner Audit Ihrer Abläufe mit priorisierten Potenzialen und einem konkreten Pilotplan.">
+<style>
+  :root{
+    --bg:#FAFAF8;
+    --bg-alt:#F2F1ED;
+    --text:#141414;
+    --text-muted:#6B6B6B;
+    --accent:#1B6B4A;
+    --accent-light:#E8F5EE;
+    --accent-dark:#134D35;
+    --border:#E2E0DA;
+    --white:#FFFFFF;
+    --serif:Georgia,'Times New Roman',serif;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --max-w:1100px;
+    --radius:10px;
+    --radius-lg:16px;
+    --space-xs:.5rem;
+    --space-sm:1rem;
+    --space-md:2rem;
+    --space-lg:4rem;
+    --space-xl:8rem;
+    --shadow-soft:0 18px 48px rgba(20,20,20,.06);
+    --paper:var(--bg);
+    --paper-2:var(--bg-alt);
+    --surface:var(--white);
+    --ink:var(--text);
+    --ink-soft:var(--text-muted);
+    --muted:var(--text-muted);
+    --green:var(--accent);
+    --green-deep:var(--accent-dark);
+    --green-tint:var(--accent-light);
+    --line:var(--border);
+    --line-soft:var(--border);
+    --maxw:var(--max-w);
+    --shadow:var(--shadow-soft);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:5.5rem}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--green);color:#fff}
+  a{color:inherit;text-decoration:none}
+  .wrap,.container{width:min(calc(100% - (var(--space-sm) * 2)),var(--max-w));margin:0 auto}
+
+  /* type */
+  h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spacing:0}
+  .eyebrow{
+    width:fit-content;padding:.45rem .85rem;border-radius:999px;background:var(--accent-light);
+    color:var(--accent);font-size:.83rem;font-weight:600;letter-spacing:.02em;
+  }
+  .lead{font-size:1.18rem;color:var(--ink-soft);line-height:1.6}
+
+  /* nav */
+  .site-nav{position:fixed;inset:0 0 auto 0;z-index:50;border-bottom:1px solid rgba(226,224,218,.8);background:rgba(250,250,248,.95);backdrop-filter:blur(14px)}
+  .site-nav__inner{display:flex;align-items:center;justify-content:space-between;gap:var(--space-sm);min-height:4.5rem}
+  .brand{text-decoration:none;font-size:1rem;font-weight:700;letter-spacing:.01em;display:inline-flex;align-items:center}
+  .brand span{color:var(--accent)}
+  .nav-links{display:flex;align-items:center;gap:1rem}
+  .nav-links a:not(.nav-cta){color:var(--text-muted);text-decoration:none;font-size:.94rem;font-weight:600;transition:color 160ms ease}
+  .nav-links a:not(.nav-cta):hover{color:var(--accent)}
+  .nav-toggle{display:none;width:2.75rem;height:2.75rem;padding:0;border:1px solid var(--border);border-radius:var(--radius);background:var(--white);color:var(--text);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+  .nav-toggle span{display:block;width:1.25rem;height:2px;border-radius:999px;background:currentColor;transition:transform 160ms ease,opacity 160ms ease}
+  .site-nav.is-open .nav-toggle span:first-child{transform:translateY(7px) rotate(45deg)}
+  .site-nav.is-open .nav-toggle span:nth-child(2){opacity:0}
+  .site-nav.is-open .nav-toggle span:last-child{transform:translateY(-7px) rotate(-45deg)}
+  @media(max-width:767px){
+    .site-nav__inner{position:relative}
+    .nav-toggle{display:inline-flex;margin-left:auto}
+    .nav-links{position:absolute;top:100%;left:0;right:0;display:flex;flex-direction:column;align-items:stretch;gap:.6rem;max-height:0;padding:0 .85rem;overflow:hidden;opacity:0;pointer-events:none;visibility:hidden;transform:translateY(-.35rem);border:1px solid transparent;border-radius:var(--radius);background:rgba(250,250,248,.98);box-shadow:0 18px 50px rgba(20,20,20,.12);transition:max-height 200ms ease,opacity 160ms ease,transform 160ms ease,padding 160ms ease}
+    .site-nav.is-open .nav-links{max-height:22rem;padding:.85rem;opacity:1;pointer-events:auto;visibility:visible;transform:translateY(0);border-color:var(--border)}
+    .site-nav.is-open .nav-links a{display:flex;width:100%;justify-content:flex-start}
+    .site-nav.is-open .nav-links .nav-cta{justify-content:center}
+  }
+
+  .btn,.nav-cta{
+    display:inline-flex;align-items:center;gap:9px;
+    background:var(--accent);color:#fff!important;font-weight:600;font-size:.96rem;
+    min-height:2.85rem;padding:0 1.2rem;border-radius:var(--radius);border:1px solid var(--accent);
+    transition:transform .18s ease, background .2s ease, box-shadow .2s ease;
+    cursor:pointer;
+  }
+  .btn:hover,.nav-cta:hover{background:var(--accent-dark);border-color:var(--accent-dark);transform:translateY(-1px);box-shadow:none}
+  .btn .arrow{transition:transform .2s ease}
+  .btn:hover .arrow{transform:translateX(4px)}
+  .btn.ghost{background:transparent;color:var(--text)!important;border-color:var(--border)}
+  .btn.ghost:hover{background:transparent;border-color:var(--text);box-shadow:none}
+
+  /* hero */
+  .hero{position:relative;padding:150px 0 64px}
+  .hero .wrap{position:relative;z-index:1}
+  .hero h1{font-size:clamp(2.5rem,5.6vw,4.3rem);margin:22px 0 0;max-width:15ch}
+  .hero h1 em{font-style:italic;color:var(--green)}
+  .hero .lead{margin-top:26px;max-width:54ch}
+  .cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+  .trust{
+    margin-top:40px;display:flex;flex-wrap:wrap;gap:10px 26px;align-items:center;
+    font-family:var(--sans);font-size:.9rem;color:var(--muted);letter-spacing:0;
+  }
+  .trust span{display:inline-flex;align-items:center;gap:9px}
+  .trust span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);flex:none}
+
+  /* sections */
+  section{padding:78px 0}
+  .sec-head{max-width:60ch;margin-bottom:48px}
+  .sec-head h2{font-size:clamp(1.9rem,3.4vw,2.7rem);margin-top:14px}
+  .sec-head p{margin-top:16px;color:var(--ink-soft)}
+  .band{background:var(--paper-2);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+  .band-dark{background:var(--green-deep);color:#EAF1EC;border:none}
+  .band-dark .eyebrow{color:#8FC3AC}
+  .band-dark h2{color:#fff}
+  .band-dark p{color:#C3D4CA}
+
+  /* problem grid */
+  .grid{display:grid;gap:18px}
+  .grid.cols-4{grid-template-columns:repeat(4,1fr)}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+  .grid.cols-2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:920px){.grid.cols-4{grid-template-columns:repeat(2,1fr)}.grid.cols-3{grid-template-columns:1fr}}
+  @media(max-width:620px){.grid.cols-4,.grid.cols-2{grid-template-columns:1fr}}
+
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 24px;box-shadow:var(--shadow);
+  }
+  .card .k{font-family:var(--sans);font-size:.82rem;letter-spacing:.02em;font-weight:700;color:var(--green)}
+  .card h3{font-size:1.32rem;margin:12px 0 9px}
+  .card p{color:var(--ink-soft);font-size:1rem;line-height:1.55}
+
+  /* principles */
+  .principle{display:flex;gap:20px;padding:26px 0;border-top:1px solid var(--line)}
+  .principle:last-child{border-bottom:1px solid var(--line)}
+  .principle .num{font-family:var(--serif);font-size:1.5rem;color:var(--green);flex:none;width:48px;font-style:italic}
+  .principle h3{font-size:1.25rem;margin-bottom:6px}
+  .principle p{color:var(--ink-soft);font-size:1.02rem}
+
+  /* steps */
+  .steps{counter-reset:step;display:grid;gap:0}
+  .step{display:grid;grid-template-columns:64px 1fr auto;gap:24px;align-items:start;padding:28px 0;border-top:1px solid var(--line)}
+  .step:last-child{border-bottom:1px solid var(--line)}
+  .step .idx{counter-increment:step;font-family:var(--sans);color:var(--green);font-size:.95rem;font-weight:700;padding-top:4px}
+  .step .idx::before{content:"0" counter(step)}
+  .step h3{font-size:1.3rem;margin-bottom:6px}
+  .step p{color:var(--ink-soft);font-size:1rem}
+  .step .out{font-family:var(--sans);font-size:.82rem;color:var(--muted);text-align:right;max-width:22ch;padding-top:5px;letter-spacing:0}
+  .step .out b{color:var(--ink-soft);font-weight:500}
+  @media(max-width:720px){.step{grid-template-columns:40px 1fr}.step .out{grid-column:1/-1;text-align:left;max-width:none;margin-top:4px}}
+
+  /* compliance band */
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+  .chip{
+    font-family:var(--sans);font-size:.82rem;letter-spacing:0;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);color:#DCE8E0;
+    padding:9px 15px;border-radius:999px;
+  }
+  .note-mono{font-family:var(--sans);font-size:.88rem;color:#9DB6A8;margin-top:26px;letter-spacing:0}
+  .comp-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+  @media(max-width:860px){.comp-grid{grid-template-columns:1fr;gap:30px}}
+
+  /* offer tiers */
+  .tier{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px 26px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .tier .stage{font-family:var(--sans);font-size:.82rem;font-weight:700;letter-spacing:.02em;color:var(--green)}
+  .tier h3{font-size:1.4rem;margin:10px 0 12px}
+  .tier p{color:var(--ink-soft);font-size:1rem;flex:1}
+
+  /* positioning list */
+  .poslist{list-style:none;display:grid;gap:14px;max-width:62ch}
+  .poslist li{display:flex;gap:14px;font-size:1.05rem;color:var(--ink-soft)}
+  .poslist li::before{content:"";flex:none;width:22px;height:22px;border-radius:50%;background:var(--green-tint);border:1px solid var(--green);margin-top:4px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231B5E47' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:center}
+
+  .deliverables-list{display:grid;gap:.85rem;list-style:none}
+  .deliverables-list li{display:flex;gap:.8rem;align-items:flex-start;color:var(--ink-soft)}
+  .deliverables-list li::before{content:"";flex:none;width:.5rem;height:.5rem;border-radius:50%;background:var(--accent);margin-top:.7rem}
+
+  /* final cta */
+  .finalcta{max-width:760px;margin:0 auto}
+  .finalcta h2{font-size:clamp(2rem,4vw,3rem)}
+  .finalcta p{margin:18px 0 30px;color:var(--ink-soft)}
+  .contact-form{margin-top:28px;padding:clamp(1.35rem,3vw,1.8rem);border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--white);box-shadow:var(--shadow-soft);color:var(--text);text-align:left}
+  .contact-form h3{margin:0 0 .35rem;font-family:var(--serif);font-size:1.35rem;font-weight:400}
+  .contact-form p{margin:.25rem 0 1.25rem;color:var(--text-muted)}
+  .contact-person{margin-top:1.4rem;padding:1rem 1.15rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--white);box-shadow:var(--shadow-soft)}
+  .contact-person strong{display:block;color:var(--text);font-weight:700}
+  .contact-person p{margin:.35rem 0 0;color:var(--text-muted)}
+  .form-grid{display:grid;gap:1rem}
+  .form-field{display:grid;gap:.45rem}
+  .form-field label{font-size:.92rem;font-weight:600;color:var(--text)}
+  .form-field input,.form-field textarea{width:100%;border:1px solid var(--border);border-radius:var(--radius);background:var(--white);padding:.9rem .95rem;color:var(--text)}
+  .form-field textarea{min-height:8rem;resize:vertical}
+  .form-field--full{grid-column:1/-1}
+  .form-hint,.optional{color:var(--text-muted);font-size:.88rem}
+  .contact-form .btn{width:fit-content}
+  @media(min-width:720px){.form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.form-grid .btn,.form-hint{grid-column:1/-1}}
+
+  /* footer */
+  .site-footer{padding-block:var(--space-md);border-top:1px solid var(--border);background:var(--bg);font-size:.95rem}
+  .site-footer__inner{display:grid;gap:1rem}
+  .site-footer__links{display:flex;flex-wrap:wrap;gap:.9rem 1.1rem}
+  .site-footer__links a{color:var(--text-muted);text-decoration:none;transition:color 160ms ease}
+  .site-footer__links a:hover{color:var(--accent)}
+  .site-footer p{margin:0;color:var(--text-muted);font-size:.9rem}
+  .fineprint{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);font-family:var(--sans);font-size:.78rem;color:var(--text-muted);line-height:1.7;letter-spacing:0}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .hero .eyebrow{animation:fu .8s both .05s}
+  .hero h1{animation:fu .9s both .15s}
+  .hero .lead{animation:fu .9s both .3s}
+  .hero .cta-row{animation:fu .9s both .42s}
+  .hero .trust{animation:fu .9s both .54s}
+  @keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+</head>
+<body>
+
+<header class="site-nav" data-mobile-nav>
+  <div class="container site-nav__inner">
+    <a class="brand" href="#top">Max<span>ContentSEO</span></a>
+    <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="primary-navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav class="nav-links" id="primary-navigation" aria-label="Hauptnavigation">
+      <a href="#problem">Problem</a>
+      <a href="#ablauf">Ablauf</a>
+      <a href="#compliance">Compliance</a>
+      <a href="#angebot">Angebot</a>
+      <a class="nav-cta" href="#kontakt">Erstgespräch</a>
+    </nav>
+  </div>
+</header>
+
+<a id="top"></a>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">AI-Analyse für Firmen · DACH-Mittelstand</p>
+    <h1>KI im Mittelstand: erst der Prozess. Dann das Tool. <em>Compliance</em> von Anfang an.</h1>
+    <p class="lead">Die meisten KI-Projekte scheitern nicht an der Technik, sondern an unklaren Prozessen und ungeklärter Rechtslage. Die AI-Analyse liefert Ihnen einen nüchternen Audit Ihrer Abläufe – mit priorisierten Potenzialen und einem konkreten, umsetzbaren Pilotplan.</p>
+    <div class="cta-row">
+      <a class="btn" href="#kontakt">Erstgespräch anfragen <span class="arrow">→</span></a>
+      <a class="btn ghost" href="#ablauf">So läuft die Analyse</a>
+    </div>
+    <div class="trust">
+      <span>Hype-frei statt Buzzwords</span>
+      <span>EU AI Act &amp; DSGVO als Architektur</span>
+      <span>Messbare Ergebnisse</span>
+    </div>
+    <p class="lead">Typische Prüfbereiche: Kundenanfragen, Angebote, Terminverwaltung, Content, Reporting, interne Dokumentation.</p>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem" class="band">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Ausgangslage</p>
+      <h2>Warum KI-Projekte im Mittelstand stecken bleiben</h2>
+      <p>Selten fehlt das Tool. Es fehlt der Prozess – und die Klarheit darüber, was rechtlich überhaupt erlaubt ist.</p>
+    </div>
+    <div class="grid cols-4">
+      <div class="card reveal"><div class="k">Prozess</div><h3>Unsichtbare Zeitfresser</h3><p>Abläufe sind nicht dokumentiert. Ohne Prozessaufnahme bleibt die Tool-Frage Raterei.</p></div>
+      <div class="card reveal"><div class="k">Daten</div><h3>Ungeklärte Datenlage</h3><p>Zugriffsrechte und Zweckbindung sind offen. Machbarkeit hängt am Datenschutz, nicht am Modell.</p></div>
+      <div class="card reveal"><div class="k">Recht</div><h3>„Später"-Thema Recht</h3><p>EU AI Act und DSGVO werden vertagt – bis es teuer wird. Die Triage gehört vor den Pilot.</p></div>
+      <div class="card reveal"><div class="k">Verantwortung</div><h3>Niemand zuständig</h3><p>Ohne Rollen, SOPs und menschliche Endkontrolle bleibt jedes Tool ein Experiment.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Der Ansatz</p>
+      <h2>Ein nüchterner Audit – kein KI-Wunderversprechen</h2>
+      <p>Drei Prinzipien tragen die AI-Analyse. Sie identifiziert Automationspotenziale, priorisiert sie nach Wirkung und Aufwand und liefert einen umsetzbaren Pilotplan.</p>
+    </div>
+    <div class="reveal">
+      <div class="principle"><div class="num">i</div><div><h3>Von Tool-Logik zu Prozess-Logik</h3><p>Nicht „Wir führen KI ein", sondern „Wir verbessern diesen konkreten Prozess".</p></div></div>
+      <div class="principle"><div class="num">ii</div><div><h3>Von Hype zu Pilot</h3><p>Ein kleiner, kontrollierter, messbarer Anwendungsfall schlägt ein breites, unmessbares KI-Programm.</p></div></div>
+      <div class="principle"><div class="num">iii</div><div><h3>Compliance als Architektur, nicht als Anhang</h3><p>EU AI Act, DSGVO und Informationssicherheit werden mitgebaut – nicht am Ende „abgehakt".</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABLAUF -->
+<section id="ablauf" class="band">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Ablauf</p>
+      <h2>Das 5-Phasen-Framework</h2>
+      <p>Jede Phase liefert ein definiertes Ergebnis – vom ersten Gespräch bis zum umsetzungsreifen Pilotplan.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step"><div class="idx"></div><div><h3>Vorgespräch &amp; Scope</h3><p>Geschäftsmodell und Engpässe verstehen: Zeitfresser, manuelle Arbeit, wiederkehrende Kundenfragen.</p></div><div class="out"><b>Ergebnis</b><br>Kurzbriefing &amp; Audit-Scope</div></div>
+      <div class="step"><div class="idx"></div><div><h3>Prozessaufnahme</h3><p>Wiederholbare Abläufe sichtbar machen: Anfragen, Angebote, Content, Reporting, Terminierung.</p></div><div class="out"><b>Ergebnis</b><br>Prozesslandkarte</div></div>
+      <div class="step"><div class="idx"></div><div><h3>Use-Case-Bewertung &amp; Risiko-Triage</h3><p>Potenzial, Aufwand und Rechtsrisiko priorisieren. Hochriskante Anwendungen werden früh ausgeschlossen.</p></div><div class="out"><b>Ergebnis</b><br>Prioritätenmatrix mit Compliance-Ampel</div></div>
+      <div class="step"><div class="idx"></div><div><h3>Compliance- &amp; Datenschutz-Architektur</h3><p>Rechtliche Rahmenbedingungen prüfen und einbauen: EU AI Act, DSGVO, Informationssicherheit, Datensouveränität.</p></div><div class="out"><b>Ergebnis</b><br>Compliance-Konzept &amp; Tool-Empfehlung</div></div>
+      <div class="step"><div class="idx"></div><div><h3>Pilotplan</h3><p>Ersten messbaren Workflow definieren – mit SOP, KPIs und menschlichem Approval-Gate.</p></div><div class="out"><b>Ergebnis</b><br>30-Tage-Umsetzungsplan</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLIANCE -->
+<section id="compliance" class="band-dark">
+  <div class="wrap">
+    <div class="comp-grid">
+      <div class="reveal">
+        <p class="eyebrow">Der Unterschied</p>
+        <h2 style="font-size:clamp(1.9rem,3.4vw,2.7rem);margin-top:14px">Compliance ab Tag&nbsp;eins</h2>
+        <p style="margin-top:16px">Der EU AI Act ist keine Zukunftsmusik mehr: Die Transparenzpflichten nach Artikel&nbsp;50 gelten ab dem 2.&nbsp;August&nbsp;2026. Wir klären je Anwendungsfall die Rolle (Anbieter oder Betreiber), screenen auf verbotene und hochriskante Praktiken und bauen Kennzeichnung, Datenschutz und Nachvollziehbarkeit von Anfang an ein – statt teuer nachzurüsten.</p>
+        <p class="note-mono">Regulatorischer Stand Juni 2026. Vorläufige Rechtsakte (z.&nbsp;B. Digital Omnibus) prüfen wir vor Mandatsbeginn auf den aktuellen Stand.</p>
+      </div>
+      <div class="reveal">
+        <div class="chips">
+          <span class="chip" title="Transparenz- und Kennzeichnungspflichten des EU AI Act">EU AI Act · Art. 50</span>
+          <span class="chip" title="Annex III = Hochrisiko-Kategorien des EU AI Act">High-Risk-Triage (Annex III)</span>
+          <span class="chip" title="AVV = Auftragsverarbeitungsvertrag">DSGVO · AVV · Zweckbindung</span>
+          <span class="chip" title="Datenschutz-Folgenabschätzung">DSFA bei hohem Risiko</span>
+          <span class="chip">Datensouveränität / Self-Hosting</span>
+          <span class="chip">Logging &amp; Nachvollziehbarkeit</span>
+          <span class="chip">Menschliche Endkontrolle</span>
+          <span class="chip" title="Aufbau von KI-Kompetenz bei den Mitarbeitenden (Art. 4 EU AI Act)">AI-Literacy (Art. 4)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANGEBOT -->
+<section id="angebot">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Angebotslogik</p>
+      <h2>Niedrigschwellig einsteigen, kontrolliert wachsen</h2>
+      <p>Ein klarer erster Schritt statt eines schwer erklärbaren Großprojekts – Audit zuerst, danach Umsetzung oder laufende Betreuung.</p>
+    </div>
+    <div class="grid cols-3">
+      <div class="tier reveal">
+        <span class="stage">Einstieg</span>
+        <h3>AI-Analyse</h3>
+        <p>Prozess- &amp; Compliance-Audit: Potenziale, Risiken und Prioritäten Ihres Unternehmens werden sichtbar gemacht.</p>
+      </div>
+      <div class="tier reveal">
+        <span class="stage">Umsetzung</span>
+        <h3>Pilot</h3>
+        <p>Ein konkreter, compliance-geprüfter Workflow als schneller Proof of Value – mit begrenztem Risiko und messbarem Ergebnis.</p>
+      </div>
+      <div class="tier reveal">
+        <span class="stage">Laufend</span>
+        <h3>Compliance &amp; Governance as a Service</h3>
+        <p>Laufende Dokumentation, Risikoüberprüfung und Governance-Struktur für DSGVO- und AI-Act-Anforderungen – statt Einmalprojekt.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POSITIONIERUNG -->
+<section class="band">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Positionierung</p>
+      <h2>Hype-frei. Bewusst.</h2>
+    </div>
+    <ul class="poslist reveal">
+      <li>Keine Erfolgsgarantien, keine überzogenen ROI-Versprechen, keine fremden Erfolgszahlen.</li>
+      <li>Keine pauschale Behauptung, KI ersetze Ihre Mitarbeitenden.</li>
+      <li>Konkrete Use-Cases statt Schlagworte: Angebotserstellung, Recherche, Reporting, Kundenkommunikation, interne SOPs.</li>
+      <li>Datenschutz und menschliche Endkontrolle von Anfang an.</li>
+      <li>Messbar: Zeitersparnis, Fehlerreduktion, Durchlaufzeit, Antwortqualität, Prozessklarheit.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- WARUM -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Über mich</p>
+      <h2>Warum MaxContentSEO?</h2>
+    </div>
+    <p class="lead reveal">Ich verbinde Prozessanalyse, Content-/SEO-Praxis und Automatisierungsverständnis. Statt Ihnen ein KI-Tool zu verkaufen, prüfe ich zuerst, welche Abläufe sich überhaupt eignen, welche Daten betroffen sind und welche Compliance-Risiken entstehen. Das Ergebnis ist kein Hype-Konzept, sondern eine priorisierte Roadmap für einen kontrollierten ersten KI-Pilot — mit menschlicher Kontrolle, Dokumentation und klarer Abgrenzung zur Rechtsberatung.</p>
+  </div>
+</section>
+
+<!-- DELIVERABLES -->
+<section class="band">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Deliverables</p>
+      <h2>Das erhalten Sie</h2>
+    </div>
+    <div class="card reveal">
+      <ul class="deliverables-list">
+        <li>Prozesslandkarte Ihrer wiederholbaren Abläufe</li>
+        <li>Use-Case-Prioritätenmatrix mit Compliance-Ampel</li>
+        <li>EU-AI-Act- &amp; DSGVO-Risikoeinschätzung je Use-Case</li>
+        <li>Tool- &amp; Architektur-Empfehlung inkl. Datensouveränität</li>
+        <li>Konkreter 30-Tage-Pilotplan mit KPIs und Approval-Gate</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="kontakt">
+  <div class="wrap">
+    <div class="finalcta reveal">
+      <p class="eyebrow" style="display:block;margin-bottom:14px">Erstgespräch</p>
+      <h2>Lohnt sich KI für Ihren Prozess? Finden wir es heraus.</h2>
+      <p>Im unverbindlichen Erstgespräch klären wir, welcher Ihrer Abläufe sich zuerst lohnt – und unter welchen Auflagen er rechtlich umsetzbar ist.</p>
+      <div class="contact-person">
+        <strong>Ihr Ansprechpartner: Georg Stopfer</strong>
+        <p>Schreiben Sie mir kurz, welchen Prozess Sie prüfen lassen wollen — ich melde mich innerhalb von 48 Stunden.</p>
+      </div>
+      <form class="contact-form" action="https://formspree.io/f/mqenpryl" method="POST">
+        <input type="hidden" name="_subject" value="Neue Potenzialanalyse-Anfrage">
+        <input type="hidden" name="_next" value="https://maxcontentseo.de/danke.html">
+        <h3>Erstgespräch anfragen</h3>
+        <p>Kostenlos und unverbindlich</p>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="name">Name *</label>
+            <input id="name" name="name" type="text" placeholder="Ihr Name" autocomplete="name" required>
+          </div>
+          <div class="form-field">
+            <label for="email">E-Mail *</label>
+            <input id="email" name="email" type="email" placeholder="ihre@email.de" autocomplete="email" required>
+          </div>
+          <div class="form-field">
+            <label for="company">Firma <span class="optional">(optional)</span></label>
+            <input id="company" name="firma" type="text" placeholder="Ihr Unternehmen" autocomplete="organization">
+          </div>
+          <div class="form-field form-field--full">
+            <label for="message">Ihr Prozess / Ihre Herausforderung *</label>
+            <textarea id="message" name="nachricht" placeholder="z. B. Kundenanfragen, Angebote, Terminverwaltung, Content, Reporting — oder beschreiben Sie kurz Ihre Situation." required></textarea>
+          </div>
+          <button class="btn" type="submit">Erstgespräch anfragen <span class="arrow">→</span></button>
+          <p class="form-hint">Antwort innerhalb von 48 Stunden. Keine Verpflichtung.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div class="site-footer__links">
+      <a href="/impressum.html">Impressum</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+      <a href="#kontakt">Kontakt</a>
+      <a href="#top">Nach oben</a>
+    </div>
+    <p class="fineprint">
+      Regulatorische Angaben (EU AI Act, UWG, DSGVO) mit Rechtsstand Juni 2026; vorläufige Rechtsakte werden vor Mandatsbeginn auf den aktuellen Stand geprüft. Diese Seite stellt keine Rechtsberatung dar.<br>
+      © 2026 MaxContentSEO · Georg Stopfer
+    </p>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const href = link.getAttribute('href');
+      const target = href ? document.querySelector(href) : null;
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const nav = link.closest('[data-mobile-nav]');
+      const toggle = nav ? nav.querySelector('.nav-toggle') : null;
+      if (nav && toggle) {
+        nav.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-mobile-nav]').forEach((nav) => {
+    const toggle = nav.querySelector('.nav-toggle');
+    if (!toggle) return;
+    toggle.addEventListener('click', () => {
+      const open = nav.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+  });
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.12, rootMargin:"0px 0px -8% 0px"});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
