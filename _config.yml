@@ -1,2 +1,29 @@
 exclude:
+  - .agents/
+  - .claude/
+  - .env
+  - .env.example
+  - __pycache__/
+  - AGENTS.md
+  - audit-queue.md
   - backups/
+  - bin/
+  - CHANGELOG.md
+  - codex-handover/
+  - codex_todo_v2.md
+  - CONTEXT.md
+  - docs/
+  - llm_visibility_check.py
+  - llm_visibility_results.csv
+  - node_modules/
+  - outreach-cli/
+  - package.json
+  - package-lock.json
+  - qa_checklist.md
+  - qa_output/
+  - README.md
+  - reports/
+  - RULES.md
+  - scripts/
+  - test-results/
+  - tests/
