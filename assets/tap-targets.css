@@ -1,0 +1,46 @@
+/* Shared tap-target hardening for navigation and footer links. */
+.brand,
+.logo,
+.tool-logo,
+.topbar .brand {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-links a,
+.nav-lite a,
+.site-nav a:not(.button-primary):not(.button-secondary):not(.nav-cta),
+.wp-block-navigation a,
+.tool-back {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding-block: 10px;
+}
+
+.site-footer__links a,
+.site-footer a,
+.footer a,
+.footer-links a,
+.tool-footer a,
+footer a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding-block: 10px;
+}
+
+.nav-links,
+.nav-lite,
+.site-footer__links,
+.footer-links {
+  align-items: center;
+}
+
+.wp-block-navigation__responsive-container-open,
+.wp-block-navigation__responsive-container-close,
+.nav-toggle {
+  min-width: 44px;
+  min-height: 44px;
+}
