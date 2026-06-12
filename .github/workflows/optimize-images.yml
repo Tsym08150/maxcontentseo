@@ -1,1 +1,109 @@
+name: Optimize images
 
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "assets/georg.jpg"
+      - "assets/kosmetikstudio-muenchen.png"
+      - "index.html"
+      - ".github/workflows/optimize-images.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  webp:
+    if: ${{ !contains(github.event.head_commit.message, '[skip image-opt]') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install sharp
+        run: npm install --no-save --no-package-lock sharp
+
+      - name: Convert oversized images to WebP and update references
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const sharp = require('sharp');
+
+          const conversions = [
+            {
+              input: 'assets/georg.jpg',
+              output: 'assets/georg.webp',
+              replacements: [
+                ['src="/assets/georg.jpg"', 'src="/assets/georg.webp"'],
+                ["src='/assets/georg.jpg'", "src='/assets/georg.webp'"],
+              ],
+            },
+            {
+              input: 'assets/kosmetikstudio-muenchen.png',
+              output: 'assets/kosmetikstudio-muenchen.webp',
+              replacements: [
+                ['src="assets/kosmetikstudio-muenchen.png"', 'src="assets/kosmetikstudio-muenchen.webp"'],
+                ["src='assets/kosmetikstudio-muenchen.png'", "src='assets/kosmetikstudio-muenchen.webp'"],
+                ['src="/assets/kosmetikstudio-muenchen.png"', 'src="/assets/kosmetikstudio-muenchen.webp"'],
+                ["src='/assets/kosmetikstudio-muenchen.png'", "src='/assets/kosmetikstudio-muenchen.webp'"],
+              ],
+            },
+          ];
+
+          async function main() {
+            let changed = false;
+
+            for (const item of conversions) {
+              if (!fs.existsSync(item.input)) {
+                console.log(`Skipping missing source: ${item.input}`);
+                continue;
+              }
+
+              await sharp(item.input)
+                .webp({ quality: 80 })
+                .toFile(item.output);
+              fs.unlinkSync(item.input);
+              console.log(`Converted ${item.input} -> ${item.output}`);
+              changed = true;
+
+              let html = fs.readFileSync('index.html', 'utf8');
+              for (const [from, to] of item.replacements) {
+                html = html.split(from).join(to);
+              }
+              fs.writeFileSync('index.html', html);
+            }
+
+            if (!changed) {
+              console.log('No source images required conversion.');
+            }
+          }
+
+          main().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
+          NODE
+
+      - name: Commit optimized images
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html assets
+          git rm --ignore-unmatch assets/georg.jpg assets/kosmetikstudio-muenchen.png
+          if git diff --cached --quiet; then
+            echo "No optimized image changes to commit."
+            exit 0
+          fi
+          git commit -m "Optimize LCP images as WebP [skip image-opt]"
+          git push
