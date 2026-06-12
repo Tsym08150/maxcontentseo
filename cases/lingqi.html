@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Case Study TCM-Praxis München: SEO für lokale Sichtbarkeit | MaxContentSEO</title>
+<title>LingQi TCM Head Spa München | SEO-Fallstudie | MaxContentSEO</title>
 <link rel="canonical" href="https://maxcontentseo.de/cases/lingqi.html">
-<meta name="description" content="LingQi — TCM Head Spa München: Ausgangslage, Audit-Erkenntnisse und priorisierte Maßnahmen für lokale SEO-Sichtbarkeit.">
+<meta name="description" content="LingQi TCM Head Spa München: dokumentierte SEO-Zusammenarbeit mit GSC-Baseline, technischen Korrekturen, Content-Struktur und transparenter Nachmessung.">
 <style>
 :root {
   --bg: #FAFAF8;
@@ -84,6 +84,7 @@ img { max-width: 100%; display: block; }
   text-decoration: none;
   color: var(--text-muted);
   font-size: 0.94rem;
+  font-weight: 600;
 }
 
 .nav-links a:hover { color: var(--accent); }
@@ -150,6 +151,13 @@ img { max-width: 100%; display: block; }
   gap: var(--space-md);
 }
 
+.hero__copy,
+.section-head,
+.stack {
+  display: grid;
+  gap: 1rem;
+}
+
 .hero__title,
 .section-title {
   margin: 0;
@@ -158,17 +166,26 @@ img { max-width: 100%; display: block; }
   line-height: 1.02;
 }
 
-.hero__title { font-size: clamp(2.35rem, 6vw, 4.2rem); max-width: 12ch; }
+.hero__title {
+  font-size: clamp(2.35rem, 6vw, 4.2rem);
+  max-width: 13ch;
+}
+
 .section-title { font-size: clamp(2rem, 4vw, 3.2rem); }
 
 .hero__lead,
 .section-intro,
 .card p,
 .text-block p,
-.site-footer p { color: var(--text-muted); }
+.site-footer p,
+.measurement-note { color: var(--text-muted); }
 
 .hero__lead,
-.section-intro { margin: 0; max-width: 62ch; font-size: clamp(1rem, 2vw, 1.1rem); }
+.section-intro {
+  margin: 0;
+  max-width: 66ch;
+  font-size: clamp(1rem, 2vw, 1.1rem);
+}
 
 .hero-card,
 .card,
@@ -189,6 +206,7 @@ img { max-width: 100%; display: block; }
   aspect-ratio: 4 / 5;
   object-fit: cover;
   width: 100%;
+  height: 100%;
 }
 
 .card-grid {
@@ -202,7 +220,7 @@ img { max-width: 100%; display: block; }
 
 .card strong {
   display: block;
-  font-size: 1.8rem;
+  font-size: clamp(1.7rem, 4vw, 2rem);
   line-height: 1;
   margin-bottom: 0.35rem;
 }
@@ -235,6 +253,35 @@ img { max-width: 100%; display: block; }
   background: rgba(255, 255, 255, 0.45);
 }
 
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+
+th,
+td {
+  padding: 0.95rem 1rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: var(--bg-alt);
+  font-weight: 700;
+}
+
+tr:last-child th,
+tr:last-child td { border-bottom: 0; }
+
 .cta-box {
   padding: clamp(1.35rem, 3vw, 1.8rem);
 }
@@ -256,32 +303,15 @@ img { max-width: 100%; display: block; }
   color: var(--text-muted);
 }
 
-@media (min-width: 768px) {
-  .hero__grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
-    align-items: center;
-  }
-
-  .summary-grid,
-  .detail-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .detail-grid--two,
-  .cta-box {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
-  }
-}
-
 .nav-toggle {
   display: none;
   width: 2.75rem;
   height: 2.75rem;
   padding: 0;
-  border: 1px solid var(--border, #E2E0DA);
-  border-radius: var(--radius, 10px);
-  background: var(--white, #fff);
-  color: var(--text, #141414);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--text);
   cursor: pointer;
   align-items: center;
   justify-content: center;
@@ -301,6 +331,23 @@ img { max-width: 100%; display: block; }
 .site-nav.is-open .nav-toggle span:first-child { transform: translateY(7px) rotate(45deg); }
 .site-nav.is-open .nav-toggle span:nth-child(2) { opacity: 0; }
 .site-nav.is-open .nav-toggle span:last-child { transform: translateY(-7px) rotate(-45deg); }
+
+@media (min-width: 768px) {
+  .hero__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+    align-items: center;
+  }
+
+  .summary-grid,
+  .detail-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .detail-grid--two,
+  .cta-box {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  }
+}
 
 @media (max-width: 767px) {
   .site-nav__inner {
@@ -331,7 +378,7 @@ img { max-width: 100%; display: block; }
     visibility: hidden;
     transform: translateY(-0.35rem);
     border: 1px solid transparent;
-    border-radius: var(--radius, 10px);
+    border-radius: var(--radius);
     background: rgba(250, 250, 248, 0.98);
     box-shadow: 0 18px 50px rgba(20, 20, 20, 0.12);
     transition: max-height 200ms ease, opacity 160ms ease, transform 160ms ease, padding 160ms ease;
@@ -344,7 +391,7 @@ img { max-width: 100%; display: block; }
     pointer-events: auto;
     visibility: visible;
     transform: translateY(0);
-    border-color: var(--border, #E2E0DA);
+    border-color: var(--border);
   }
 
   .site-nav.is-open .nav-links a {
@@ -353,7 +400,6 @@ img { max-width: 100%; display: block; }
     justify-content: flex-start;
   }
 
-  .site-nav.is-open .nav-links .nav-cta,
   .site-nav.is-open .nav-links .button-primary {
     justify-content: center;
   }
@@ -366,9 +412,10 @@ img { max-width: 100%; display: block; }
     {
       "@type": "Article",
       "@id": "https://maxcontentseo.de/cases/lingqi.html#article",
-      "headline": "LingQi TCM Head Spa München — Case Study",
-      "description": "SEO Case Study für eine TCM-Praxis in München: Ausgangslage, Audit-Erkenntnisse und priorisierte Maßnahmen für lokale Sichtbarkeit rund um Head Spa und TCM.",
+      "headline": "LingQi TCM Head Spa München",
+      "description": "Dokumentierte SEO-Zusammenarbeit: belegte Ausgangslage, konkrete Maßnahmen, offene Messung und nächste Schritte für LingQi TCM Head Spa München.",
       "url": "https://maxcontentseo.de/cases/lingqi.html",
+      "dateModified": "2026-06-12",
       "author": {"@id": "https://maxcontentseo.de/#georg"},
       "publisher": {"@id": "https://maxcontentseo.de/#organization"},
       "about": {
@@ -423,49 +470,60 @@ img { max-width: 100%; display: block; }
 
     <section class="hero">
       <div class="container hero__grid">
-        <div style="display:grid; gap:1.15rem;">
+        <div class="hero__copy">
           <div class="eyebrow">LingQi Referenz</div>
           <div class="pill">TCM-Praxis · München</div>
-          <h1 class="hero__title">Klare SEO-Grundlage für lokale Sichtbarkeit rund um Head Spa und TCM</h1>
-          <p class="hero__lead">Die Fallstudie zeigt, wie aus einer hochwertigen Praxis mit geringer Sichtbarkeit ein klar priorisiertes SEO-Setup wurde. Der Fokus lag auf kaufnahen Suchanfragen, lokaler Einordnung und einer Content-Struktur, die sich tatsächlich weiter umsetzen lässt.</p>
+          <h1 class="hero__title">LingQi TCM Head Spa München</h1>
+          <p class="hero__lead">Von der Analyse zur gemeinsamen Umsetzung: belegte Ausgangslage, konkrete Maßnahmen, offene Messung.</p>
+          <p class="hero__lead">Diese Fallstudie zeigt, wie eine strukturierte SEO-Zusammenarbeit in der Praxis aussieht. Keine aufgeblähten Versprechen, sondern ein dokumentierter Prozess: was analysiert wurde, was gemeinsam umgesetzt wurde, was noch aussteht, und wie im September 2026 gemessen wird.</p>
           <div style="display:flex; flex-wrap:wrap; gap:0.9rem;">
             <a class="button-primary" href="/#kontakt">Ähnliches Potenzial prüfen lassen</a>
             <a class="button-secondary" href="./">Zur Referenzübersicht</a>
           </div>
         </div>
         <article class="hero-card">
-          <img src="../assets/linqi.PNG" alt="LingQi TCM München" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+          <img class="hero-card__image" src="../assets/linqi.PNG" alt="LingQi TCM Head Spa München">
         </article>
       </div>
     </section>
 
     <section class="section section-alt">
       <div class="container">
-        <div style="display:grid; gap: 1rem; margin-bottom: clamp(var(--space-md), 5vw, var(--space-lg));">
+        <div class="section-head">
           <div class="pill">Executive Summary</div>
-          <h2 class="section-title">Worum es in dieser Referenz geht</h2>
-          <p class="section-intro">Nicht eine „große Erfolgsreferenz“ mit aufgeblähten Versprechen, sondern ein sauber belegter Audit-Fall: Ausgangssituation, priorisierte Erkenntnisse und die nächsten sinnvollen Schritte.</p>
+          <h2 class="section-title">Kennzahlen und Ausgangswert</h2>
+          <p class="section-intro">Die Bewertung basiert auf belegten Daten aus der Google Search Console und einer priorisierten SEO-Analyse.</p>
         </div>
         <div class="card-grid summary-grid">
           <article class="card">
             <strong>12+</strong>
             <h3>Keywords</h3>
-            <p>mit Ranking-Potenzial wurden im Audit identifiziert und priorisiert.</p>
-          </article>
-          <article class="card">
-            <strong>München</strong>
-            <h3>Lokaler Fokus</h3>
-            <p>Wettbewerbsanalyse im relevanten Umfeld als Grundlage für weitere Inhalte.</p>
-          </article>
-          <article class="card">
-            <strong>Content-Plan</strong>
-            <h3>Nächster Schritt</h3>
-            <p>Klare SEO-Strategie mit priorisierten Themen und Struktur für organische Sichtbarkeit.</p>
+            <p>Keywords mit Ranking-Potenzial identifiziert und priorisiert.</p>
           </article>
           <article class="card">
             <strong>8,2</strong>
-            <h3>Ø-Position bei Google</h3>
-            <p>Ausgangswert Mai 2026 — Messung September 2026</p>
+            <h3>Ø-Position</h3>
+            <p>Google Search Console Baseline Mai/Juni 2026 im 3-Monats-Fenster.</p>
+          </article>
+          <article class="card">
+            <strong>11,4</strong>
+            <h3>Haupt-Keyword</h3>
+            <p>Ø-Position für "head spa münchen" als maßgebliches Haupt-Keyword.</p>
+          </article>
+          <article class="card">
+            <strong>267</strong>
+            <h3>Klicks</h3>
+            <p>GSC-Ausgangswert für den Vergleich im September 2026.</p>
+          </article>
+          <article class="card">
+            <strong>5.866</strong>
+            <h3>Impressionen</h3>
+            <p>3-Monats-Baseline aus der Google Search Console.</p>
+          </article>
+          <article class="card">
+            <strong>4,6 %</strong>
+            <h3>CTR</h3>
+            <p>Ausgangswert vor der geplanten Nachmessung.</p>
           </article>
         </div>
       </div>
@@ -473,18 +531,24 @@ img { max-width: 100%; display: block; }
 
     <section class="section">
       <div class="container">
-        <div style="display:grid; gap: 1rem; margin-bottom: clamp(var(--space-md), 5vw, var(--space-lg));">
-          <div class="pill">Ausgangslage und Ergebnis</div>
-          <h2 class="section-title">Von geringer Sichtbarkeit zu klaren Prioritäten</h2>
+        <div class="section-head">
+          <div class="pill">Ausgangslage</div>
+          <h2 class="section-title">Hochwertige Praxis, strukturelle Sichtbarkeitslücken</h2>
+          <p class="section-intro">LingQi TCM Head Spa ist eine spezialisierte Praxis in München-Haidhausen mit TCM-basierten Kopfhautbehandlungen und Head Spa mit 4D-Liege als technischem Alleinstellungsmerkmal.</p>
         </div>
         <div class="detail-grid detail-grid--two">
           <article class="text-block">
-            <h3>Ausgangssituation</h3>
-            <p>Hochwertige Praxis mit geringer Sichtbarkeit bei relevanten Suchanfragen rund um Haarausfall, Kopfhautbehandlung und TCM. Bestehende Inhalte waren vorhanden, jedoch nicht gezielt auf Suchintention und Keywords ausgerichtet. Google Search Console (Mai 2026): 267 Klicks · 5.866 Impressionen · Ø-Position 8,2 · CTR 4,6 % — Ausgangsbasis für die laufende Optimierung.</p>
+            <h3>Strukturelle Schwächen</h3>
+            <ul class="detail-list">
+              <li>Bestehende Inhalte waren nicht konsequent auf Suchintention ausgerichtet.</li>
+              <li>Defekte Links, inkonsistente Adressangaben und widersprüchliche Preise auf englischsprachigen Seiten erschwerten die Nutzerführung.</li>
+              <li>Ein strukturierter Content-Plan für kaufnahe Suchanfragen fehlte.</li>
+              <li>Google Search Console: 267 Klicks, 5.866 Impressionen, Ø-Position 8,2 im 3-Monats-Fenster.</li>
+            </ul>
           </article>
-          <article class="text-block">
-            <h3>Ergebnis</h3>
-            <p>Klare SEO-Strategie mit priorisierten Keywords und konkretem Content-Plan als Grundlage für organische Sichtbarkeit bei relevanten Suchanfragen.</p>
+          <article class="text-block callout">
+            <h3>Einordnung</h3>
+            <p>Die Praxis hatte ein klares Angebot und echte Differenzierung. Die Website übersetzte diese Stärken aber noch nicht sauber in auffindbare Seiten, lokale Signale und priorisierte Inhalte.</p>
           </article>
         </div>
       </div>
@@ -492,18 +556,38 @@ img { max-width: 100%; display: block; }
 
     <section class="section section-alt">
       <div class="container">
-        <div style="display:grid; gap: 1rem; margin-bottom: clamp(var(--space-md), 5vw, var(--space-lg));">
-          <div class="pill">Audit-Inhalte</div>
-          <h2 class="section-title">Was im Audit konkret erarbeitet wurde</h2>
+        <div class="section-head">
+          <div class="pill">Zusammenarbeit</div>
+          <h2 class="section-title">Was gemeinsam umgesetzt wurde</h2>
+          <p class="section-intro">MaxContentSEO liefert Analyse, Strategie und technische Fixes. Die Inhaberin setzt Maßnahmen in ihrem System selbst um und trifft alle inhaltlichen Entscheidungen.</p>
         </div>
-        <div class="detail-grid detail-grid--two">
+        <div class="detail-grid">
           <article class="text-block">
-            <h3>Vorgehen</h3>
+            <h3>Technische Korrekturen</h3>
             <ul class="detail-list">
-              <li>SEO-Analyse der gesamten Website</li>
-              <li>Keyword-Recherche mit Fokus auf kaufnahe Suchanfragen</li>
-              <li>Wettbewerbsanalyse im lokalen Umfeld</li>
-              <li>Strukturierte Content-Strategie inklusive interner Verlinkung und FAQ-Struktur</li>
+              <li>Defekter Harmony-Button auf der Startseite repariert.</li>
+              <li>Discovery-Buchungsseite <code>/erstbehandlung-45-minuten/</code> angelegt, damit das Einstiegsangebot für 119 Euro buchbar ist.</li>
+              <li>Straßennamen auf "Englmannstraße" vereinheitlicht.</li>
+              <li>Öffnungszeiten auf Di-Sa 10-17 Uhr über Website, Google Maps und Treatwell vereinheitlicht.</li>
+              <li>Preissystem geklärt: Discovery 119 Euro, Master 159 Euro, Harmony 219 Euro, Imperial 419 Euro.</li>
+            </ul>
+          </article>
+          <article class="text-block">
+            <h3>Inhalte und Struktur</h3>
+            <ul class="detail-list">
+              <li>Neues Journal-System mit fokussierten Ratgeber-Artikeln zu Kopfhautgesundheit, Schuppen und Stress.</li>
+              <li>Neue Ritual-Landingpages für Master, Imperial, Scalp Health und Stress-Stabilisierung.</li>
+              <li>Technische Bereinigung begonnen: Weiterleitungen normalisiert, Impressum und Datenschutz vereinheitlicht.</li>
+            </ul>
+          </article>
+          <article class="text-block">
+            <h3>Analyse abgeschlossen</h3>
+            <ul class="detail-list">
+              <li>SEO-Vollanalyse mit 14 priorisierten Maßnahmen.</li>
+              <li>Keyword-Recherche zu Head Spa, Kopfhautbehandlung und TCM München.</li>
+              <li>Lokale Wettbewerbsanalyse im Münchner Umfeld.</li>
+              <li>KI-Sichtbarkeits-Analyse für ChatGPT, Gemini und Perplexity im Juni 2026.</li>
+              <li>Content-Strategie mit Prioritäten und interner Verlinkungsstruktur.</li>
             </ul>
           </article>
         </div>
@@ -511,14 +595,90 @@ img { max-width: 100%; display: block; }
     </section>
 
     <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div class="pill">Offene Schritte</div>
+          <h2 class="section-title">Was noch aussteht</h2>
+          <p class="section-intro">Die Fallstudie bleibt bewusst transparent: Einige Maßnahmen sind abgeschlossen, andere gehören in die nächste Umsetzungsphase.</p>
+        </div>
+        <div class="detail-grid detail-grid--two">
+          <article class="text-block">
+            <h3>Nächste Umsetzungsschritte</h3>
+            <ul class="detail-list">
+              <li>Dedizierte Landingpage <code>/head-spa-muenchen/</code> für das Haupt-Keyword.</li>
+              <li>Weitere Landingpage <code>/kopfmassage-muenchen/</code> für verwandte Suchanfragen.</li>
+              <li>Mobile Ladezeit optimieren, besonders durch Bildkomprimierung.</li>
+              <li>URL-Kannibalisierung auflösen.</li>
+              <li>KI-Sichtbarkeits-Grundlagen implementieren: robots.txt, Schema Markup und llms.txt.</li>
+              <li>USP 4D-Liege und TCM-Kopfzonenarbeit in Website-Texte überführen.</li>
+            </ul>
+          </article>
+          <article class="text-block callout">
+            <h3>Warum das wichtig ist</h3>
+            <p>Lokale SEO-Arbeit wird belastbarer, wenn technische Sauberkeit, Suchintention, Standortbezug und Messmethodik zusammenpassen. Genau darauf ist die nächste Phase ausgelegt.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container stack">
+        <div class="section-head">
+          <div class="pill">Methodik</div>
+          <h2 class="section-title">Verbindlicher Messstandard</h2>
+          <p class="section-intro">Alle Vorher/Nachher-Vergleiche basieren ausschließlich auf Google Search Console: Ø-Position impressionsgewichtet, Zeitfenster 3 Monate. Keine geschätzten Besucherzahlen, keine Tool-Momentaufnahmen als Vergleichsbasis.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Kennzahl</th>
+                <th>Baseline Mai/Juni 2026</th>
+                <th>Nachher September 2026</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Klicks (3 Monate)</td>
+                <td>267</td>
+                <td>offen</td>
+              </tr>
+              <tr>
+                <td>Impressionen (3 Monate)</td>
+                <td>5.866</td>
+                <td>offen</td>
+              </tr>
+              <tr>
+                <td>CTR</td>
+                <td>4,6 %</td>
+                <td>offen</td>
+              </tr>
+              <tr>
+                <td>Ø-Position gesamt</td>
+                <td>8,2</td>
+                <td>offen</td>
+              </tr>
+              <tr>
+                <td>"head spa münchen" Ø-Position</td>
+                <td>11,4</td>
+                <td>offen</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="measurement-note"><em>Nachmessung September 2026: Ergebnisse werden hier veröffentlicht.</em></p>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="container cta-box">
-        <div>
+        <div class="stack">
           <div class="pill">Nächster Schritt</div>
-          <h2 class="section-title">Sie möchten wissen, wie Ihr Studio lokal gefunden wird?</h2>
-          <p class="section-intro">Ich prüfe Ihre Website, zeige die größten Sichtbarkeitslücken und sortiere, welche Inhalte oder Seiten zuerst wirklich sinnvoll wären.</p>
+          <h2 class="section-title">Ähnliches Potenzial für Ihr Studio prüfen lassen?</h2>
+          <p class="section-intro">Ich analysiere Ihre Website, zeige die größten Sichtbarkeitslücken und sortiere, welche Maßnahmen zuerst wirklich sinnvoll wären.</p>
         </div>
         <div style="display:flex; align-items:center; justify-content:flex-start;">
-          <a class="button-primary" href="/#kontakt">Kostenlose Potenzialanalyse</a>
+          <a class="button-primary" href="/#kontakt">Kostenlose Potenzialanalyse anfragen</a>
         </div>
       </div>
     </section>
@@ -528,6 +688,8 @@ img { max-width: 100%; display: block; }
     <div class="site-footer__links">
       <a href="/">Startseite</a>
       <a href="./">Referenzen</a>
+      <a href="/seo-muenchen/">SEO-Beratung München</a>
+      <a href="/ki-sichtbarkeit/">KI-Sichtbarkeits-Check</a>
       <a href="/impressum.html">Impressum</a>
       <a href="/datenschutz.html">Datenschutz</a>
       <a href="mailto:georg@maxcontentseo.de">georg@maxcontentseo.de</a>

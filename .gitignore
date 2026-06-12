@@ -9,6 +9,8 @@ reports/audit-*.md
 reports/audit-*.pdf
 reports/outreach-*.md
 reports/outreach-*.txt
+reports/_stage1_scrape/
+reports/_stage1_scrape/impressum/
 audit-queue.md
 
 # Operatives Live-Wissen (Hot-Leads, Pricing, Privatadresse)
