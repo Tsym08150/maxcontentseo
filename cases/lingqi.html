@@ -203,7 +203,7 @@ img { max-width: 100%; display: block; }
 }
 
 .hero-card__image {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 9 / 16;
   object-fit: cover;
   width: 100%;
   height: 100%;
@@ -249,7 +249,7 @@ img { max-width: 100%; display: block; }
 }
 
 .callout {
-  border-left: 3px solid var(--accent);
+  border-left: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.45);
 }
 
@@ -335,7 +335,11 @@ tr:last-child td { border-bottom: 0; }
 @media (min-width: 768px) {
   .hero__grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
-    align-items: center;
+    align-items: start;
+  }
+
+  .hero-card {
+    margin-top: 6.2rem;
   }
 
   .summary-grid,
@@ -483,7 +487,7 @@ tr:last-child td { border-bottom: 0; }
           </div>
         </div>
         <article class="hero-card">
-          <img class="hero-card__image" src="../assets/linqi.PNG" alt="LingQi TCM Head Spa München">
+          <img class="hero-card__image" src="../assets/lingqi-foto.webp" alt="LingQi TCM Head Spa München">
         </article>
       </div>
     </section>
