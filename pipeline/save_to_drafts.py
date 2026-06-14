@@ -1,6 +1,7 @@
 """save_to_drafts.py — Automatisches Draft-Ablegen in ProtonMail Entwürfe.
 
 Bedingungen für automatisches Ablegen (ALLE müssen erfüllt sein):
+- Empfänger nicht auf DNC-Liste (do_not_contact.txt) — R14, hart
 - Kein Roast-Deadlock (roast_result != "DEADLOCK")
 - NeverBounce: valid oder catch-all
 - Dry-Run: DNC-Gate OK + Format OK
@@ -23,6 +24,15 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 from dotenv import load_dotenv
+
+# DNC-/Suppression-Check (R14): zentrale, einzige Wahrheit (do_not_contact.txt
+# via outreach_cli.suppression). Wir nutzen denselben Check wie das Send-Gate
+# (one_shot_send.send_message -> DNCBlockedError) — kein neuer Check, gleiche
+# Semantik. outreach-cli liegt als Schwesterordner (Pfad wie tools/sheets_client.py).
+_OUTREACH_CLI_DIR = Path(__file__).parent.parent / "outreach-cli"
+if str(_OUTREACH_CLI_DIR) not in sys.path:
+    sys.path.insert(0, str(_OUTREACH_CLI_DIR))
+from outreach_cli.suppression import is_suppressed
 
 APPROVALS_PATH = Path(__file__).parent.parent / "config" / "approvals.json"
 PIPELINE_LOG = Path(__file__).parent.parent.parent / "logs" / "pipeline-log.txt"
@@ -48,6 +58,7 @@ def save_approvals(data: dict) -> None:
 
 def _check_gates(
     *,
+    recipient: str,
     roast_result: str,
     neverbounce_status: str,
     dry_run_ok: bool,
@@ -55,6 +66,14 @@ def _check_gates(
     approvals: dict,
 ) -> tuple[bool, str]:
     """Prüft alle Gate-Bedingungen. Gibt (ok, reason) zurück."""
+    # DNC-/Suppression-Gate (R14) — hart, identische Semantik zum Send-Gate
+    # (one_shot_send.send_message -> DNCBlockedError): ein Treffer in
+    # do_not_contact.txt blockt; fehlende Datei = fail-open (siehe suppression.py).
+    if is_suppressed(recipient):
+        return False, (
+            f"Empfänger {recipient} steht auf der DNC-Liste (do_not_contact.txt) — "
+            f"kein Draft abgelegt."
+        )
     if roast_result == "DEADLOCK":
         return False, "Roast-Deadlock — manuelle Überarbeitung erforderlich"
     # role_account + smtp_connectable = Mailbox existiert, kein Hard-Bounce-Risiko
@@ -147,6 +166,7 @@ def save_draft(
 
     # Gate-Prüfung
     ok, reason = _check_gates(
+        recipient=recipient,
         roast_result=roast_result,
         neverbounce_status=neverbounce_status,
         dry_run_ok=dry_run_ok,
