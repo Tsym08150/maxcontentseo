@@ -28,3 +28,37 @@ nul
 node_modules/
 test-results/
 playwright-report/
+
+# Codex-Handover (enthält Lead-Daten, nicht ins Repo)
+codex-handover/
+
+# Runtime-State + Tokens (config/)
+config/*token*.json
+config/approvals.json
+config/drafts_pending.json
+config/pipeline_locks.json
+config/leads_queue.json
+
+# Lead/PII-Daten
+reports/followup-*.txt
+reports/stage1-*.md
+reports/neverbounce-*.json
+reports/impressum-*.json
+reports/warming-*.md
+reports/codex-goal-22-impressum-*.md
+*leads*.csv
+llm_visibility_results.csv
+docs/llm_visibility_leads_2026-06.csv
+
+# Caches / OS
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.log
+*.lock
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+Thumbs.db
+desktop.ini
