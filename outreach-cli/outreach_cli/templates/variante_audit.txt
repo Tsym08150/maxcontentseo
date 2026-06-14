@@ -1,37 +1,41 @@
 ---
-subject: "Kurze Frage zu Ihrer Website in {stadt}"
+subject: "Kurze Frage zu [WEBSITE]"
 version: "audit-v2"
 created_at: "2026-05-13"
-description: "5-Absatz-Sales-Struktur: Problem (Hook P1) -> Konsequenz (Hook P2) -> Hoffnung -> Audit-Wertigkeit -> CTA. Hook (P1+P2) kommt aus /audit Skill - reports/outreach-<domain>-*.txt. Keine Tool-Sprache, Konsequenz-Satz Pflicht (Anfragen -> Mitbewerber)."
+description: "3-Absatz-Sales-Struktur: Problem (Hook P1) -> Konsequenz (Hook P2) -> CTA. Hook (P1+P2) kommt aus /audit Skill - reports/outreach-<domain>-*.txt. Keine Tool-Sprache, Konsequenz-Satz Pflicht (Anfragen -> Mitbewerber). P3 (Hoffnung) und P5 (Website-Hinweis) entfernt 2026-06-10 — Roast-Befund: generisch/agenturig."
+# HOOK-REGELN (Pflicht bei Hook-Erstellung):
+# Performance-Hook (Ladezeit):
+#   PFLICHT: Vergleichswert nennen — mindestens eine dieser Varianten:
+#     - "Googles Grenzwert liegt bei 2,5 Sekunden"
+#     - "Der Branchendurchschnitt liegt unter 3 Sekunden"
+#     - "Vergleich: [Konkurrent] lädt in X Sekunden" (anonymisiert OK)
+#   VERBOTEN: vage Formulierungen ohne Zahl, z.B. "Konkurrenz lädt schneller"
+#   Roast-Frage 4 Deadlock-Schutz: ohne Vergleichszahl immer 1 schwacher Punkt.
 ---
 Hallo [NAME],
 
 {audit_hook}
 
-Die gute Nachricht: oft reichen wenige gezielte Anpassungen, um wieder lokal sichtbar zu werden - das Angebot stimmt ja.
+Ich habe die drei Punkte in einer kurzen Analyse dokumentiert — mit konkreten Ansatzpunkten, was sich ändern lässt.
 
-Wenn Sie moechten, schicke ich Ihnen einen kurzen Sichtbarkeitscheck mit den 3 wichtigsten Stellschrauben in priorisierter Reihenfolge - konkret auf Ihre Seite bezogen, ohne Werbeaussagen.
-
-Auf meiner Website zeige ich, wie eine solche Analyse konkret aussieht.
-
-Ein kurzes "Ja" per Antwort genuegt.
+Ein kurzes „Ja" per Antwort genügt — ich schicke Ihnen die Analyse mit den konkreten Ansatzpunkten zu.
 
 Mit freundlichen Gruessen
 Georg Stopfer
 
 ---
 
-MaxContentSEO - Inhaber Georg Stopfer
-Hauptstr. 29, 85551 Kirchheim b. Muenchen
+MaxContentSEO – Inhaber Georg Stopfer
+Hauptstr. 29, 85551 Kirchheim b. München
 E-Mail: georg@maxcontentseo.de
-Web: maxcontentseo.de
+Web: https://maxcontentseo.de
 
 Hinweis nach UWG/DSGVO:
 Sie erhalten diese Mail als gewerblicher Ansprechpartner
 Ihrer Website. Rechtsgrundlage: berechtigtes Interesse
 (Art. 6 Abs. 1 lit. f DSGVO) zur Anbahnung einer
-B2B-Geschaeftsbeziehung im Bereich SEO-Dienstleistungen.
+B2B-Geschäftsbeziehung im Bereich SEO-Dienstleistungen für Ihre Branche.
 
-Kein Interesse? Eine kurze Rueckmeldung genuegt - ich entferne Ihre Adresse
+Kein Interesse? Eine kurze Rückmeldung genügt – ich entferne Ihre Adresse
 umgehend und dauerhaft.
-Widerspruch nach Art. 21 DSGVO ist jederzeit moeglich.
+Widerspruch nach Art. 21 DSGVO ist jederzeit möglich.
